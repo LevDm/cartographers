@@ -1,36 +1,32 @@
 "use client";
 import React from "react";
 
-import {
-  Button,
-  AppBar,
-  Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  Stack,
-  Container,
-} from "@mui/material";
+import { Button, AppBar, Box, Toolbar, IconButton, Typography, Container } from "@mui/material";
 
-import ExtensionIcon from "@mui/icons-material/Extension";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
 
 import { usePathname, useRouter } from "next/navigation";
 
-export default function HomePage() {
+export default function FinishedActionPage() {
   const router = useRouter();
   const basepath = usePathname();
 
   const link = (path: string) => {
+    console.log(basepath, path);
     router.push(`${basepath}${path}`);
   };
+
+  console.log();
 
   return (
     <Box component={"main"}>
       <AppBar position="static">
         <Toolbar>
-          <ExtensionIcon />
+          <IconButton color="inherit" onClick={() => router.back()}>
+            <StarOutlineIcon />
+          </IconButton>
           <Typography variant="h6" sx={{ marginLeft: 2, flexGrow: 1 }}>
-            Главная
+            Результат
           </Typography>
           <Button color="inherit" onClick={() => router.push("//rules")}>
             Правила
@@ -39,14 +35,7 @@ export default function HomePage() {
       </AppBar>
 
       <Container component={"section"}>
-        <Stack spacing={2}>
-          <Button size="large" onClick={() => link("/action")}>
-            Новая
-          </Button>
-          <Button size="large" onClick={() => link("/action/process")}>
-            Продолжить
-          </Button>
-        </Stack>
+        <Button onClick={() => router.replace("//")}>Главная</Button>
       </Container>
     </Box>
   );
