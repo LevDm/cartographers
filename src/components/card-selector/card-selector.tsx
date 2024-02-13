@@ -29,7 +29,7 @@ type CardSelectorPropsType = {
   control: any;
 };
 
-const CardSelector = React.memo((props: CardSelectorPropsType) => {
+export const CardSelector = React.memo((props: CardSelectorPropsType) => {
   const { cards, selectID, title, required, control, error } = props;
 
   return (
@@ -76,4 +76,3 @@ const CardSelector = React.memo((props: CardSelectorPropsType) => {
     </FormControl>
   );
 });
-export default CardSelector;
