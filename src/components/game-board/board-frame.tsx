@@ -7,24 +7,16 @@ type FrameProps = MapFramesType & {
   usageIn: "show" | "edit";
 };
 
-const FramesParams = {
-  void: { imgSrc: "0" },
-  hill: { imgSrc: "1" },
-  none: { imgSrc: "2" },
-  home: { imgSrc: "3" },
-  tree: { imgSrc: "4" },
-  evil: { imgSrc: "5" },
-  brim: { imgSrc: "6" },
-  pond: { imgSrc: "7" },
-  // sub
-  show: { imgSrc: "-a" },
-  edit: { imgSrc: "-b" },
-};
+import { BASIC_FRAMES, SUB_FRAMES } from "@/data/elements";
 
 export const Frame = React.memo((props: FrameProps) => {
   const { id, frameType, frameSubType, isEdit, handler, usageIn } = props;
 
-  const useInEdit = usageIn === "edit";
+  const { bgc, imgSrc, disabled } = BASIC_FRAMES[frameType];
+
+  const sumImdSrc = frameSubType ? SUB_FRAMES[frameSubType].kind.none.imgSrc : null;
+
+  const useInEdit = usageIn === "edit" && !disabled;
 
   const onClickHandler = () => {
     if (handler) handler(id);
@@ -34,17 +26,16 @@ export const Frame = React.memo((props: FrameProps) => {
     <div
       style={{
         display: "flex",
-        backgroundColor: "white", //isEdit ? "transparent" :
+        backgroundColor: bgc,
         aspectRatio: "1/1",
         alignItems: "center",
         justifyContent: "center",
-        //cursor: "pointer",
         borderRadius: 2,
         opacity: useInEdit ? (isEdit ? 1 : 0.4) : 1,
       }}
       onClick={useInEdit ? onClickHandler : undefined}
     >
-      <p style={{}}>{FramesParams[frameType]?.imgSrc}</p>
+      <p style={{}}>{imgSrc}</p>
     </div>
   );
 });

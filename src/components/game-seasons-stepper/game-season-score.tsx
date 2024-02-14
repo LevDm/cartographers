@@ -3,26 +3,21 @@ import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { SeasonScoresType } from "@/data/types";
 
 type SeasonScorePropsType = {
+  season: number;
   score: SeasonScoresType;
 };
 
 import { countScores } from "@/game-utils/score-counter";
 
-export function GameSeasonScore(props: SeasonScorePropsType) {
-  const { score } = props;
-  const { p1, p2, c, m } = score;
+import { SEASONS } from "@/data/elements";
 
-  const res = [
-    { title: "A", value: p1 },
-    { title: "B", value: p2 },
-    { title: "C", value: c },
-    { title: "D", value: m },
-    { value: countScores(score) },
-  ];
+export function GameSeasonScore(props: SeasonScorePropsType) {
+  const { season, score } = props;
+  //const { p1, p2, c, m } = score;
 
   return (
     <Box sx={{ paddingTop: 1 }}>
-      <Typography>Счёт сезона</Typography>
+      <Typography>Счёт сезона {SEASONS[season].title}</Typography>
       <Paper sx={{ padding: 1, width: "fit-content" }}>
         <Stack
           direction={"row"}
@@ -30,21 +25,19 @@ export function GameSeasonScore(props: SeasonScorePropsType) {
           spacing={1}
           divider={<Divider orientation="vertical" flexItem />}
         >
-          {res.map((el) => (
-            <>
-              {(el.title && (
-                <Stack
-                  direction={"column"}
-                  spacing={1}
-                  alignItems="stretch"
-                  divider={<Divider orientation="horizontal" flexItem />}
-                >
-                  <Typography>{el.title}</Typography>
-                  <Typography>{el.value}</Typography>
-                </Stack>
-              )) || <Typography variant="h4">{el.value}</Typography>}
-            </>
+          {SEASONS[season].score.map((el, index) => (
+            <Stack
+              key={`score-col-${index}`}
+              direction={"column"}
+              spacing={1}
+              alignItems="stretch"
+              divider={<Divider orientation="horizontal" flexItem />}
+            >
+              <Typography>{el.title}</Typography>
+              <Typography>{Object.values(score)[index]}</Typography>
+            </Stack>
           ))}
+          <Typography variant="h5">{countScores(score)}</Typography>
         </Stack>
       </Paper>
     </Box>

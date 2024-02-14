@@ -16,36 +16,36 @@ import {
   Typography,
 } from "@mui/material";
 
+import { AllFrameTypes } from "@/data/types";
+import { BASIC_FRAMES } from "@/data/elements";
+
 type InputFieldProps = {
+  location: {
+    type: AllFrameTypes | undefined;
+    subType: string | undefined;
+    ruin: boolean;
+  };
+  applyDissabled: boolean;
+  handleLocation: (v: any) => unknown;
   handleChoiseReset: () => unknown;
   handleChoiseApply: () => unknown;
 };
 
-type FieldLocationType = { value: string; title: string; srcImg: string };
+type FieldLocationType = AllFrameTypes; // { value: string; title: string; srcImg: string };
 
-const generalsLocationsType = [
+const generalsLocationsType = Object.keys(BASIC_FRAMES) as AllFrameTypes[];
+
+/*[
   { value: "home", title: "Поселение", srcImg: "" },
   { value: "tree", title: "Лес", srcImg: "" },
   { value: "brim", title: "Поля", srcImg: "" },
   { value: "pond", title: "Водоём", srcImg: "" },
   { value: "evil", title: "Монстры", srcImg: "" },
 ];
+*/
 
 export function InputField(props: InputFieldProps) {
-  const { handleChoiseReset, handleChoiseApply } = props;
-
-  const [location, setLocation] = useState<{
-    type: string | undefined;
-    subType: string | undefined;
-    ruin: boolean;
-  }>({ type: undefined, subType: undefined, ruin: false });
-
-  const locTypeHandler = (value: string) => {
-    setLocation((prev) => ({
-      ...prev,
-      type: value,
-    }));
-  };
+  const { location, applyDissabled, handleLocation, handleChoiseReset, handleChoiseApply } = props;
 
   return (
     <Paper
@@ -65,7 +65,7 @@ export function InputField(props: InputFieldProps) {
         <FieldTypeSelect
           label="Местность"
           value={location.type}
-          onChange={locTypeHandler}
+          onChange={handleLocation}
           Items={generalsLocationsType}
         />
 
@@ -77,7 +77,7 @@ export function InputField(props: InputFieldProps) {
           Сбросить клетки
         </Button>
         <Button
-          disabled={!Boolean(location.type)}
+          disabled={applyDissabled}
           onClick={handleChoiseApply}
           endIcon={<SendAndArchiveIcon />}
         >
@@ -129,10 +129,17 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
       <InputLabel id="select-label">{label}</InputLabel>
       <Select labelId="select-label" value={value} label={label} onChange={handleChange}>
         {Items.map((el) => (
-          <MenuItem key={`select-item-${el.value}`} value={el.value}>
+          <MenuItem key={`select-item-${el}`} value={el}>
             <Stack direction={"row"} spacing={1}>
-              <RotateLeftIcon />
-              <Typography>{el.title}</Typography>
+              <div
+                style={{
+                  height: "20px",
+                  width: "20px",
+                  backgroundColor: BASIC_FRAMES[el].bgc,
+                  border: "1px solid black",
+                }}
+              />
+              <Typography>{BASIC_FRAMES[el].title}</Typography>
             </Stack>
           </MenuItem>
         ))}

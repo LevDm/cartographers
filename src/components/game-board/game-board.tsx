@@ -20,7 +20,7 @@ export function GameBoard(props: GameBoardPropsType) {
           paddingTop: 2,
           paddingBottom: 2,
           display: "flex",
-          backgroundColor: "brown",
+          backgroundColor: "#999999",
           border: "none",
           alignItems: "center",
           justifyContent: "center",

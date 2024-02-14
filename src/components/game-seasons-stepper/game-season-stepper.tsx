@@ -5,24 +5,7 @@ import { GameSeasonScore } from "./game-season-score";
 import { GameSeasonInfo } from "./game-season-info";
 import { GameStateType } from "@/data/types";
 
-const steps = [
-  {
-    label: "Весна",
-    description: "Активны А и Б",
-  },
-  {
-    label: "Лето",
-    description: "Активны Б и В",
-  },
-  {
-    label: "Осень",
-    description: "Активны В и Г",
-  },
-  {
-    label: "Зима",
-    description: "Активны А и Г",
-  },
-];
+import { SEASONS } from "@/data/elements";
 
 type GameSeasonsStepperPropsType = {
   gameState: GameStateType;
@@ -36,8 +19,8 @@ export function GameSeasonsStepper(props: GameSeasonsStepperPropsType) {
   return (
     <Box>
       <Stepper activeStep={season} alternativeLabel>
-        {steps.map((step, index) => (
-          <Step key={step.label}>
+        {SEASONS.map((step, index) => (
+          <Step key={`${step.title}-${index}`}>
             <StepLabel>
               <Badge
                 badgeContent={season > index ? countScores(scores[index]) : 0}
@@ -50,17 +33,17 @@ export function GameSeasonsStepper(props: GameSeasonsStepperPropsType) {
                   paddingRight: 1.5,
                 }}
               >
-                {step.label}
+                {step.title}
               </Badge>
             </StepLabel>
           </Step>
         ))}
       </Stepper>
 
-      <Stack direction={"row"} spacing={2} sx={{ marginTop: 1 }} alignItems={"stretch"}>
-        <GameSeasonInfo text={steps[season].description} />
+      <Stack direction={"row"} spacing={2} sx={{ marginTop: 2 }} alignItems={"stretch"}>
+        <GameSeasonInfo text={SEASONS[season].description} />
 
-        <GameSeasonScore score={scores[season]} />
+        <GameSeasonScore season={season} score={scores[season]} />
       </Stack>
     </Box>
   );

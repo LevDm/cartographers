@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 
 import { Frame } from "./board-frame";
 import { Popover } from "@mui/material";
 import { InputField } from "./board-input";
 
-import { AllActionTypes, MapFramesType } from "@/data/types";
+import { AllActionTypes, AllFrameTypes, MapFramesType } from "@/data/types";
 
 type GameBoardPropsType = {
   openInputStep: null | Omit<AllActionTypes, "season">;
@@ -94,32 +94,69 @@ type InputBoardPropsType = {
 function InputBoard(props: InputBoardPropsType) {
   const { mapFrames, inputHandler, width } = props;
 
-  const [data, setData] = useState<(MapFramesType & { isEdit: boolean })[]>(
+  const [data, setData] = useState<(MapFramesType & { isEdit?: boolean })[]>(
     mapFrames.map((el) => ({ ...el, isEdit: false }))
   );
 
   const handleChoiseReset = () => {
-    setData((prev) => {
-      const res = [...prev].map((e) => ({ ...e, isEdit: false }));
-      return res;
-    });
+    setData(mapFrames.map((el) => ({ ...el, isEdit: false })));
   };
 
   const frameClickHandler = (id: string) => {
     setData((prev) => {
       const indexItem = prev.findIndex((e) => e.id == id);
       const res = [...prev];
-      res[indexItem] = { ...res[indexItem], isEdit: !res[indexItem].isEdit };
+      if (location.type && !res[indexItem].isEdit) {
+        res[indexItem] = {
+          ...res[indexItem],
+          isEdit: true,
+          frameType: location.type,
+        };
+      } else {
+        res[indexItem] = { ...mapFrames[indexItem], isEdit: !res[indexItem].isEdit };
+      }
 
       return res;
     });
   };
 
   const handleChoiseApply = () => {
-    //data cleaner
-    //apply params
-    //inputHandler()
+    const newMap = [...data].map((el) => {
+      delete el.isEdit;
+      return el;
+    });
+
+    //location coin???
+
+    inputHandler(newMap);
   };
+
+  const [location, setLocation] = useState<{
+    type: AllFrameTypes | undefined;
+    subType: string | undefined;
+    ruin: boolean;
+  }>({ type: undefined, subType: undefined, ruin: false });
+
+  const handleLocation = (value: AllFrameTypes) => {
+    setLocation((prev) => ({
+      ...prev,
+      type: value,
+    }));
+
+    if (value) {
+      setData((prev) => {
+        return [...prev].map((el) => {
+          if (el.isEdit) return { ...el, frameType: value };
+          return el;
+        });
+      });
+    }
+  };
+
+  const applyDissabled = useMemo(
+    () => data.findIndex((el) => el.isEdit === true) === -1 || !Boolean(location.type),
+    [data, location]
+  );
 
   return (
     <>
@@ -137,7 +174,13 @@ function InputBoard(props: InputBoardPropsType) {
         ))}
       </div>
 
-      <InputField handleChoiseReset={handleChoiseReset} handleChoiseApply={handleChoiseApply} />
+      <InputField
+        location={location}
+        applyDissabled={applyDissabled}
+        handleLocation={handleLocation}
+        handleChoiseReset={handleChoiseReset}
+        handleChoiseApply={handleChoiseApply}
+      />
     </>
   );
 }

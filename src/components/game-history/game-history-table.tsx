@@ -14,7 +14,8 @@ import {
 } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
-import { HistoryRowType } from "@/data/types";
+import { AllFrameTypes, HistoryRowType } from "@/data/types";
+import { ACTIONS_TITLES, BASIC_FRAMES } from "@/data/elements";
 
 type HistoryPropsType = {
   gameHistory: HistoryRowType[];
@@ -48,21 +49,21 @@ export function GameActionHistory(props: HistoryPropsType) {
           <TableHead>
             <TableRow>
               <TableCell align={"left"} style={{ minWidth: 100 }}>
-                Тип хода
+                Действие
               </TableCell>
-              <TableCell align={"right"} style={{ minWidth: 100 }}>
+              <TableCell align={"center"} style={{ minWidth: 100 }}>
                 Время
               </TableCell>
-              <TableCell align={"right"} style={{ minWidth: 100 }}>
+              <TableCell align={"center"} style={{ minWidth: 100 }}>
                 Монеты
               </TableCell>
-              <TableCell align={"right"} style={{ minWidth: 100 }}>
+              <TableCell align={"center"} style={{ minWidth: 100 }}>
                 Руины
               </TableCell>
-              <TableCell align={"right"} style={{ minWidth: 100 }}>
+              <TableCell align={"center"} style={{ minWidth: 100 }}>
                 Старые клетки
               </TableCell>
-              <TableCell align={"right"} style={{ minWidth: 100 }}>
+              <TableCell align={"center"} style={{ minWidth: 100 }}>
                 Новые клетки
               </TableCell>
             </TableRow>
@@ -74,22 +75,26 @@ export function GameActionHistory(props: HistoryPropsType) {
             ).map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.stepMode}
+                  {ACTIONS_TITLES[row.stepMode]}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
+                <TableCell style={{ width: 170 }} align="center">
                   {String(row.time)}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {String(row?.coins)}
+                <TableCell style={{ width: 80 }} align="center">
+                  {row?.coins !== 0 && typeof row?.coins == "number" ? String(row?.coins) : ""}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {String(row?.ruin)}
+                <TableCell style={{ width: 80 }} align="center">
+                  {row?.ruin === true ? "Да" : ""}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row?.oldFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count}x ${el.kind}`)}
+                <TableCell style={{ width: 180 }} align="center">
+                  {row?.oldFrames?.map((el, i) => (
+                    <FrameInHistory key={`tc-old-frame-${el.kind}-${i}`} {...el} />
+                  ))}
                 </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {row?.newFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count}x ${el.kind}`)}
+                <TableCell style={{ width: 180 }} align="center">
+                  {row?.newFrames?.map((el, i) => (
+                    <FrameInHistory key={`tc-new-frame-${el.kind}-${i}`} {...el} />
+                  ))}
                 </TableCell>
               </TableRow>
             ))}
@@ -120,5 +125,29 @@ export function GameActionHistory(props: HistoryPropsType) {
         </Table>
       </TableContainer>
     </Box>
+  );
+}
+
+function FrameInHistory({ count, kind }: { count: number; kind: AllFrameTypes }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "row",
+        gap: 4,
+        marginTop: "2px",
+      }}
+    >
+      {`${count}x`}
+      <div
+        style={{
+          height: 18,
+          width: 18,
+          backgroundColor: BASIC_FRAMES[kind].bgc,
+          border: "1px solid black",
+        }}
+      />
+    </div>
   );
 }

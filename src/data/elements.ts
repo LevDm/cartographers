@@ -1,4 +1,4 @@
-import { AllFrameTypes, AllFrameSubTypes, CoinTypes } from "./types";
+import { AllFrameTypes, AllFrameSubTypes, CoinTypes, AllActionTypes } from "./types";
 
 type basicFrameType = {
   title: string;
@@ -52,7 +52,7 @@ export const BASIC_FRAMES: Record<AllFrameTypes | string, basicFrameType> = {
   },
 };
 
-type CoinKinds = Record<CoinTypes, { title: string; imgSrc: string }>;
+export type CoinKinds = Record<CoinTypes, { title: string; imgSrc: string }>;
 
 type RuinTypes = "none" | "added";
 type RuinKinds = Record<RuinTypes, { title: string; imgSrc: string }>;
@@ -130,6 +130,12 @@ export const SEASONS: seasonsType[] = [
     score: [{ title: "A" }, { title: "Г" }, ...STATIC_SCORES],
   },
 ];
+
+export const ACTIONS_TITLES: Record<AllActionTypes, string> = {
+  simpl: "Ход",
+  skill: "Навык",
+  season: "Сезон",
+};
 
 export const MAPS = {};
 

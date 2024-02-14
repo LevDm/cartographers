@@ -47,13 +47,9 @@ const MapDefault = [...Array(121)].map((_, index) => {
 
 const HistoryDefault = [
   {
-    id: "1",
+    id: "history-row-0",
     stepMode: "season" as AllActionTypes,
-    time: "00-00 00-00-00",
-    coins: 0,
-    ruin: true,
-    oldFrames: [{ count: 2, kind: "none" as AllFrameTypes }],
-    newFrames: [{ count: 2, kind: "home" as AllFrameTypes }],
+    time: getCurrentDateTime(),
   },
 ];
 
@@ -69,6 +65,15 @@ export default function ProcessActionPage() {
   const [mapFrames, setMapFrames] = useState<MapFramesType[]>(MapDefault);
 
   const [gameHistory, setGameHistory] = useState<HistoryRowType[]>(HistoryDefault);
+
+  const addToHistory = (row: Omit<HistoryRowType, "id" | "time">) => {
+    const newRow = {
+      id: `history-row-${gameHistory.length}`,
+      time: getCurrentDateTime(),
+      ...row,
+    };
+    setGameHistory([newRow, ...gameHistory]);
+  };
 
   const switchToNewSeason = () => {
     setGameState((prev) => ({
@@ -96,7 +101,27 @@ export default function ProcessActionPage() {
     }
   };
 
-  const inputHandler = (newMapFrames: MapFramesType[], getCoins: number = 0) => {};
+  const inputHandler = (newMapFrames: MapFramesType[], coins: number = 0) => {
+    if (openInputStep) {
+      const { oldFrames, newFrames } = mapFramesCompare(mapFrames, newMapFrames);
+
+      const ruin = false;
+
+      const rowHistory = {
+        stepMode: openInputStep as AllActionTypes,
+        coins: coins,
+        ruin: ruin,
+        oldFrames: oldFrames,
+        newFrames: newFrames,
+      };
+
+      addToHistory(rowHistory);
+
+      setMapFrames(newMapFrames);
+
+      inputClose();
+    }
+  };
 
   const inputClose = () => {
     setOpenInputStep(null);
@@ -149,6 +174,9 @@ function TopAppBar() {
 
 import AddIcon from "@mui/icons-material/Add";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { mapFramesCompare } from "@/game-utils/map-compare";
+import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
+import { SEASONS } from "@/data/elements";
 
 type ActionBarPropsType = {
   gameState: GameStateType;
@@ -189,7 +217,7 @@ function ActionBar(props: ActionBarPropsType) {
       </Fab>
       <Fab variant="extended" size="medium" onClick={() => actionBarHandler("season")}>
         <NavigationIcon sx={{ mr: 1 }} />
-        {season !== 3 ? "Сезон" : "Закончить"}
+        {season !== 3 ? SEASONS[season + 1].title : "Закончить"}
       </Fab>
     </Box>
   );

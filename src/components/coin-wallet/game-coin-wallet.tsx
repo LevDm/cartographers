@@ -7,10 +7,13 @@ type CoinWalletPropsType = {
   coinsWallet: CoinWalletType[];
 };
 
+import { SUB_FRAMES, CoinKinds } from "@/data/elements";
+const COINS = SUB_FRAMES.coin.kind as CoinKinds;
+
 export function CoinWallet(props: CoinWalletPropsType) {
   const { coinsWallet } = props;
   return (
-    <Box sx={{ paddingTop: 1 }}>
+    <Box sx={{ paddingTop: 1, marginTop: 2 }}>
       <Typography paddingRight={1}>Кошелек</Typography>
 
       <Paper sx={{}}>
@@ -23,7 +26,7 @@ export function CoinWallet(props: CoinWalletPropsType) {
         >
           {coinsWallet.map((el) => (
             <div key={el.id}>
-              <Typography>{el.coinType[0]}</Typography>
+              <Typography>{COINS[el.coinType].imgSrc}</Typography>
             </div>
           ))}
         </Stack>
