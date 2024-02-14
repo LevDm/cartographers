@@ -1,11 +1,14 @@
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 
-const coins = [...Array(14)].map(() => ({
-  state: "1",
-}));
+import { CoinWalletType } from "@/data/types";
 
-export function CoinWallet() {
+type CoinWalletPropsType = {
+  coinsWallet: CoinWalletType[];
+};
+
+export function CoinWallet(props: CoinWalletPropsType) {
+  const { coinsWallet } = props;
   return (
     <Box sx={{ paddingTop: 1 }}>
       <Typography paddingRight={1}>Кошелек</Typography>
@@ -18,9 +21,9 @@ export function CoinWallet() {
           justifyContent="space-between"
           divider={<Divider orientation="vertical" flexItem />}
         >
-          {coins.map((el, index) => (
-            <div key={String(index)}>
-              <Typography>{el.state}</Typography>
+          {coinsWallet.map((el) => (
+            <div key={el.id}>
+              <Typography>{el.coinType[0]}</Typography>
             </div>
           ))}
         </Stack>

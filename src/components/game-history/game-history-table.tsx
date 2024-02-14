@@ -14,60 +14,19 @@ import {
 } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
-type FieldTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" | "pond" | "void";
-type HistoryRowType = {
-  stepMode: "skill" | "simpl" | "season";
-  time: string | Date;
-  oldFrames?: { count: number; kind: FieldTypes }[];
-  newFrames?: { count: number; kind: FieldTypes }[];
+import { HistoryRowType } from "@/data/types";
+
+type HistoryPropsType = {
+  gameHistory: HistoryRowType[];
 };
 
-const ROWS: HistoryRowType[] = [
-  {
-    stepMode: "simpl",
-    time: "00-00-00",
-    oldFrames: [{ count: 3, kind: "home" }],
-    newFrames: [{ count: 3, kind: "none" }],
-  },
-  {
-    stepMode: "season",
-    time: "00-00-00",
-  },
-  {
-    stepMode: "simpl",
-    time: "00-00-00",
-    oldFrames: [{ count: 3, kind: "home" }],
-    newFrames: [{ count: 3, kind: "none" }],
-  },
-  {
-    stepMode: "skill",
-    time: "00-00-00",
-    oldFrames: [
-      { count: 2, kind: "home" },
-      { count: 2, kind: "tree" },
-    ],
-    newFrames: [{ count: 4, kind: "none" }],
-  },
-  {
-    stepMode: "simpl",
-    time: "00-00-00",
-    oldFrames: [{ count: 3, kind: "home" }],
-    newFrames: [{ count: 3, kind: "none" }],
-  },
-  {
-    stepMode: "simpl",
-    time: "00-00-00",
-    oldFrames: [{ count: 3, kind: "home" }],
-    newFrames: [{ count: 3, kind: "none" }],
-  },
-];
-
-export function GameActionHistory() {
+export function GameActionHistory(props: HistoryPropsType) {
+  const { gameHistory } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ROWS.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - gameHistory.length) : 0;
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -89,25 +48,31 @@ export function GameActionHistory() {
           <TableHead>
             <TableRow>
               <TableCell align={"left"} style={{ minWidth: 100 }}>
-                1 field
+                Тип хода
               </TableCell>
               <TableCell align={"right"} style={{ minWidth: 100 }}>
-                2 field
+                Время
               </TableCell>
               <TableCell align={"right"} style={{ minWidth: 100 }}>
-                3 field
+                Монеты
               </TableCell>
               <TableCell align={"right"} style={{ minWidth: 100 }}>
-                4 field
+                Руины
+              </TableCell>
+              <TableCell align={"right"} style={{ minWidth: 100 }}>
+                Старые клетки
+              </TableCell>
+              <TableCell align={"right"} style={{ minWidth: 100 }}>
+                Новые клетки
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? ROWS.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : ROWS
-            ).map((row, index) => (
-              <TableRow key={row.stepMode + index}>
+              ? gameHistory.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : gameHistory
+            ).map((row) => (
+              <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.stepMode}
                 </TableCell>
@@ -115,10 +80,16 @@ export function GameActionHistory() {
                   {String(row.time)}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row?.oldFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count} ${el.kind}`)}
+                  {String(row?.coins)}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row?.newFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count} ${el.kind}`)}
+                  {String(row?.ruin)}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {row?.oldFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count}x ${el.kind}`)}
+                </TableCell>
+                <TableCell style={{ width: 160 }} align="right">
+                  {row?.newFrames?.map((el, i) => `${i > 0 ? " / " : ""}${el.count}x ${el.kind}`)}
                 </TableCell>
               </TableRow>
             ))}
@@ -132,16 +103,14 @@ export function GameActionHistory() {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[3, 10, 15, { label: "Все", value: -1 }]}
-                colSpan={4}
-                count={ROWS.length}
+                //colSpan={4}
+                count={gameHistory.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
-                SelectProps={{
-                  inputProps: {
-                    "aria-label": "rows per page",
-                  },
-                  native: true,
-                }}
+                labelRowsPerPage={"Строк на странице"}
+                labelDisplayedRows={({ from, to, count }) =>
+                  `${from}–${to} из ${count !== -1 ? count : `more than ${to}`}`
+                }
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 ActionsComponent={TablePaginationActions}

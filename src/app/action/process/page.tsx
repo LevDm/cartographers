@@ -18,8 +18,89 @@ import ReplayIcon from "@mui/icons-material/Replay";
 
 import { useRouter } from "next/navigation";
 
+import {
+  CoinWalletType,
+  GameStateType,
+  AllActionTypes,
+  MapFramesType,
+  HistoryRowType,
+  CoinTypes,
+  AllFrameTypes,
+} from "@/data/types";
+
+const GameStateDefault = {
+  season: 0,
+  scores: [...Array(4)].map(() => ({ p1: 0, p2: 0, c: 0, m: 0 })),
+  freeSkills: 1,
+};
+
+const CoinWalletDefault = [...Array(14)].map((_, index) => ({
+  id: `coin-${index}`,
+  coinType: "none" as CoinTypes,
+}));
+
+const MapDefault = [...Array(121)].map((_, index) => {
+  const row = Math.floor(index / 11);
+  const col = index - 11 * row;
+  return { id: `${row}-${col}`, frameType: "none" as AllFrameTypes };
+});
+
+const HistoryDefault = [
+  {
+    id: "1",
+    stepMode: "season" as AllActionTypes,
+    time: "00-00 00-00-00",
+    coins: 0,
+    ruin: true,
+    oldFrames: [{ count: 2, kind: "none" as AllFrameTypes }],
+    newFrames: [{ count: 2, kind: "home" as AllFrameTypes }],
+  },
+];
+
 export default function ProcessActionPage() {
   const router = useRouter();
+
+  const [gameState, setGameState] = useState<GameStateType>(GameStateDefault);
+
+  const [coinsWallet, setCoinsWallet] = useState<CoinWalletType[]>(CoinWalletDefault);
+
+  const [openInputStep, setOpenInputStep] = useState<null | Omit<AllActionTypes, "season">>(null);
+
+  const [mapFrames, setMapFrames] = useState<MapFramesType[]>(MapDefault);
+
+  const [gameHistory, setGameHistory] = useState<HistoryRowType[]>(HistoryDefault);
+
+  const switchToNewSeason = () => {
+    setGameState((prev) => ({
+      ...prev,
+      season: Math.min(prev.season + 1, 3),
+      freeSkills: Math.max(prev.freeSkills, 1),
+    }));
+  };
+
+  const finishGame = () => {};
+
+  const actionBarHandler = (action: AllActionTypes) => {
+    switch (action) {
+      case "simpl":
+        setOpenInputStep(action);
+        return;
+      case "skill":
+        //open select skills > check wallet > open input
+        //setOpenInputStep(action);
+        return;
+      case "season":
+        if (gameState.season === 3) finishGame();
+        else switchToNewSeason();
+        return;
+    }
+  };
+
+  const inputHandler = (newMapFrames: MapFramesType[], getCoins: number = 0) => {};
+
+  const inputClose = () => {
+    setOpenInputStep(null);
+  };
 
   return (
     <Box component={"main"}>
@@ -28,16 +109,21 @@ export default function ProcessActionPage() {
       <Container component={"section"}>
         <Button onClick={() => router.replace("finished")}>Конец</Button>
 
-        <GameSeasonsStepper />
+        <GameSeasonsStepper gameState={gameState} />
 
-        <CoinWallet />
+        <CoinWallet coinsWallet={coinsWallet} />
 
-        <GameBoard />
+        <GameBoard
+          openInputStep={openInputStep}
+          mapFrames={mapFrames}
+          inputHandler={inputHandler}
+          inputClose={inputClose}
+        />
 
-        <GameActionHistory />
+        <GameActionHistory gameHistory={gameHistory} />
       </Container>
 
-      <ActionBar />
+      <ActionBar gameState={gameState} actionBarHandler={actionBarHandler} />
     </Box>
   );
 }
@@ -64,7 +150,15 @@ function TopAppBar() {
 import AddIcon from "@mui/icons-material/Add";
 import NavigationIcon from "@mui/icons-material/Navigation";
 
-function ActionBar() {
+type ActionBarPropsType = {
+  gameState: GameStateType;
+  actionBarHandler: (v: AllActionTypes) => unknown;
+};
+
+function ActionBar(props: ActionBarPropsType) {
+  const { gameState, actionBarHandler } = props;
+  const { season, freeSkills } = gameState;
+
   return (
     <Box
       sx={{
@@ -80,17 +174,22 @@ function ActionBar() {
         "& > :not(style)": { m: 1 },
       }}
     >
-      <Fab variant="extended" size="medium">
+      <Fab
+        variant="extended"
+        size="medium"
+        disabled={freeSkills === 0}
+        onClick={() => actionBarHandler("skill")}
+      >
         <AddIcon sx={{ mr: 1 }} />
         Навык
       </Fab>
-      <Fab color="primary" variant="extended">
+      <Fab color="primary" variant="extended" onClick={() => actionBarHandler("simpl")}>
         <AddIcon sx={{ mr: 1 }} />
         Ход
       </Fab>
-      <Fab variant="extended" size="medium">
+      <Fab variant="extended" size="medium" onClick={() => actionBarHandler("season")}>
         <NavigationIcon sx={{ mr: 1 }} />
-        Сезон
+        {season !== 3 ? "Сезон" : "Закончить"}
       </Fab>
     </Box>
   );

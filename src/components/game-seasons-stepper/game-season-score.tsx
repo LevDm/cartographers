@@ -1,15 +1,25 @@
 import React from "react";
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import { SeasonScoresType } from "@/data/types";
 
-const res = [
-  { title: "A", value: "av" },
-  { title: "B", value: "bv" },
-  { title: "C", value: "cv" },
-  { title: "D", value: "dv" },
-  { value: "x" },
-];
+type SeasonScorePropsType = {
+  score: SeasonScoresType;
+};
 
-export function GameSeasonScore() {
+import { countScores } from "@/game-utils/score-counter";
+
+export function GameSeasonScore(props: SeasonScorePropsType) {
+  const { score } = props;
+  const { p1, p2, c, m } = score;
+
+  const res = [
+    { title: "A", value: p1 },
+    { title: "B", value: p2 },
+    { title: "C", value: c },
+    { title: "D", value: m },
+    { value: countScores(score) },
+  ];
+
   return (
     <Box sx={{ paddingTop: 1 }}>
       <Typography>Счёт сезона</Typography>

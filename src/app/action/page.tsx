@@ -22,7 +22,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { FieldError, useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
 
-import CardSelector, { CardType } from "@/components/card-selector/card-selector";
+import { CardSelector, CardType } from "@/components/card-selector/card-selector";
 
 import cagIMG_1 from "../../../public/counting-cads/1_01.jpg";
 import cagIMG_2 from "../../../public/counting-cads/1_02.jpg";

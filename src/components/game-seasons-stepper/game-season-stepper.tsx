@@ -3,6 +3,7 @@ import { Badge, Box, Stack, Step, StepLabel, Stepper } from "@mui/material";
 
 import { GameSeasonScore } from "./game-season-score";
 import { GameSeasonInfo } from "./game-season-info";
+import { GameStateType } from "@/data/types";
 
 const steps = [
   {
@@ -23,29 +24,23 @@ const steps = [
   },
 ];
 
-export function GameSeasonsStepper() {
-  const [activeStep, setActiveStep] = React.useState(0);
+type GameSeasonsStepperPropsType = {
+  gameState: GameStateType;
+};
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+import { countScores } from "@/game-utils/score-counter";
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+export function GameSeasonsStepper(props: GameSeasonsStepperPropsType) {
+  const { season, scores } = props.gameState;
 
   return (
     <Box>
-      <Stepper activeStep={activeStep} alternativeLabel>
+      <Stepper activeStep={season} alternativeLabel>
         {steps.map((step, index) => (
           <Step key={step.label}>
             <StepLabel>
               <Badge
-                badgeContent={activeStep > index ? -50 : 0}
+                badgeContent={season > index ? countScores(scores[index]) : 0}
                 color="secondary"
                 anchorOrigin={{
                   vertical: "top",
@@ -63,9 +58,9 @@ export function GameSeasonsStepper() {
       </Stepper>
 
       <Stack direction={"row"} spacing={2} sx={{ marginTop: 1 }} alignItems={"stretch"}>
-        <GameSeasonInfo text={steps[activeStep].description} />
+        <GameSeasonInfo text={steps[season].description} />
 
-        <GameSeasonScore />
+        <GameSeasonScore score={scores[season]} />
       </Stack>
     </Box>
   );

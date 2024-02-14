@@ -4,57 +4,28 @@ import { Frame } from "./board-frame";
 import { Popover } from "@mui/material";
 import { InputField } from "./board-input";
 
-type FieldTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" | "pond" | "void";
+import { AllActionTypes, MapFramesType } from "@/data/types";
 
-const frames = [...Array(121)].map((_, index) => {
-  const row = Math.floor(index / 11);
-  const col = index - 11 * row;
-  return { id: `${row}-${col}`, isEdit: false, type: "none" as FieldTypes };
-});
+type GameBoardPropsType = {
+  openInputStep: null | Omit<AllActionTypes, "season">;
+  mapFrames: MapFramesType[];
+  inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
+  inputClose: () => unknown;
+};
 
-//props: { open: boolean; handleClose: () => unknown }
-export const Board = () => {
-  //const { open } = props
-
-  const [open, setOpen] = useState(false);
+export const Board = (props: GameBoardPropsType) => {
+  const { openInputStep, mapFrames, inputHandler, inputClose } = props;
 
   const boardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (open && boardRef) {
+    if (openInputStep && boardRef) {
       boardRef.current?.scrollIntoView({ block: "center" });
     }
-  }, [open]);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
+  }, [openInputStep]);
 
   const handleClose = () => {
-    setOpen(false);
-  };
-
-  const [data, setData] = useState(frames);
-
-  const frameClickHandler = (id: string) => {
-    setData((prev) => {
-      const indexItem = prev.findIndex((e) => e.id == id);
-      const res = [...prev];
-      res[indexItem] = { ...res[indexItem], isEdit: !res[indexItem].isEdit };
-
-      return res;
-    });
-  };
-
-  const handleChoiseReset = () => {
-    setData((prev) => {
-      const res = [...prev].map((e) => ({ ...e, isEdit: false }));
-      return res;
-    });
-  };
-
-  const handleChoiseApply = () => {
-    handleClose();
+    inputClose();
   };
 
   return (
@@ -68,20 +39,16 @@ export const Board = () => {
           gridTemplateColumns: "repeat(11, 1fr)",
           gridTemplateRows: "repeat(11, 1fr)",
           gap: 2,
-          //padding: 2,
-          cursor: "pointer",
-          //marginBottom: 2,
         }}
         aria-describedby={"simple-popover"}
-        onClick={handleClick}
       >
-        {data.map((el) => (
+        {mapFrames.map((el) => (
           <Frame key={el.id} {...el} usageIn="show" />
         ))}
       </div>
 
       <Popover
-        open={open}
+        open={Boolean(openInputStep)}
         anchorEl={boardRef?.current}
         onClose={handleClose}
         anchorOrigin={{
@@ -108,22 +75,69 @@ export const Board = () => {
         }}
         transitionDuration={{ exit: 0 }}
       >
-        <div
-          style={{
-            width: boardRef ? boardRef.current?.clientWidth : "100vw",
-            display: "grid",
-            gridTemplateColumns: "repeat(11, 1fr)",
-            gridTemplateRows: "repeat(11, 1fr)",
-            gap: 2,
-          }}
-        >
-          {data.map((el) => (
-            <Frame key={el.id} {...el} usageIn="edit" handler={frameClickHandler} />
-          ))}
-        </div>
-
-        <InputField handleChoiseReset={handleChoiseReset} handleChoiseApply={handleChoiseApply} />
+        <InputBoard
+          mapFrames={mapFrames}
+          width={boardRef?.current?.clientWidth ?? "90vw"}
+          inputHandler={inputHandler}
+        />
       </Popover>
     </>
   );
 };
+
+type InputBoardPropsType = {
+  mapFrames: MapFramesType[];
+  width: number | string;
+  inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
+};
+
+function InputBoard(props: InputBoardPropsType) {
+  const { mapFrames, inputHandler, width } = props;
+
+  const [data, setData] = useState<(MapFramesType & { isEdit: boolean })[]>(
+    mapFrames.map((el) => ({ ...el, isEdit: false }))
+  );
+
+  const handleChoiseReset = () => {
+    setData((prev) => {
+      const res = [...prev].map((e) => ({ ...e, isEdit: false }));
+      return res;
+    });
+  };
+
+  const frameClickHandler = (id: string) => {
+    setData((prev) => {
+      const indexItem = prev.findIndex((e) => e.id == id);
+      const res = [...prev];
+      res[indexItem] = { ...res[indexItem], isEdit: !res[indexItem].isEdit };
+
+      return res;
+    });
+  };
+
+  const handleChoiseApply = () => {
+    //data cleaner
+    //apply params
+    //inputHandler()
+  };
+
+  return (
+    <>
+      <div
+        style={{
+          width: width,
+          display: "grid",
+          gridTemplateColumns: "repeat(11, 1fr)",
+          gridTemplateRows: "repeat(11, 1fr)",
+          gap: 2,
+        }}
+      >
+        {data.map((el) => (
+          <Frame key={el.id} {...el} usageIn="edit" handler={frameClickHandler} />
+        ))}
+      </div>
+
+      <InputField handleChoiseReset={handleChoiseReset} handleChoiseApply={handleChoiseApply} />
+    </>
+  );
+}

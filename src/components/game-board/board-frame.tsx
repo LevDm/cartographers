@@ -1,20 +1,7 @@
 import React from "react";
+import { MapFramesType } from "@/data/types";
 
-type FieldTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" | "pond" | "void";
-type SubFieldTypes = "ruin" | "coin";
-
-type FrameType = {
-  id: string;
-  type: FieldTypes;
-  subType?: SubFieldTypes;
-};
-
-type FrameProps = {
-  //...FrameType,
-  id: string;
-  type: FieldTypes;
-  subType?: SubFieldTypes;
-
+type FrameProps = MapFramesType & {
   handler?: (id: string) => unknown;
   isEdit?: boolean;
   usageIn: "show" | "edit";
@@ -35,7 +22,7 @@ const FramesParams = {
 };
 
 export const Frame = React.memo((props: FrameProps) => {
-  const { id, type, subType, isEdit, handler, usageIn } = props;
+  const { id, frameType, frameSubType, isEdit, handler, usageIn } = props;
 
   const useInEdit = usageIn === "edit";
 
@@ -57,7 +44,7 @@ export const Frame = React.memo((props: FrameProps) => {
       }}
       onClick={useInEdit ? onClickHandler : undefined}
     >
-      <p style={{}}>{FramesParams[type]?.imgSrc}</p>
+      <p style={{}}>{FramesParams[frameType]?.imgSrc}</p>
     </div>
   );
 });
