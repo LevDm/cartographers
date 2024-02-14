@@ -1,6 +1,6 @@
 //
 export type AllFrameTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" | "pond" | "void";
-export type AllFrameSubTypes = undefined | "coin" | "ruin";
+export type AllFrameSubTypes = "coin" | "ruin";
 
 export type AllActionTypes = "skill" | "simpl" | "season";
 
