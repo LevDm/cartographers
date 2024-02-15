@@ -141,4 +141,59 @@ export const MAPS = {};
 
 export const CARD_COUNTER = {};
 
-export const CARD_MONSTER = {};
+type CardSkill = {
+  id: string;
+  title: string;
+  cost: number;
+  imgSrc: string;
+};
+export const CARD_SKILL: CardSkill[] = [
+  {
+    id: "skill-1",
+    title: "Лечение (...ран)",
+    cost: 1,
+    imgSrc: "1",
+  },
+  {
+    id: "skill-2",
+    title: "Скрытность",
+    cost: 0,
+    imgSrc: "2",
+  },
+  {
+    id: "skill-3",
+    title: "Концентрация",
+    cost: 3,
+    imgSrc: "3",
+  },
+  {
+    id: "skill-4",
+    title: "Познания (Тайные знания)",
+    cost: 0,
+    imgSrc: "4",
+  },
+  {
+    id: "skill-5",
+    title: "Поиск",
+    cost: 0,
+    imgSrc: "5",
+  },
+  {
+    id: "skill-6",
+    title: "Ловкость",
+    cost: 2,
+    imgSrc: "6",
+  },
+  {
+    id: "skill-7",
+    title: "Дипломатия",
+    cost: 1,
+    imgSrc: "7",
+  },
+  {
+    id: "skill-8",
+    title: "Сделка (переговоры)",
+    cost: 1,
+    imgSrc: "8",
+  },
+];
