@@ -31,18 +31,9 @@ type InputFieldProps = {
   handleChoiseApply: () => unknown;
 };
 
-type FieldLocationType = AllFrameTypes; // { value: string; title: string; srcImg: string };
+type FieldLocationType = AllFrameTypes;
 
 const generalsLocationsType = Object.keys(BASIC_FRAMES) as AllFrameTypes[];
-
-/*[
-  { value: "home", title: "Поселение", srcImg: "" },
-  { value: "tree", title: "Лес", srcImg: "" },
-  { value: "brim", title: "Поля", srcImg: "" },
-  { value: "pond", title: "Водоём", srcImg: "" },
-  { value: "evil", title: "Монстры", srcImg: "" },
-];
-*/
 
 export function InputField(props: InputFieldProps) {
   const { location, applyDissabled, handleLocation, handleChoiseReset, handleChoiseApply } = props;
@@ -117,7 +108,7 @@ type FieldTypeSelectProps = {
 };
 
 function FieldTypeSelect(props: FieldTypeSelectProps) {
-  const { value, label, Items, onChange } = props;
+  const { value = "", label, Items, onChange } = props;
 
   const handleChange = (event: SelectChangeEvent) => {
     const newValue = event.target.value as string;
