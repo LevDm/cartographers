@@ -102,6 +102,26 @@ export default function ProcessActionPage() {
       season: Math.min(prev.season + 1, 3),
       freeSkills: Math.max(prev.freeSkills, 1),
     }));
+    addToHistory({ stepMode: "season" });
+  };
+
+  const walletHandler = (coins: number) => {
+    setCoinsWallet((prev) => {
+      const newWallet = [...prev];
+      for (let i = 0; i < Math.abs(coins); i++) {
+        if (coins > 0) {
+          const index = newWallet.findIndex((el) => el.coinType == "none");
+          console.log("...i", index);
+          if (index >= 0) newWallet[index] = { ...newWallet[index], coinType: "added" };
+        } else {
+          const index = newWallet.findIndex((el) => el.coinType == "added");
+          console.log("...i", index);
+          if (index >= 0) newWallet[index] = { ...newWallet[index], coinType: "lost" };
+        }
+      }
+      console.log("newWallet", coins, newWallet);
+      return newWallet;
+    });
   };
 
   const finishGame = () => {};
@@ -114,25 +134,42 @@ export default function ProcessActionPage() {
         setOpenInputStep(e);
         return;
       case "skill":
-        //open select skills > check wallet > open input
-        //setOpenInputStep(action);
+        setOpenInputStep(e);
         return;
       case "season":
-        if (gameState.season === 3) finishGame();
+        if (value == "finish") finishGame();
         else switchToNewSeason();
         return;
     }
   };
 
-  const inputHandler = (newMapFrames: MapFramesType[], coins: number = 0) => {
+  const inputHandler = (
+    newMapFrames: MapFramesType[],
+    coins: number = 0,
+    ruin: boolean = false
+  ) => {
     if (openInputStep) {
       const { oldFrames, newFrames } = mapFramesCompare(mapFrames, newMapFrames);
 
-      const ruin = false;
+      const skillCost =
+        openInputStep.action == "skill" && openInputStep?.value
+          ? CARD_SKILL.find((el) => el.id == openInputStep.value)?.cost ?? 0
+          : 0;
+
+      const historyCoin = coins - skillCost;
+
+      if (coins > 0) walletHandler(coins);
+
+      if (openInputStep.action == "skill") {
+        setGameState((prev) => ({ ...prev, freeSkills: 0 }));
+      }
+      if (skillCost > 0) {
+        walletHandler(-skillCost);
+      }
 
       const rowHistory = {
         stepMode: openInputStep.action as AllActionTypes,
-        coins: coins,
+        coins: historyCoin,
         ruin: ruin,
         oldFrames: oldFrames,
         newFrames: newFrames,
@@ -235,7 +272,13 @@ function ActionBar(props: ActionBarPropsType) {
         <AddIcon sx={{ mr: 1 }} />
         Ход
       </Fab>
-      <Fab variant="extended" size="medium" onClick={() => actionBarHandler({ action: "season" })}>
+      <Fab
+        variant="extended"
+        size="medium"
+        onClick={() =>
+          actionBarHandler({ action: "season", value: season !== 3 ? "next" : "finish" })
+        }
+      >
         <NavigationIcon sx={{ mr: 1 }} />
         {season !== 3 ? SEASONS[season + 1].title : "Закончить"}
       </Fab>
@@ -256,9 +299,7 @@ function SkillFab(props: SkillFabPropsType) {
   } = props;
   const { freeSkills } = gameState;
 
-  const coinsCount = useMemo(() => {
-    return coinsWallet.reduce((acc, prev) => (acc + prev.coinType === "added" ? 1 : 0), 0);
-  }, [coinsWallet]);
+  const coinsCount = coinsWallet.reduce((acc, el) => acc + (el.coinType == "added" ? 1 : 0), 0);
 
   const [open, setOpen] = useState(false);
 

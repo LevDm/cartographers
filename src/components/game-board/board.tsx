@@ -4,12 +4,12 @@ import { Frame } from "./board-frame";
 import { Popover } from "@mui/material";
 import { InputField, LocationType } from "./board-input";
 
-import { AllFrameTypes, MapFramesType, FrameParamsType, CoinTypes, RuinTypes } from "@/data/types";
+import { AllFrameTypes, MapFramesType, FrameParamsType, RuinTypes } from "@/data/types";
 
 export type GameBoardPropsType = {
   openInputStep: boolean;
   mapFrames: MapFramesType[];
-  inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
+  inputHandler: (newMapFrames: MapFramesType[], coins?: number, ruin?: boolean) => unknown;
   inputClose: () => unknown;
 };
 
@@ -88,98 +88,90 @@ export const Board = (props: GameBoardPropsType) => {
 type InputBoardPropsType = {
   mapFrames: MapFramesType[];
   width: number | string;
-  inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
+  inputHandler: (newMapFrames: MapFramesType[], coins?: number, ruin?: boolean) => unknown;
 };
 
 function InputBoard(props: InputBoardPropsType) {
   const { mapFrames, inputHandler, width } = props;
 
-  const [data, setData] = useState<(MapFramesType & { isEdit?: boolean })[]>(
+  const [inputMapFrames, setInputMapFrames] = useState<(MapFramesType & { isEdit?: boolean })[]>(
     mapFrames.map((el) => ({ ...el, isEdit: false }))
   );
 
   const handleChoiseReset = () => {
-    setData(mapFrames.map((el) => ({ ...el, isEdit: false })));
+    setInputMapFrames(mapFrames.map((el) => ({ ...el, isEdit: false })));
   };
 
   const frameClickHandler = (id: string) => {
-    setData((prev) => {
+    setInputMapFrames((prev) => {
       const indexItem = prev.findIndex((e) => e.id == id);
       const res = [...prev];
-      if ((location.type.length > 0 || location.params.length > 0) && !res[indexItem].isEdit) {
-        const [frameType, frameSubType] = location.type;
-        const coinType = location.params.includes("coin") ? ("none" as CoinTypes) : undefined;
-        const ruinType = location.params.includes("ruin") ? ("none" as RuinTypes) : undefined;
-        const frame = { frameType, frameSubType, coinType, ruinType };
-
-        res[indexItem] = {
-          ...res[indexItem],
-          isEdit: true,
-          ...frame,
-        };
-      } else {
-        res[indexItem] = { ...mapFrames[indexItem], isEdit: !res[indexItem].isEdit };
-      }
-
+      res[indexItem] = { ...mapFrames[indexItem], isEdit: !Boolean(res[indexItem].isEdit) };
       return res;
+    });
+    locationHandler(location);
+  };
+
+  const locationHandler = (framesParams: LocationType) => {
+    setInputMapFrames((prev) => {
+      const newData = [...prev].map((el) => {
+        if (el.isEdit) {
+          const [frameType, frameSubType] = framesParams.type;
+
+          const addRuin = framesParams.params.includes("ruin");
+          let ruinType = el?.ruinType;
+          if (addRuin && el?.ruinType === "none") ruinType = "added" as RuinTypes;
+          if (!addRuin && el?.ruinType === "added") ruinType = "none" as RuinTypes;
+
+          return {
+            id: el.id,
+            isEdit: el.isEdit,
+            frameType: frameType ?? el.frameType,
+            frameSubType: frameSubType ?? el.frameSubType,
+            coinType: el.coinType,
+            ruinType,
+          };
+        }
+        return el;
+      });
+
+      return newData;
     });
   };
 
   const handleChoiseApply = () => {
-    const newMap = [...data].map((el) => {
+    const newMap = [...inputMapFrames].map((el) => {
       delete el.isEdit;
       return el;
     });
-
-    //location coin???
-
-    inputHandler(newMap);
+    const addCoin = location.params.includes("coin");
+    const addRuin = location.params.includes("ruin");
+    inputHandler(newMap, addCoin ? 1 : 0, addRuin);
   };
 
   const [location, setLocation] = useState<LocationType>({ type: [], params: [] });
 
-  const handleLocationType = (value: AllFrameTypes[]) => {
-    setLocation((prev) => ({
-      ...prev,
-      type: value,
-    }));
-
-    if (value.length > 0) {
-      setData((prev) => {
-        return [...prev].map((el) => {
-          const [frameType, frameSubType] = value;
-          const frame = { frameType, frameSubType };
-          if (el.isEdit) return { ...el, ...frame };
-          return el;
-        });
-      });
-    }
+  const handleLocationType = (newType: AllFrameTypes[]) => {
+    setLocation((prev) => {
+      const newValue = { ...prev, type: newType };
+      locationHandler(newValue);
+      return newValue;
+    });
   };
 
-  const handleLocationParams = (value: FrameParamsType[]) => {
-    setLocation((prev) => ({
-      ...prev,
-      params: value,
-    }));
-
-    if (value.length > 0) {
-      setData((prev) => {
-        return [...prev].map((el) => {
-          const coinType = value.includes("coin") ? ("none" as CoinTypes) : undefined;
-          const ruinType = value.includes("ruin") ? ("none" as RuinTypes) : undefined;
-          const frame = { coinType, ruinType };
-          if (el.isEdit) return { ...el, ...frame };
-          return el;
-        });
-      });
-    }
+  const handleLocationParams = (newParams: FrameParamsType[]) => {
+    setLocation((prev) => {
+      const newValue = { ...prev, params: newParams };
+      locationHandler(newValue);
+      return newValue;
+    });
   };
 
   const applyDissabled = useMemo(() => {
-    const notEditFrames = data.findIndex((el) => el.isEdit === true) === -1;
+    const notEditFrames = inputMapFrames.findIndex((el) => el.isEdit === true) === -1;
     const notLocationSelect = location.type.length === 0;
     return notEditFrames || notLocationSelect;
-  }, [data, location]);
+  }, [inputMapFrames, location]);
 
   return (
     <>
@@ -192,7 +184,7 @@ function InputBoard(props: InputBoardPropsType) {
           gap: 2,
         }}
       >
-        {data.map((el) => (
+        {inputMapFrames.map((el) => (
           <Frame key={el.id} {...el} usageIn="edit" handler={frameClickHandler} />
         ))}
       </div>

@@ -7,14 +7,14 @@ type FrameProps = MapFramesType & {
   usageIn: "show" | "edit";
 };
 
-import { BASIC_FRAMES, PARAMS } from "@/data/elements";
+import { BASIC_FRAMES, PARAMS, RUIN_PARAM } from "@/data/elements";
 
 export const Frame = React.memo((props: FrameProps) => {
   const { id, frameType, frameSubType, coinType, ruinType, isEdit, handler, usageIn } = props;
 
   const { bgc, imgSrc, disabled } = BASIC_FRAMES[frameType];
 
-  const ruin = ruinType ? PARAMS.ruin : null;
+  const ruin = ruinType ? RUIN_PARAM.kind[ruinType] : null;
   const coin = coinType ? PARAMS.coin : null;
   const sub = frameSubType ? BASIC_FRAMES[frameSubType] : null;
 
@@ -29,9 +29,9 @@ export const Frame = React.memo((props: FrameProps) => {
   return (
     <div
       style={{
+        aspectRatio: "1/1",
         display: "flex",
         background: `linear-gradient(to bottom right, ${bgc} 50%, ${subBgc} 50%`,
-        aspectRatio: "1/1",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 2,
