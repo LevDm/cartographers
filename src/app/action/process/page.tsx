@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Button,
@@ -10,6 +10,16 @@ import {
   Typography,
   Container,
   Fab,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 
 import { CoinWallet, GameActionHistory, GameBoard, GameSeasonsStepper } from "@/components";
@@ -28,7 +38,7 @@ import {
   AllFrameTypes,
 } from "@/data/types";
 
-import { MAPS } from "@/data/cards";
+import { CARD_SKILL, MAPS } from "@/data/cards";
 
 const GameStateDefault = {
   season: 0,
@@ -67,7 +77,10 @@ export default function ProcessActionPage() {
 
   const [coinsWallet, setCoinsWallet] = useState<CoinWalletType[]>(CoinWalletDefault);
 
-  const [openInputStep, setOpenInputStep] = useState<null | Omit<AllActionTypes, "season">>(null);
+  const [openInputStep, setOpenInputStep] = useState<null | {
+    action: Omit<AllActionTypes, "season">;
+    value?: string;
+  }>(null);
 
   const [mapFrames, setMapFrames] = useState<MapFramesType[]>(MapDefault);
 
@@ -92,10 +105,12 @@ export default function ProcessActionPage() {
 
   const finishGame = () => {};
 
-  const actionBarHandler = (action: AllActionTypes) => {
+  const actionBarHandler = (e: { action: AllActionTypes; value?: string }) => {
+    const { action, value } = e;
+
     switch (action) {
       case "simpl":
-        setOpenInputStep(action);
+        setOpenInputStep(e);
         return;
       case "skill":
         //open select skills > check wallet > open input
@@ -115,7 +130,7 @@ export default function ProcessActionPage() {
       const ruin = false;
 
       const rowHistory = {
-        stepMode: openInputStep as AllActionTypes,
+        stepMode: openInputStep.action as AllActionTypes,
         coins: coins,
         ruin: ruin,
         oldFrames: oldFrames,
@@ -146,7 +161,7 @@ export default function ProcessActionPage() {
         <CoinWallet coinsWallet={coinsWallet} />
 
         <GameBoard
-          openInputStep={openInputStep}
+          openInputStep={Boolean(openInputStep)}
           mapFrames={mapFrames}
           inputHandler={inputHandler}
           inputClose={inputClose}
@@ -155,7 +170,11 @@ export default function ProcessActionPage() {
         <GameActionHistory gameHistory={gameHistory} />
       </Container>
 
-      <ActionBar gameState={gameState} actionBarHandler={actionBarHandler} />
+      <ActionBar
+        coinsWallet={coinsWallet}
+        gameState={gameState}
+        actionBarHandler={actionBarHandler}
+      />
     </Box>
   );
 }
@@ -186,8 +205,9 @@ import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
 import { SEASONS } from "@/data/elements";
 
 type ActionBarPropsType = {
+  coinsWallet: CoinWalletType[];
   gameState: GameStateType;
-  actionBarHandler: (v: AllActionTypes) => unknown;
+  actionBarHandler: (e: { action: AllActionTypes; value?: string }) => unknown;
 };
 
 function ActionBar(props: ActionBarPropsType) {
@@ -209,23 +229,121 @@ function ActionBar(props: ActionBarPropsType) {
         "& > :not(style)": { m: 1 },
       }}
     >
-      <Fab
-        variant="extended"
-        size="medium"
-        disabled={freeSkills === 0}
-        onClick={() => actionBarHandler("skill")}
-      >
-        <AddIcon sx={{ mr: 1 }} />
-        Навык
-      </Fab>
-      <Fab color="primary" variant="extended" onClick={() => actionBarHandler("simpl")}>
+      <SkillFab {...props} />
+      <Fab color="primary" variant="extended" onClick={() => actionBarHandler({ action: "simpl" })}>
         <AddIcon sx={{ mr: 1 }} />
         Ход
       </Fab>
-      <Fab variant="extended" size="medium" onClick={() => actionBarHandler("season")}>
+      <Fab variant="extended" size="medium" onClick={() => actionBarHandler({ action: "season" })}>
         <NavigationIcon sx={{ mr: 1 }} />
         {season !== 3 ? SEASONS[season + 1].title : "Закончить"}
       </Fab>
     </Box>
+  );
+}
+
+type SkillFabPropsType = ActionBarPropsType & {
+  skillCardIds?: string[];
+};
+
+function SkillFab(props: SkillFabPropsType) {
+  const {
+    coinsWallet,
+    gameState,
+    actionBarHandler,
+    skillCardIds = ["skill-1", "skill-2", "skill-6"],
+  } = props;
+  const { freeSkills } = gameState;
+
+  const coinsCount = useMemo(() => {
+    return coinsWallet.reduce((acc, prev) => (acc + prev.coinType === "added" ? 1 : 0), 0);
+  }, [coinsWallet]);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleApply = () => {
+    actionBarHandler({ action: "skill", value: value });
+    handleClose();
+  };
+
+  const [value, setValue] = useState("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+
+  return (
+    <>
+      <Fab
+        variant="extended"
+        size="medium"
+        disabled={freeSkills === 0}
+        onClick={() => handleClickOpen()}
+      >
+        <AddIcon sx={{ mr: 1 }} />
+        Навык
+      </Fab>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        scroll={"paper"}
+        aria-labelledby="dialog-skils-title"
+        aria-describedby="dialog-skils-content"
+      >
+        <DialogTitle id="dialog-skils-title">Использование навыка</DialogTitle>
+        <DialogContent dividers={true}>
+          <FormControl>
+            <FormLabel id="skils-radio-buttons-group">Выбери навык</FormLabel>
+            <RadioGroup
+              aria-labelledby="skils-radio-buttons-group"
+              name="skils-controlled-radio-buttons-group"
+              value={value}
+              onChange={handleChange}
+              sx={{ gap: 2 }}
+            >
+              {CARD_SKILL.map(
+                (el) =>
+                  (skillCardIds.includes(el.id) && (
+                    <FormControlLabel
+                      key={el.id}
+                      value={el.id}
+                      disabled={el.cost > coinsCount}
+                      control={<Radio />}
+                      label={
+                        <Box>
+                          <Typography variant="h6">{el.title}</Typography>
+                          <Typography>Стоимость: {el.cost}x монет</Typography>
+                          <div
+                            style={{
+                              height: "260px",
+                              width: "200px",
+                              backgroundColor: "red",
+                            }}
+                          />
+                        </Box>
+                      }
+                    />
+                  )) ||
+                  null
+              )}
+            </RadioGroup>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Отмена</Button>
+          <Button disabled={!Boolean(value) && value === ""} onClick={handleApply}>
+            Ок
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

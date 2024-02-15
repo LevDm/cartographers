@@ -1,15 +1,8 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 
-import { Board } from "./board";
+import { Board, GameBoardPropsType } from "./board";
 import { AllActionTypes, MapFramesType } from "@/data/types";
-
-type GameBoardPropsType = {
-  openInputStep: null | Omit<AllActionTypes, "season">;
-  mapFrames: MapFramesType[];
-  inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
-  inputClose: () => unknown;
-};
 
 export function GameBoard(props: GameBoardPropsType) {
   return (

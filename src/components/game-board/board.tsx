@@ -6,8 +6,8 @@ import { InputField } from "./board-input";
 
 import { AllActionTypes, AllFrameTypes, MapFramesType } from "@/data/types";
 
-type GameBoardPropsType = {
-  openInputStep: null | Omit<AllActionTypes, "season">;
+export type GameBoardPropsType = {
+  openInputStep: boolean;
   mapFrames: MapFramesType[];
   inputHandler: (newMapFrames: MapFramesType[], getCoins?: number) => unknown;
   inputClose: () => unknown;
@@ -48,7 +48,7 @@ export const Board = (props: GameBoardPropsType) => {
       </div>
 
       <Popover
-        open={Boolean(openInputStep)}
+        open={openInputStep}
         anchorEl={boardRef?.current}
         onClose={handleClose}
         anchorOrigin={{
