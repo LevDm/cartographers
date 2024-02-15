@@ -2,45 +2,45 @@ import { AllFrameSubTypes, AllFrameTypes } from "./types";
 
 type MapType = {
   id: string;
-  params: Record<string, { frameType?: AllFrameTypes; subFrameType?: AllFrameSubTypes }>;
+  params: Record<string, { frameType?: AllFrameTypes; frameSubType?: AllFrameSubTypes }>;
 };
 export const MAPS: MapType[] = [
   {
     id: "map-a",
     params: {
-      "1-3": { frameType: "hill", subFrameType: "coin" },
-      "1-5": { subFrameType: "ruin" },
-      "2-1": { subFrameType: "ruin" },
-      "2-8": { frameType: "hill", subFrameType: "coin" },
-      "2-9": { subFrameType: "ruin" },
-      "5-5": { frameType: "hill", subFrameType: "coin" },
-      "8-1": { subFrameType: "ruin" },
-      "8-2": { frameType: "hill", subFrameType: "coin" },
-      "8-9": { subFrameType: "ruin" },
-      "10-5": { subFrameType: "ruin" },
-      "10-7": { frameType: "hill", subFrameType: "coin" },
+      "1-3": { frameType: "hill", frameSubType: "coin" },
+      "1-5": { frameSubType: "ruin" },
+      "2-1": { frameSubType: "ruin" },
+      "2-8": { frameType: "hill", frameSubType: "coin" },
+      "2-9": { frameSubType: "ruin" },
+      "5-5": { frameType: "hill", frameSubType: "coin" },
+      "8-1": { frameSubType: "ruin" },
+      "8-2": { frameType: "hill", frameSubType: "coin" },
+      "8-9": { frameSubType: "ruin" },
+      "9-5": { frameSubType: "ruin" },
+      "9-7": { frameType: "hill", frameSubType: "coin" },
     },
   },
   {
     id: "map-b",
     params: {
-      "1-6": { subFrameType: "ruin" },
-      "1-8": { frameType: "hill", subFrameType: "coin" },
+      "1-6": { frameSubType: "ruin" },
+      "1-8": { frameType: "hill", frameSubType: "coin" },
 
-      "2-2": { subFrameType: "ruin" },
-      "2-3": { frameType: "hill", subFrameType: "coin" },
+      "2-2": { frameSubType: "ruin" },
+      "2-3": { frameType: "hill", frameSubType: "coin" },
 
-      "4-6": { subFrameType: "ruin" },
+      "4-6": { frameSubType: "ruin" },
 
-      "6-1": { subFrameType: "ruin" },
+      "6-1": { frameSubType: "ruin" },
 
-      "7-5": { frameType: "hill", subFrameType: "coin" },
-      "7-8": { subFrameType: "ruin" },
+      "7-5": { frameType: "hill", frameSubType: "coin" },
+      "7-8": { frameSubType: "ruin" },
 
-      "8-9": { frameType: "hill", subFrameType: "coin" },
+      "8-9": { frameType: "hill", frameSubType: "coin" },
 
-      "9-2": { frameType: "hill", subFrameType: "coin" },
-      "9-3": { subFrameType: "ruin" },
+      "9-2": { frameType: "hill", frameSubType: "coin" },
+      "9-3": { frameSubType: "ruin" },
       //
       "3-5": { frameType: "void" },
       "4-4": { frameType: "void" },
