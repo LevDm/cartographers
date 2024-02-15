@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import SendAndArchiveIcon from "@mui/icons-material/SendAndArchive";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import {
+  Box,
   Button,
+  Chip,
   Divider,
   FormControl,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Paper,
   Select,
   SelectChangeEvent,
@@ -16,27 +19,36 @@ import {
   Typography,
 } from "@mui/material";
 
-import { AllFrameTypes } from "@/data/types";
-import { BASIC_FRAMES } from "@/data/elements";
+import { AllFrameSubTypes, AllFrameTypes } from "@/data/types";
+import { BASIC_FRAMES, SUB_FRAMES } from "@/data/elements";
 
 type InputFieldProps = {
   location: {
-    type: AllFrameTypes | undefined;
-    subType: string | undefined;
-    ruin: boolean;
+    type: AllFrameTypes[];
+    subType: AllFrameSubTypes[];
   };
   applyDissabled: boolean;
-  handleLocation: (v: any) => unknown;
+  handleLocationType: (v: AllFrameTypes[]) => unknown;
+  handleLocationSubType: (v: AllFrameSubTypes[]) => unknown;
   handleChoiseReset: () => unknown;
   handleChoiseApply: () => unknown;
 };
 
-type FieldLocationType = AllFrameTypes;
+const generalsLocationsType = Object.keys(BASIC_FRAMES).filter(
+  (el) => !["void", "hill"].includes(el)
+) as AllFrameTypes[];
 
-const generalsLocationsType = Object.keys(BASIC_FRAMES) as AllFrameTypes[];
+const generalsLocationsSubType = Object.keys(SUB_FRAMES) as AllFrameSubTypes[];
 
 export function InputField(props: InputFieldProps) {
-  const { location, applyDissabled, handleLocation, handleChoiseReset, handleChoiseApply } = props;
+  const {
+    location,
+    applyDissabled,
+    handleLocationType,
+    handleLocationSubType,
+    handleChoiseReset,
+    handleChoiseApply,
+  } = props;
 
   return (
     <Paper
@@ -44,9 +56,10 @@ export function InputField(props: InputFieldProps) {
         display: "flex",
         position: "absolute",
         width: "100%",
-        height: 120,
-        top: -128,
+        height: 140,
+        top: -148,
         padding: 1,
+        paddingTop: 2,
         justifyContent: "space-between",
         flexDirection: "column",
       }}
@@ -56,11 +69,18 @@ export function InputField(props: InputFieldProps) {
         <FieldTypeSelect
           label="Местность"
           value={location.type}
-          onChange={handleLocation}
+          onChange={(v) => handleLocationType(v as AllFrameTypes[])}
           Items={generalsLocationsType}
+          itemsSrcData={BASIC_FRAMES}
         />
 
-        <RuinSwitch />
+        <FieldTypeSelect
+          label="Параметры"
+          value={location.subType}
+          onChange={(v) => handleLocationSubType(v as AllFrameSubTypes[])}
+          Items={generalsLocationsSubType}
+          itemsSrcData={SUB_FRAMES}
+        />
       </Stack>
       <Divider orientation="horizontal" flexItem />
       <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
@@ -79,46 +99,51 @@ export function InputField(props: InputFieldProps) {
   );
 }
 
-function RuinSwitch() {
-  return (
-    <Stack
-      direction={"row"}
-      alignItems={"center"}
-      sx={{
-        borderRadius: "4px",
-        borderWidth: 1,
-        borderColor: "lightgrey",
-        borderStyle: "solid",
-        height: "100%",
-        paddingLeft: 2,
-        paddingRight: 1,
-      }}
-    >
-      <SendAndArchiveIcon />
-      <Switch />
-    </Stack>
-  );
-}
+type AllFrames = AllFrameTypes | AllFrameSubTypes;
 
 type FieldTypeSelectProps = {
-  value: string | undefined;
+  value: AllFrames[];
+  maxValueCount?: number;
   label: string;
-  Items: FieldLocationType[];
-  onChange: (v: string) => unknown;
+  Items: AllFrames[];
+  itemsSrcData: Record<AllFrames, { title: string; bgc: string }>;
+  onChange: (v: string[]) => unknown;
 };
 
 function FieldTypeSelect(props: FieldTypeSelectProps) {
-  const { value = "", label, Items, onChange } = props;
+  const { value, label, Items, onChange, maxValueCount = 2, itemsSrcData } = props;
 
-  const handleChange = (event: SelectChangeEvent) => {
-    const newValue = event.target.value as string;
-    onChange(newValue);
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const newValue = event.target.value;
+    const newValueList = typeof newValue === "string" ? newValue.split(",") : newValue;
+    if (newValueList.length <= maxValueCount) onChange(newValueList);
   };
 
   return (
-    <FormControl sx={{ minWidth: 130, height: "fit-content" }}>
+    <FormControl sx={{ minWidth: 140, height: "100%" }}>
       <InputLabel id="select-label">{label}</InputLabel>
-      <Select labelId="select-label" value={value} label={label} onChange={handleChange}>
+      <Select
+        labelId="select-label"
+        multiple
+        value={value}
+        label={label}
+        onChange={handleChange}
+        //input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+        renderValue={(selected: (AllFrameTypes | AllFrameSubTypes)[]) => (
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+            {selected.map((el) => (
+              <Chip
+                key={el}
+                sx={{
+                  backgroundColor: itemsSrcData[el].bgc,
+                  border: "1px solid grey",
+                }}
+                label={"##"}
+              />
+            ))}
+          </Box>
+        )}
+      >
         {Items.map((el) => (
           <MenuItem key={`select-item-${el}`} value={el}>
             <Stack direction={"row"} spacing={1}>
@@ -126,11 +151,11 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
                 style={{
                   height: "20px",
                   width: "20px",
-                  backgroundColor: BASIC_FRAMES[el].bgc,
+                  backgroundColor: itemsSrcData[el].bgc,
                   border: "1px solid black",
                 }}
               />
-              <Typography>{BASIC_FRAMES[el].title}</Typography>
+              <Typography>{itemsSrcData[el].title}</Typography>
             </Stack>
           </MenuItem>
         ))}

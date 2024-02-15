@@ -60,11 +60,13 @@ type RuinKinds = Record<RuinTypes, { title: string; imgSrc: string }>;
 type subFrameType = {
   title: string;
   kind: CoinKinds | RuinKinds;
+  bgc: string;
 };
 
 export const SUB_FRAMES: Record<AllFrameSubTypes | string, subFrameType> = {
   coin: {
     title: "Монета",
+    bgc: "orange",
     kind: {
       none: {
         title: "Не найдена",
@@ -82,6 +84,7 @@ export const SUB_FRAMES: Record<AllFrameSubTypes | string, subFrameType> = {
   },
   ruin: {
     title: "Руины",
+    bgc: "lightgreen",
     kind: {
       none: {
         title: "Пропущены",
