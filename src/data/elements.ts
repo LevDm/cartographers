@@ -139,7 +139,104 @@ export const ACTIONS_TITLES: Record<AllActionTypes, string> = {
 
 export const MAPS = {};
 
-export const CARD_COUNTER = {};
+type CounterTypes = "green" | "blue" | "red" | "violet";
+
+type CardCounter = {
+  id: string;
+  title: string;
+  counter?: () => unknown;
+  imgSrc: string;
+};
+export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
+  green: [
+    {
+      id: "g-counter-1",
+      title: "Сторожевой лес",
+      imgSrc: "g1",
+    },
+    {
+      id: "g-counter-2",
+      title: "",
+      imgSrc: "g2",
+    },
+    {
+      id: "g-counter-3",
+      title: "",
+      imgSrc: "g3",
+    },
+    {
+      id: "g-counter-4",
+      title: "",
+      imgSrc: "g4",
+    },
+  ],
+  blue: [
+    {
+      id: "b-counter-1",
+      title: "",
+      imgSrc: "b1",
+    },
+    {
+      id: "b-counter-2",
+      title: "",
+      imgSrc: "b2",
+    },
+    {
+      id: "b-counter-3",
+      title: "",
+      imgSrc: "b3",
+    },
+    {
+      id: "b-counter-4",
+      title: "",
+      imgSrc: "b4",
+    },
+  ],
+  red: [
+    {
+      id: "r-counter-1",
+      title: "",
+      imgSrc: "1r",
+    },
+    {
+      id: "r-counter-2",
+      title: "",
+      imgSrc: "2r",
+    },
+    {
+      id: "r-counter-3",
+      title: "",
+      imgSrc: "3r",
+    },
+    {
+      id: "r-counter-4",
+      title: "",
+      imgSrc: "4r",
+    },
+  ],
+  violet: [
+    {
+      id: "v-counter-1",
+      title: "",
+      imgSrc: "1v",
+    },
+    {
+      id: "v-counter-2",
+      title: "",
+      imgSrc: "2v",
+    },
+    {
+      id: "v-counter-3",
+      title: "",
+      imgSrc: "3v",
+    },
+    {
+      id: "v-counter-4",
+      title: "",
+      imgSrc: "4v",
+    },
+  ],
+};
 
 type CardSkill = {
   id: string;
