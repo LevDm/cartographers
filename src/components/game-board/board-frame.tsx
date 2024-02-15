@@ -35,7 +35,9 @@ export const Frame = React.memo((props: FrameProps) => {
       }}
       onClick={useInEdit ? onClickHandler : undefined}
     >
-      <p style={{}}>{imgSrc}</p>
+      <p style={{}}>
+        {imgSrc}-{sumImdSrc ?? ""}
+      </p>
     </div>
   );
 });

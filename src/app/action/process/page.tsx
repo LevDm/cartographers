@@ -28,6 +28,8 @@ import {
   AllFrameTypes,
 } from "@/data/types";
 
+import { MAPS } from "@/data/cards";
+
 const GameStateDefault = {
   season: 0,
   scores: [...Array(4)].map(() => ({ p1: 0, p2: 0, c: 0, m: 0 })),
@@ -42,7 +44,12 @@ const CoinWalletDefault = [...Array(14)].map((_, index) => ({
 const MapDefault = [...Array(121)].map((_, index) => {
   const row = Math.floor(index / 11);
   const col = index - 11 * row;
-  return { id: `${row}-${col}`, frameType: "none" as AllFrameTypes };
+
+  const frameID = `${row}-${col}`;
+  const mapBuilderFrame = MAPS[1].params[frameID];
+  const frameType = mapBuilderFrame?.frameType ?? ("none" as AllFrameTypes);
+  const subFrameType = mapBuilderFrame?.subFrameType ?? undefined;
+  return { id: frameID, frameType: frameType, subFrameType: subFrameType };
 });
 
 const HistoryDefault = [
