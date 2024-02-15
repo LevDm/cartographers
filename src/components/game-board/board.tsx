@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 
 import { Frame } from "./board-frame";
 import { Popover } from "@mui/material";
-import { InputField } from "./board-input";
+import { InputField, LocationType } from "./board-input";
 
-import { AllActionTypes, AllFrameSubTypes, AllFrameTypes, MapFramesType } from "@/data/types";
+import { AllFrameTypes, MapFramesType, FrameParamsType, CoinTypes, RuinTypes } from "@/data/types";
 
 export type GameBoardPropsType = {
   openInputStep: boolean;
@@ -106,11 +106,16 @@ function InputBoard(props: InputBoardPropsType) {
     setData((prev) => {
       const indexItem = prev.findIndex((e) => e.id == id);
       const res = [...prev];
-      if (location.type.length > 0 && !res[indexItem].isEdit) {
+      if ((location.type.length > 0 || location.params.length > 0) && !res[indexItem].isEdit) {
+        const [frameType, frameSubType] = location.type;
+        const coinType = location.params.includes("coin") ? ("none" as CoinTypes) : undefined;
+        const ruinType = location.params.includes("ruin") ? ("none" as RuinTypes) : undefined;
+        const frame = { frameType, frameSubType, coinType, ruinType };
+
         res[indexItem] = {
           ...res[indexItem],
           isEdit: true,
-          frameType: location.type[0],
+          ...frame,
         };
       } else {
         res[indexItem] = { ...mapFrames[indexItem], isEdit: !res[indexItem].isEdit };
@@ -131,10 +136,7 @@ function InputBoard(props: InputBoardPropsType) {
     inputHandler(newMap);
   };
 
-  const [location, setLocation] = useState<{
-    type: AllFrameTypes[];
-    subType: AllFrameSubTypes[];
-  }>({ type: [], subType: [] });
+  const [location, setLocation] = useState<LocationType>({ type: [], params: [] });
 
   const handleLocationType = (value: AllFrameTypes[]) => {
     setLocation((prev) => ({
@@ -145,23 +147,28 @@ function InputBoard(props: InputBoardPropsType) {
     if (value.length > 0) {
       setData((prev) => {
         return [...prev].map((el) => {
-          if (el.isEdit) return { ...el, frameType: value[0] };
+          const [frameType, frameSubType] = value;
+          const frame = { frameType, frameSubType };
+          if (el.isEdit) return { ...el, ...frame };
           return el;
         });
       });
     }
   };
 
-  const handleLocationSubType = (value: AllFrameSubTypes[]) => {
+  const handleLocationParams = (value: FrameParamsType[]) => {
     setLocation((prev) => ({
       ...prev,
-      subType: value,
+      params: value,
     }));
 
     if (value.length > 0) {
       setData((prev) => {
         return [...prev].map((el) => {
-          if (el.isEdit) return { ...el, frameSubType: value[0] };
+          const coinType = value.includes("coin") ? ("none" as CoinTypes) : undefined;
+          const ruinType = value.includes("ruin") ? ("none" as RuinTypes) : undefined;
+          const frame = { coinType, ruinType };
+          if (el.isEdit) return { ...el, ...frame };
           return el;
         });
       });
@@ -194,7 +201,7 @@ function InputBoard(props: InputBoardPropsType) {
         location={location}
         applyDissabled={applyDissabled}
         handleLocationType={handleLocationType}
-        handleLocationSubType={handleLocationSubType}
+        handleLocationParams={handleLocationParams}
         handleChoiseReset={handleChoiseReset}
         handleChoiseApply={handleChoiseApply}
       />

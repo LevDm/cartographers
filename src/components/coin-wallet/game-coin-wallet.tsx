@@ -1,14 +1,14 @@
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import React from "react";
 
-import { CoinWalletType } from "@/data/types";
+import { CoinWalletType, CoinKinds } from "@/data/types";
 
 type CoinWalletPropsType = {
   coinsWallet: CoinWalletType[];
 };
 
-import { SUB_FRAMES, CoinKinds } from "@/data/elements";
-const COINS = SUB_FRAMES.coin.kind as CoinKinds;
+import { COIN_PARAM } from "@/data/elements";
+const COINS = COIN_PARAM.kind as CoinKinds;
 
 export function CoinWallet(props: CoinWalletPropsType) {
   const { coinsWallet } = props;

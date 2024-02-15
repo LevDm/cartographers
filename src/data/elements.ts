@@ -1,13 +1,14 @@
-import { AllFrameTypes, AllFrameSubTypes, CoinTypes, AllActionTypes } from "./types";
+import { AllFrameTypes, CoinKinds, RuinKinds, AllActionTypes, FrameParamsType } from "./types";
 
-type basicFrameType = {
+type BasicFrameDataType = {
   title: string;
   bgc: string;
   imgSrc: string;
   disabled?: boolean;
 };
 
-export const BASIC_FRAMES: Record<AllFrameTypes | string, basicFrameType> = {
+export type BasicFramesType = Record<AllFrameTypes, BasicFrameDataType>;
+export const BASIC_FRAMES: BasicFramesType = {
   void: {
     title: "Пустота",
     bgc: "transparent",
@@ -52,49 +53,54 @@ export const BASIC_FRAMES: Record<AllFrameTypes | string, basicFrameType> = {
   },
 };
 
-export type CoinKinds = Record<CoinTypes, { title: string; imgSrc: string }>;
-
-type RuinTypes = "none" | "added";
-type RuinKinds = Record<RuinTypes, { title: string; imgSrc: string }>;
-
-type subFrameType = {
+type paramsType = {
   title: string;
   kind: CoinKinds | RuinKinds;
-  bgc: string;
 };
 
-export const SUB_FRAMES: Record<AllFrameSubTypes | string, subFrameType> = {
-  coin: {
-    title: "Монета",
-    bgc: "orange",
-    kind: {
-      none: {
-        title: "Не найдена",
-        imgSrc: "0",
-      },
-      added: {
-        title: "Добавлена",
-        imgSrc: "1",
-      },
-      lost: {
-        title: "Потеряна",
-        imgSrc: "2",
-      },
+export const RUIN_PARAM: paramsType = {
+  title: "Руины",
+  kind: {
+    none: {
+      title: "Пропущены",
+      imgSrc: "0",
+    },
+    added: {
+      title: "Замечены",
+      imgSrc: "1",
     },
   },
-  ruin: {
-    title: "Руины",
-    bgc: "lightgreen",
-    kind: {
-      none: {
-        title: "Пропущены",
-        imgSrc: "0",
-      },
-      added: {
-        title: "Замечены",
-        imgSrc: "1",
-      },
+};
+
+export const COIN_PARAM: paramsType = {
+  title: "Монета",
+  kind: {
+    none: {
+      title: "Не найдена",
+      imgSrc: "0",
     },
+    added: {
+      title: "Добавлена",
+      imgSrc: "1",
+    },
+    lost: {
+      title: "Потеряна",
+      imgSrc: "2",
+    },
+  },
+};
+
+export type ParamsType = Record<FrameParamsType, BasicFrameDataType>;
+export const PARAMS: ParamsType = {
+  coin: {
+    title: COIN_PARAM.title,
+    bgc: "orange",
+    imgSrc: COIN_PARAM.kind.none.imgSrc,
+  },
+  ruin: {
+    title: RUIN_PARAM.title,
+    bgc: "lightgreen",
+    imgSrc: RUIN_PARAM.kind.none.imgSrc,
   },
 };
 
@@ -102,15 +108,13 @@ type seasonScoreType = {
   title: string;
   imgScr?: string;
 };
+const STATIC_SCORES: seasonScoreType[] = [{ title: "К" }, { title: "М" }];
 
 type seasonsType = {
   title: string;
   description: string;
   score: seasonScoreType[];
 };
-
-const STATIC_SCORES: seasonScoreType[] = [{ title: "К" }, { title: "М" }];
-
 export const SEASONS: seasonsType[] = [
   {
     title: "Весна",

@@ -7,14 +7,16 @@ type FrameProps = MapFramesType & {
   usageIn: "show" | "edit";
 };
 
-import { BASIC_FRAMES, SUB_FRAMES } from "@/data/elements";
+import { BASIC_FRAMES, PARAMS } from "@/data/elements";
 
 export const Frame = React.memo((props: FrameProps) => {
-  const { id, frameType, frameSubType, isEdit, handler, usageIn } = props;
+  const { id, frameType, frameSubType, coinType, ruinType, isEdit, handler, usageIn } = props;
 
   const { bgc, imgSrc, disabled } = BASIC_FRAMES[frameType];
 
-  const sumImdSrc = frameSubType ? SUB_FRAMES[frameSubType].kind.none.imgSrc : null;
+  const ruin = ruinType ? PARAMS.ruin : null;
+  const coin = coinType ? PARAMS.coin : null;
+  const sub = frameSubType ? BASIC_FRAMES[frameSubType] : null;
 
   const useInEdit = usageIn === "edit" && !disabled;
 
@@ -22,11 +24,13 @@ export const Frame = React.memo((props: FrameProps) => {
     if (handler) handler(id);
   };
 
+  const subBgc = sub?.bgc ?? bgc;
+
   return (
     <div
       style={{
         display: "flex",
-        backgroundColor: bgc,
+        background: `linear-gradient(to bottom right, ${bgc} 50%, ${subBgc} 50%`,
         aspectRatio: "1/1",
         alignItems: "center",
         justifyContent: "center",
@@ -36,7 +40,7 @@ export const Frame = React.memo((props: FrameProps) => {
       onClick={useInEdit ? onClickHandler : undefined}
     >
       <p style={{}}>
-        {imgSrc}-{sumImdSrc ?? ""}
+        {imgSrc}/{sub?.imgSrc ?? ""}-c{coin?.imgSrc ?? ""}-r{ruin?.imgSrc ?? ""}
       </p>
     </div>
   );

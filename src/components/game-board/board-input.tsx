@@ -19,17 +19,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import { AllFrameSubTypes, AllFrameTypes } from "@/data/types";
-import { BASIC_FRAMES, SUB_FRAMES } from "@/data/elements";
+import { AllFrameTypes, FrameParamsType } from "@/data/types";
+import { BASIC_FRAMES, BasicFramesType, PARAMS, ParamsType } from "@/data/elements";
+
+export type LocationType = { type: AllFrameTypes[]; params: FrameParamsType[] };
 
 type InputFieldProps = {
-  location: {
-    type: AllFrameTypes[];
-    subType: AllFrameSubTypes[];
-  };
+  location: LocationType;
   applyDissabled: boolean;
   handleLocationType: (v: AllFrameTypes[]) => unknown;
-  handleLocationSubType: (v: AllFrameSubTypes[]) => unknown;
+  handleLocationParams: (v: FrameParamsType[]) => unknown;
   handleChoiseReset: () => unknown;
   handleChoiseApply: () => unknown;
 };
@@ -38,14 +37,14 @@ const generalsLocationsType = Object.keys(BASIC_FRAMES).filter(
   (el) => !["void", "hill"].includes(el)
 ) as AllFrameTypes[];
 
-const generalsLocationsSubType = Object.keys(SUB_FRAMES) as AllFrameSubTypes[];
+const generalsLocationsSubType = Object.keys(PARAMS) as FrameParamsType[];
 
 export function InputField(props: InputFieldProps) {
   const {
     location,
     applyDissabled,
     handleLocationType,
-    handleLocationSubType,
+    handleLocationParams: handleLocationSubType,
     handleChoiseReset,
     handleChoiseApply,
   } = props;
@@ -71,15 +70,15 @@ export function InputField(props: InputFieldProps) {
           value={location.type}
           onChange={(v) => handleLocationType(v as AllFrameTypes[])}
           Items={generalsLocationsType}
-          itemsSrcData={BASIC_FRAMES}
+          itemsSrcData={BASIC_FRAMES as BasicFramesType & ParamsType}
         />
 
         <FieldTypeSelect
           label="Параметры"
-          value={location.subType}
-          onChange={(v) => handleLocationSubType(v as AllFrameSubTypes[])}
+          value={location.params}
+          onChange={(v) => handleLocationSubType(v as FrameParamsType[])}
           Items={generalsLocationsSubType}
-          itemsSrcData={SUB_FRAMES}
+          itemsSrcData={PARAMS as BasicFramesType & ParamsType}
         />
       </Stack>
       <Divider orientation="horizontal" flexItem />
@@ -99,14 +98,14 @@ export function InputField(props: InputFieldProps) {
   );
 }
 
-type AllFrames = AllFrameTypes | AllFrameSubTypes;
+type AllFramesFieldsType = AllFrameTypes | FrameParamsType;
 
 type FieldTypeSelectProps = {
-  value: AllFrames[];
+  value: AllFramesFieldsType[];
   maxValueCount?: number;
   label: string;
-  Items: AllFrames[];
-  itemsSrcData: Record<AllFrames, { title: string; bgc: string }>;
+  Items: AllFramesFieldsType[];
+  itemsSrcData: BasicFramesType & ParamsType;
   onChange: (v: string[]) => unknown;
 };
 
@@ -129,7 +128,7 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
         label={label}
         onChange={handleChange}
         //input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-        renderValue={(selected: (AllFrameTypes | AllFrameSubTypes)[]) => (
+        renderValue={(selected: AllFramesFieldsType[]) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((el) => (
               <Chip

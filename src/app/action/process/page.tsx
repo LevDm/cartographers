@@ -57,9 +57,10 @@ const MapDefault = [...Array(121)].map((_, index) => {
 
   const frameID = `${row}-${col}`;
   const mapBuilderFrame = MAPS[1].params[frameID];
-  const frameType = mapBuilderFrame?.frameType ?? ("none" as AllFrameTypes);
-  const subFrameType = mapBuilderFrame?.frameSubType ?? undefined;
-  return { id: frameID, frameType: frameType, frameSubType: subFrameType } as MapFramesType;
+
+  const frame = { frameType: "none", ...mapBuilderFrame };
+
+  return { id: frameID, ...frame } as MapFramesType;
 });
 
 const HistoryDefault = [

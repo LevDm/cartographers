@@ -1,46 +1,46 @@
-import { AllFrameSubTypes, AllFrameTypes } from "./types";
+import { MapFramesType } from "./types";
 
 type MapType = {
   id: string;
-  params: Record<string, { frameType?: AllFrameTypes; frameSubType?: AllFrameSubTypes }>;
+  params: Record<string, Partial<Omit<MapFramesType, "id">>>;
 };
 export const MAPS: MapType[] = [
   {
     id: "map-a",
     params: {
-      "1-3": { frameType: "hill", frameSubType: "coin" },
-      "1-5": { frameSubType: "ruin" },
-      "2-1": { frameSubType: "ruin" },
-      "2-8": { frameType: "hill", frameSubType: "coin" },
-      "2-9": { frameSubType: "ruin" },
-      "5-5": { frameType: "hill", frameSubType: "coin" },
-      "8-1": { frameSubType: "ruin" },
-      "8-2": { frameType: "hill", frameSubType: "coin" },
-      "8-9": { frameSubType: "ruin" },
-      "9-5": { frameSubType: "ruin" },
-      "9-7": { frameType: "hill", frameSubType: "coin" },
+      "1-3": { frameType: "hill", coinType: "none" },
+      "1-5": { ruinType: "none" },
+      "2-1": { ruinType: "none" },
+      "2-8": { frameType: "hill", coinType: "none" },
+      "2-9": { ruinType: "none" },
+      "5-5": { frameType: "hill", coinType: "none" },
+      "8-1": { ruinType: "none" },
+      "8-2": { frameType: "hill", coinType: "none" },
+      "8-9": { ruinType: "none" },
+      "9-5": { ruinType: "none" },
+      "9-7": { frameType: "hill", coinType: "none" },
     },
   },
   {
     id: "map-b",
     params: {
-      "1-6": { frameSubType: "ruin" },
-      "1-8": { frameType: "hill", frameSubType: "coin" },
+      "1-6": { ruinType: "none" },
+      "1-8": { frameType: "hill", coinType: "none" },
 
-      "2-2": { frameSubType: "ruin" },
-      "2-3": { frameType: "hill", frameSubType: "coin" },
+      "2-2": { ruinType: "none" },
+      "2-3": { frameType: "hill", coinType: "none" },
 
-      "4-6": { frameSubType: "ruin" },
+      "4-6": { ruinType: "none" },
 
-      "6-1": { frameSubType: "ruin" },
+      "6-1": { ruinType: "none" },
 
-      "7-5": { frameType: "hill", frameSubType: "coin" },
-      "7-8": { frameSubType: "ruin" },
+      "7-5": { frameType: "hill", coinType: "none" },
+      "7-8": { ruinType: "none" },
 
-      "8-9": { frameType: "hill", frameSubType: "coin" },
+      "8-9": { frameType: "hill", coinType: "none" },
 
-      "9-2": { frameType: "hill", frameSubType: "coin" },
-      "9-3": { frameSubType: "ruin" },
+      "9-2": { frameType: "hill", coinType: "none" },
+      "9-3": { ruinType: "none" },
       //
       "3-5": { frameType: "void" },
       "4-4": { frameType: "void" },
