@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -9,7 +9,9 @@ import {
   DialogContentText,
   DialogProps,
   DialogTitle,
+  ListItem,
   Paper,
+  Stack,
   Typography,
 } from "@mui/material";
 
@@ -35,55 +37,51 @@ export function GameSeasonInfo(props: { text: string }) {
   );
 }
 
-function CardsViewModal() {
-  const [open, setOpen] = React.useState(false);
-  const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
+type CardsViewModalPropsType = {
+  cards?: string[];
+};
 
-  const handleClickOpen = (scrollType: DialogProps["scroll"]) => () => {
+function CardsViewModal(props: CardsViewModalPropsType) {
+  const { cards = ["1", "2", "3", "4"] } = props;
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
     setOpen(true);
-    setScroll(scrollType);
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
-  React.useEffect(() => {
-    if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
-      }
-    }
-  }, [open]);
-
   return (
     <>
-      <Button onClick={handleClickOpen("paper")}>Посмотреть все</Button>
+      <Button onClick={handleClickOpen} size="small">
+        Посмотреть все
+      </Button>
       <Dialog
         open={open}
         onClose={handleClose}
-        scroll={scroll}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        scroll={"paper"}
+        aria-labelledby="orders-dialog-title"
       >
-        <DialogTitle id="scroll-dialog-title">Приказы игры</DialogTitle>
-        <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
-            tabIndex={-1}
-          >
-            {[...new Array(50)]
-              .map(
-                () => `Cras mattis consectetur purus sit amet fermentum.
-  Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-  Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-  Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-              )
-              .join("\n")}
-          </DialogContentText>
+        <DialogTitle id="orders-dialog-title">Приказы игры</DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={2}>
+            {cards.map((el) => (
+              <Button key={el} variant="outlined" disableRipple disableFocusRipple disableElevation>
+                <Stack direction={"column"}>
+                  <Typography variant="h6">{el}</Typography>
+                  <div
+                    style={{
+                      height: "260px",
+                      width: "200px",
+                      backgroundColor: "red",
+                    }}
+                  />
+                </Stack>
+              </Button>
+            ))}
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Закрыть</Button>
