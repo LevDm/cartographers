@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
+
+const basePath = "/cartographers";
+
 const nextConfig = {
-  basePath: "/cartographers",
+  basePath: basePath,
+  output: "export",
 
   webpack(config) {
     config.module.rules.push({
