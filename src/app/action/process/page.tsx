@@ -222,9 +222,7 @@ function TopAppBar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton color="inherit" onClick={() => router.back()}>
-          <ReplayIcon />
-        </IconButton>
+        <RestartGameButton handleClick={() => router.back()} />
         <Typography variant="h6" sx={{ marginLeft: 2, flexGrow: 1 }}>
           Игра
         </Typography>
@@ -233,6 +231,54 @@ function TopAppBar() {
         </Button>
       </Toolbar>
     </AppBar>
+  );
+}
+interface RestartGameProps {
+  handleClick: () => unknown;
+}
+function RestartGameButton(props: RestartGameProps) {
+  const { handleClick } = props;
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleApply = () => {
+    handleClose();
+    handleClick();
+  };
+
+  return (
+    <>
+      <IconButton color="inherit" onClick={handleClickOpen}>
+        <ReplayIcon />
+      </IconButton>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="restart-dialog-title"
+        aria-describedby="restart-dialog-description"
+      >
+        <DialogTitle id="restart-dialog-title">Перезапустить игру?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="restart-dialog-description">
+            Перезапуск сбросит все начальные параметры и прогресс игры
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Отмена</Button>
+          <Button onClick={handleApply} autoFocus>
+            Ок
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 
