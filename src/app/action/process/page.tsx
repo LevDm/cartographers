@@ -180,7 +180,7 @@ export default function ProcessActionPage() {
 
   return (
     <Box component={"main"}>
-      <TopAppBar />
+      <TopAppBar router={router} />
 
       <Container component={"section"} sx={{ padding: [2, 0] }}>
         <GameSeasonsStepper gameState={gameState} />

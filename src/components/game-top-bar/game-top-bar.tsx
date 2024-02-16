@@ -1,32 +1,27 @@
-"use client";
 import React, { useState } from "react";
 
 import {
   Button,
   AppBar,
-  Box,
   Toolbar,
   IconButton,
   Typography,
-  Container,
-  Fab,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
   DialogActions,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
 } from "@mui/material";
-import { useRouter } from "next/router";
 
 import ReplayIcon from "@mui/icons-material/Replay";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export function TopAppBar() {
-  const router = useRouter();
+interface TopAppBarType {
+  router: AppRouterInstance;
+}
+
+export function TopAppBar(props: TopAppBarType) {
+  const { router } = props;
   return (
     <AppBar position="static">
       <Toolbar>
