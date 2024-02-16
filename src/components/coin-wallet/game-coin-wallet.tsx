@@ -18,8 +18,8 @@ export function CoinWallet(props: CoinWalletPropsType) {
 
       <Paper sx={{}}>
         <Grid
-          spacing={2}
-          rowSpacing={2}
+          //spacing={2}
+          //rowSpacing={2}
           sx={{
             width: "100%",
             padding: [1, 3],
@@ -27,7 +27,7 @@ export function CoinWallet(props: CoinWalletPropsType) {
             display: "flex",
             justifyContent: "space-between",
           }}
-          direction={"row"}
+          //direction={"row"}
         >
           {coinsWallet.map((el) => (
             <SvgIcon

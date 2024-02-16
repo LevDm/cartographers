@@ -4,7 +4,7 @@ const basePath = "/cartographers";
 
 const nextConfig = {
   basePath: basePath,
-  output: "export",
+  //output: "export",
 
   webpack(config) {
     config.module.rules.push({
