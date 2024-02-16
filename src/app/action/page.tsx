@@ -9,40 +9,23 @@ import {
   IconButton,
   Typography,
   Container,
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  InputLabel,
-  FormControl,
   Stack,
-  Grid,
 } from "@mui/material";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { FieldError, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
 
-import { CardSelector, CardType } from "@/components/card-selector/card-selector";
+import { CardSelector } from "@/components/card-selector/card-selector";
 
-import cagIMG_1 from "../../../public/counting-cads/1_01.jpg";
-import cagIMG_2 from "../../../public/counting-cads/1_02.jpg";
-import cagIMG_3 from "../../../public/counting-cads/1_03.jpg";
-
-const cards: CardType[] = [
-  {
-    value: "",
-    src: cagIMG_1,
-    disabled: true,
-  },
-  {
-    value: "1",
-    src: cagIMG_2,
-  },
-  {
-    value: "2",
-    src: cagIMG_3,
-  },
-];
+import {
+  MAPS_IMG,
+  GREEN_COUNTERS_IMG,
+  BLUE_COUNTERS_IMG,
+  RED_COUNTERS_IMG,
+  VIOLET_COUNTERS_IMG,
+  SKILLS_IMG,
+} from "@/data/cards";
 
 const COUNTERS = {
   base: {
@@ -51,10 +34,10 @@ const COUNTERS = {
     selectID: "game-start-counter",
   },
   data: [
-    { id: "a", title: "А", cards: cards },
-    { id: "b", title: "Б", cards: cards },
-    { id: "c", title: "В", cards: cards },
-    { id: "d", title: "Г", cards: cards },
+    { id: "a", title: "А", cards: GREEN_COUNTERS_IMG },
+    { id: "b", title: "Б", cards: BLUE_COUNTERS_IMG },
+    { id: "c", title: "В", cards: RED_COUNTERS_IMG },
+    { id: "d", title: "Г", cards: VIOLET_COUNTERS_IMG },
   ],
 };
 
@@ -65,9 +48,9 @@ const SCILLS = {
     selectID: "game-start-skill",
   },
   data: [
-    { id: "1", title: "1", cards: cards },
-    { id: "2", title: "2", cards: cards },
-    { id: "3", title: "3", cards: cards },
+    { id: "1", title: "1", cards: SKILLS_IMG },
+    { id: "2", title: "2", cards: SKILLS_IMG },
+    { id: "3", title: "3", cards: SKILLS_IMG },
   ],
 };
 
@@ -85,7 +68,7 @@ export default function ActionPage() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      "game-frame": "1",
+      "game-frame": "map-a",
       "game-start-counter-a": "",
       "game-start-counter-b": "",
       "game-start-counter-c": "",
@@ -132,7 +115,7 @@ export default function ActionPage() {
           <CardSelector
             selectID="game-frame"
             title="Игровое поле"
-            cards={cards}
+            cards={MAPS_IMG}
             required
             control={control}
             error={Boolean(errors["game-frame"])}

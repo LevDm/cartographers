@@ -124,7 +124,9 @@ export default function ProcessActionPage() {
     });
   };
 
-  const finishGame = () => {};
+  const finishGame = () => {
+    router.replace("finished");
+  };
 
   const actionBarHandler = (e: { action: AllActionTypes; value?: string }) => {
     const { action, value } = e;
@@ -191,9 +193,7 @@ export default function ProcessActionPage() {
     <Box component={"main"}>
       <TopAppBar />
 
-      <Container component={"section"}>
-        <Button onClick={() => router.replace("finished")}>Конец</Button>
-
+      <Container component={"section"} sx={{ padding: [2, 0] }}>
         <GameSeasonsStepper gameState={gameState} />
 
         <CoinWallet coinsWallet={coinsWallet} />
@@ -287,6 +287,7 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 import { mapFramesCompare } from "@/game-utils/map-compare";
 import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
 import { SEASONS } from "@/data/elements";
+import Image from "next/image";
 
 type ActionBarPropsType = {
   coinsWallet: CoinWalletType[];
@@ -387,7 +388,16 @@ function SkillFab(props: SkillFabPropsType) {
     coinsWallet,
     gameState,
     actionBarHandler,
-    skillCardIds = ["skill-1", "skill-2", "skill-6"],
+    skillCardIds = [
+      "skill-1",
+      "skill-2",
+      "skill-3",
+      "skill-4",
+      "skill-5",
+      "skill-6",
+      "skill-7",
+      "skill-8",
+    ],
   } = props;
   const { freeSkills } = gameState;
 
@@ -453,15 +463,9 @@ function SkillFab(props: SkillFabPropsType) {
                       control={<Radio />}
                       label={
                         <Box>
-                          <Typography variant="h6">{el.title}</Typography>
-                          <Typography>Стоимость: {el.cost}x монет</Typography>
-                          <div
-                            style={{
-                              height: "260px",
-                              width: "200px",
-                              backgroundColor: "red",
-                            }}
-                          />
+                          <Typography>{el.title}</Typography>
+                          <Typography>Стоимость: {el.cost}x монет(ы)</Typography>
+                          <Image src={el.imgSrc} alt={""} width={200} style={{ borderRadius: 4 }} />
                         </Box>
                       }
                     />

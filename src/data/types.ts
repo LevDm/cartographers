@@ -1,3 +1,5 @@
+import { StaticImageData } from "next/image";
+
 export type AllFrameTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" | "pond" | "void";
 export type FrameParamsType = "coin" | "ruin";
 export type AllActionTypes = "skill" | "simpl" | "season";

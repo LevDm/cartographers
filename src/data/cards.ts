@@ -8,14 +8,14 @@ export const MAPS: MapType[] = [
   {
     id: "map-a",
     params: {
-      "1-3": { frameType: "hill", coinType: "none" },
+      "1-3": { frameType: "hill", coinType: "added" },
       "1-5": { ruinType: "none" },
       "2-1": { ruinType: "none" },
-      "2-8": { frameType: "hill", coinType: "none" },
+      "2-8": { frameType: "hill", coinType: "added" },
       "2-9": { ruinType: "none" },
-      "5-5": { frameType: "hill", coinType: "none" },
+      "5-5": { frameType: "hill", coinType: "added" },
       "8-1": { ruinType: "none" },
-      "8-2": { frameType: "hill", coinType: "none" },
+      "8-2": { frameType: "hill", coinType: "added" },
       "8-9": { ruinType: "none" },
       "9-5": { ruinType: "none" },
       "9-7": { frameType: "hill", coinType: "none" },
@@ -25,21 +25,21 @@ export const MAPS: MapType[] = [
     id: "map-b",
     params: {
       "1-6": { ruinType: "none" },
-      "1-8": { frameType: "hill", coinType: "none" },
+      "1-8": { frameType: "hill", coinType: "added" },
 
       "2-2": { ruinType: "none" },
-      "2-3": { frameType: "hill", coinType: "none" },
+      "2-3": { frameType: "hill", coinType: "added" },
 
       "4-6": { ruinType: "none" },
 
       "6-1": { ruinType: "none" },
 
-      "7-5": { frameType: "hill", coinType: "none" },
+      "7-5": { frameType: "hill", coinType: "added" },
       "7-8": { ruinType: "none" },
 
-      "8-9": { frameType: "hill", coinType: "none" },
+      "8-9": { frameType: "hill", coinType: "added" },
 
-      "9-2": { frameType: "hill", coinType: "none" },
+      "9-2": { frameType: "hill", coinType: "added" },
       "9-3": { ruinType: "none" },
       //
       "3-5": { frameType: "void" },
@@ -53,158 +53,252 @@ export const MAPS: MapType[] = [
   },
 ];
 
-type CounterTypes = "green" | "blue" | "red" | "violet";
+import { StaticImageData } from "next/image";
 
+import gc0 from "../../public/cards/counters/green/gc0.jpg";
+import gc1 from "../../public/cards/counters/green/gc01.jpg";
+import gc2 from "../../public/cards/counters/green/gc02.jpg";
+import gc3 from "../../public/cards/counters/green/gc03.jpg";
+import gc4 from "../../public/cards/counters/green/gc04.jpg";
+
+import bc0 from "../../public/cards/counters/blue/bc0.jpg";
+import bc1 from "../../public/cards/counters/blue/bc01.jpg";
+import bc2 from "../../public/cards/counters/blue/bc02.jpg";
+import bc3 from "../../public/cards/counters/blue/bc03.jpg";
+import bc4 from "../../public/cards/counters/blue/bc04.jpg";
+
+import rc0 from "../../public/cards/counters/red/rc0.jpg";
+import rc1 from "../../public/cards/counters/red/rc01.jpg";
+import rc2 from "../../public/cards/counters/red/rc02.jpg";
+import rc3 from "../../public/cards/counters/red/rc03.jpg";
+import rc4 from "../../public/cards/counters/red/rc04.jpg";
+
+import vc0 from "../../public/cards/counters/violet/vc0.jpg";
+import vc1 from "../../public/cards/counters/violet/vc01.jpg";
+import vc2 from "../../public/cards/counters/violet/vc02.jpg";
+import vc3 from "../../public/cards/counters/violet/vc03.jpg";
+import vc4 from "../../public/cards/counters/violet/vc04.jpg";
+
+type CounterTypes = "green" | "blue" | "red" | "violet";
 type CardCounter = {
   id: string;
   title: string;
   counter?: () => unknown;
-  imgSrc: string;
+  imgSrc: StaticImageData;
 };
 export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
   green: [
     {
       id: "g-counter-1",
       title: "Сторожевой лес",
-      imgSrc: "g1",
+      imgSrc: gc1,
     },
     {
       id: "g-counter-2",
       title: "",
-      imgSrc: "g2",
+      imgSrc: gc2,
     },
     {
       id: "g-counter-3",
       title: "",
-      imgSrc: "g3",
+      imgSrc: gc3,
     },
     {
       id: "g-counter-4",
       title: "",
-      imgSrc: "g4",
+      imgSrc: gc4,
     },
   ],
   blue: [
     {
       id: "b-counter-1",
       title: "",
-      imgSrc: "b1",
+      imgSrc: bc1,
     },
     {
       id: "b-counter-2",
       title: "",
-      imgSrc: "b2",
+      imgSrc: bc2,
     },
     {
       id: "b-counter-3",
       title: "",
-      imgSrc: "b3",
+      imgSrc: bc3,
     },
     {
       id: "b-counter-4",
       title: "",
-      imgSrc: "b4",
+      imgSrc: bc4,
     },
   ],
   red: [
     {
       id: "r-counter-1",
       title: "",
-      imgSrc: "1r",
+      imgSrc: rc1,
     },
     {
       id: "r-counter-2",
       title: "",
-      imgSrc: "2r",
+      imgSrc: rc2,
     },
     {
       id: "r-counter-3",
       title: "",
-      imgSrc: "3r",
+      imgSrc: rc3,
     },
     {
       id: "r-counter-4",
       title: "",
-      imgSrc: "4r",
+      imgSrc: rc4,
     },
   ],
   violet: [
     {
       id: "v-counter-1",
       title: "",
-      imgSrc: "1v",
+      imgSrc: vc1,
     },
     {
       id: "v-counter-2",
       title: "",
-      imgSrc: "2v",
+      imgSrc: vc2,
     },
     {
       id: "v-counter-3",
       title: "",
-      imgSrc: "3v",
+      imgSrc: vc3,
     },
     {
       id: "v-counter-4",
       title: "",
-      imgSrc: "4v",
+      imgSrc: vc4,
     },
   ],
 };
+
+import s0 from "../../public/cards/skills/s0.jpg";
+import s1 from "../../public/cards/skills/s03.jpg";
+import s2 from "../../public/cards/skills/s06.jpg";
+import s3 from "../../public/cards/skills/s02.jpg";
+import s4 from "../../public/cards/skills/s05.jpg";
+import s5 from "../../public/cards/skills/s08.jpg";
+import s6 from "../../public/cards/skills/s01.jpg";
+import s7 from "../../public/cards/skills/s04.jpg";
+import s8 from "../../public/cards/skills/s07.jpg";
 
 type CardSkill = {
   id: string;
   title: string;
   cost: number;
-  imgSrc: string;
+  imgSrc: StaticImageData;
 };
 export const CARD_SKILL: CardSkill[] = [
   {
     id: "skill-1",
     title: "Лечение (...ран)",
     cost: 1,
-    imgSrc: "1",
+    imgSrc: s1,
   },
   {
     id: "skill-2",
     title: "Скрытность",
     cost: 0,
-    imgSrc: "2",
+    imgSrc: s2,
   },
   {
     id: "skill-3",
     title: "Концентрация",
     cost: 3,
-    imgSrc: "3",
+    imgSrc: s3,
   },
   {
     id: "skill-4",
     title: "Познания (Тайные знания)",
     cost: 0,
-    imgSrc: "4",
+    imgSrc: s4,
   },
   {
     id: "skill-5",
     title: "Поиск",
     cost: 0,
-    imgSrc: "5",
+    imgSrc: s5,
   },
   {
     id: "skill-6",
-    title: "Ловкость",
+    title: "Ловкость (Акробатика)",
     cost: 2,
-    imgSrc: "6",
+    imgSrc: s6,
   },
   {
     id: "skill-7",
     title: "Дипломатия",
     cost: 1,
-    imgSrc: "7",
+    imgSrc: s7,
   },
   {
     id: "skill-8",
     title: "Сделка (переговоры)",
     cost: 1,
-    imgSrc: "8",
+    imgSrc: s8,
   },
+];
+
+import { toSelect } from "@/game-utils/format-to-selecter";
+import { CardType } from "@/components/card-selector/card-selector";
+
+import mapA from "../../public/cards/maps/map-a.jpg";
+import mapB from "../../public/cards/maps/map-b.jpg";
+
+export const MAPS_IMG: CardType[] = [
+  {
+    value: "map-a",
+    src: mapA,
+  },
+  {
+    value: "map-b",
+    src: mapB,
+  },
+];
+
+export const GREEN_COUNTERS_IMG: CardType[] = [
+  {
+    value: "",
+    src: gc0,
+    disabled: true,
+  },
+  ...CARD_COUNTER.green.map((el) => toSelect(el)),
+];
+export const BLUE_COUNTERS_IMG: CardType[] = [
+  {
+    value: "",
+    src: bc0,
+    disabled: true,
+  },
+  ...CARD_COUNTER.blue.map((el) => toSelect(el)),
+];
+export const RED_COUNTERS_IMG: CardType[] = [
+  {
+    value: "",
+    src: rc0,
+    disabled: true,
+  },
+  ...CARD_COUNTER.red.map((el) => toSelect(el)),
+];
+export const VIOLET_COUNTERS_IMG: CardType[] = [
+  {
+    value: "",
+    src: vc0,
+    disabled: true,
+  },
+  ...CARD_COUNTER.violet.map((el) => toSelect(el)),
+];
+
+export const SKILLS_IMG: CardType[] = [
+  {
+    value: "",
+    src: s0,
+    disabled: true,
+  },
+  ...CARD_SKILL.map((el) => toSelect(el)),
 ];

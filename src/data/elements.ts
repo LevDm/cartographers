@@ -1,57 +1,68 @@
 import { AllFrameTypes, CoinKinds, RuinKinds, AllActionTypes, FrameParamsType } from "./types";
 
+import hill from "../../public/element-icons/hill.svg";
+import home from "../../public/element-icons/home.svg";
+import tree from "../../public/element-icons/tree.svg";
+import evil from "../../public/element-icons/evil.svg";
+import pond from "../../public/element-icons/pond.svg";
+import brim from "../../public/element-icons/brim.svg";
+
 type BasicFrameDataType = {
   title: string;
   bgc: string;
-  imgSrc: string;
+  imgSrc?: string;
   disabled?: boolean;
 };
-
 export type BasicFramesType = Record<AllFrameTypes, BasicFrameDataType>;
 export const BASIC_FRAMES: BasicFramesType = {
   void: {
     title: "Пустота",
     bgc: "transparent",
-    imgSrc: "0",
     disabled: true,
   },
   hill: {
     title: "Горы",
-    bgc: "brown",
-    imgSrc: "1",
+    bgc: "#F2E8DE",
+    imgSrc: hill,
     disabled: true,
   },
   none: {
     title: "Свободно",
-    bgc: "white",
-    imgSrc: "2",
+    bgc: "#F2EEEC",
   },
   tree: {
     title: "Лес",
-    bgc: "green",
-    imgSrc: "3",
+    bgc: "#D8E9C6",
+    imgSrc: tree,
   },
   home: {
     title: "Поселение",
-    bgc: "red",
-    imgSrc: "4",
+    bgc: "#F4C7C5",
+    imgSrc: home,
   },
   brim: {
     title: "Поля",
-    bgc: "yellow",
-    imgSrc: "5",
+    bgc: "#F2E6BD",
+    imgSrc: brim,
   },
   pond: {
     title: "Водоём",
-    bgc: "blue",
-    imgSrc: "6",
+    bgc: "#C9E2EB",
+    imgSrc: pond,
   },
   evil: {
     title: "Монстры",
-    bgc: "pink",
-    imgSrc: "7",
+    bgc: "#E5CADC",
+    imgSrc: evil,
   },
 };
+
+import coinNone from "../../public/element-icons/coin-none.svg";
+import coinAdded from "../../public/element-icons/coin-added.svg";
+import coinLost from "../../public/element-icons/coin-lost.svg";
+
+import ruinNone from "../../public/element-icons/ruin-none.svg";
+import ruinAdded from "../../public/element-icons/ruin-added.svg";
 
 type paramsType = {
   title: string;
@@ -63,11 +74,11 @@ export const RUIN_PARAM: paramsType = {
   kind: {
     none: {
       title: "Пропущены",
-      imgSrc: "0",
+      imgSrc: ruinNone,
     },
     added: {
       title: "Замечены",
-      imgSrc: "1",
+      imgSrc: ruinAdded,
     },
   },
 };
@@ -77,15 +88,15 @@ export const COIN_PARAM: paramsType = {
   kind: {
     none: {
       title: "Не найдена",
-      imgSrc: "0",
+      imgSrc: coinNone,
     },
     added: {
       title: "Добавлена",
-      imgSrc: "1",
+      imgSrc: coinAdded,
     },
     lost: {
       title: "Потеряна",
-      imgSrc: "2",
+      imgSrc: coinLost,
     },
   },
 };
@@ -94,13 +105,13 @@ export type ParamsType = Record<FrameParamsType, BasicFrameDataType>;
 export const PARAMS: ParamsType = {
   coin: {
     title: COIN_PARAM.title,
-    bgc: "orange",
-    imgSrc: COIN_PARAM.kind.none.imgSrc,
+    bgc: "#F2EEEC",
+    imgSrc: COIN_PARAM.kind.added.imgSrc,
   },
   ruin: {
     title: RUIN_PARAM.title,
-    bgc: "lightgreen",
-    imgSrc: RUIN_PARAM.kind.none.imgSrc,
+    bgc: "#F2EEEC",
+    imgSrc: RUIN_PARAM.kind.added.imgSrc,
   },
 };
 

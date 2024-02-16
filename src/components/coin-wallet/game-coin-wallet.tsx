@@ -1,5 +1,5 @@
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Box, Divider, Grid, Paper, Stack, SvgIcon, Typography } from "@mui/material";
+import React, { ElementType } from "react";
 
 import { CoinWalletType, CoinKinds } from "@/data/types";
 
@@ -17,19 +17,31 @@ export function CoinWallet(props: CoinWalletPropsType) {
       <Typography paddingRight={1}>Кошелек</Typography>
 
       <Paper sx={{}}>
-        <Stack
-          sx={{ width: "100%", padding: [1, 3] }}
+        <Grid
+          spacing={2}
+          rowSpacing={2}
+          sx={{
+            width: "100%",
+            padding: [1, 3],
+            flexWrap: "wrap",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
           direction={"row"}
-          alignItems="center"
-          justifyContent="space-between"
-          divider={<Divider orientation="vertical" flexItem />}
         >
           {coinsWallet.map((el) => (
-            <div key={el.id}>
-              <Typography>{COINS[el.coinType].imgSrc}</Typography>
-            </div>
+            <SvgIcon
+              key={el.id}
+              //inheritViewBox
+              component={COINS[el.coinType].imgSrc as ElementType}
+              htmlColor="transparent"
+              sx={{
+                minHeight: "30px",
+                minWidth: "30px",
+              }}
+            />
           ))}
-        </Stack>
+        </Grid>
       </Paper>
     </Box>
   );

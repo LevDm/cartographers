@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ElementType } from "react";
 import { MapFramesType } from "@/data/types";
 
 type FrameProps = MapFramesType & {
@@ -8,6 +8,7 @@ type FrameProps = MapFramesType & {
 };
 
 import { BASIC_FRAMES, PARAMS, RUIN_PARAM } from "@/data/elements";
+import { SvgIcon } from "@mui/material";
 
 export const Frame = React.memo((props: FrameProps) => {
   const { id, frameType, frameSubType, coinType, ruinType, isEdit, handler, usageIn } = props;
@@ -24,24 +25,65 @@ export const Frame = React.memo((props: FrameProps) => {
     if (handler) handler(id);
   };
 
-  const subBgc = sub?.bgc ?? bgc;
-
   return (
     <div
       style={{
         aspectRatio: "1/1",
         display: "flex",
-        background: `linear-gradient(to bottom right, ${bgc} 50%, ${subBgc} 50%`,
+        //background: `linear-gradient(to bottom right, ${bgc} 50%, ${subBgc} 50%`,
+        backgroundColor: bgc,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 2,
         opacity: useInEdit ? (isEdit ? 1 : 0.4) : 1,
+        position: "relative",
       }}
       onClick={useInEdit ? onClickHandler : undefined}
     >
-      <p style={{}}>
-        {imgSrc}/{sub?.imgSrc ?? ""}-c{coin?.imgSrc ?? ""}-r{ruin?.imgSrc ?? ""}
-      </p>
+      <SvgIcon
+        component={imgSrc as ElementType}
+        htmlColor="transparent"
+        sx={{ height: "90%", width: "90%" }}
+      />
+      {sub && (
+        <SvgIcon
+          component={sub.imgSrc as ElementType}
+          htmlColor={sub.bgc ?? "transparent"}
+          sx={{
+            height: "60%",
+            width: "60%",
+            position: "absolute",
+            top: "20%",
+            left: "20%",
+          }}
+        />
+      )}
+      {ruin && (
+        <SvgIcon
+          component={ruin.imgSrc as ElementType}
+          htmlColor="transparent"
+          sx={{
+            height: "80%",
+            width: "80%",
+            position: "absolute",
+            top: "10%",
+            left: "10%",
+          }}
+        />
+      )}
+      {coin && (
+        <SvgIcon
+          component={coin.imgSrc as ElementType}
+          htmlColor="transparent"
+          sx={{
+            height: "40%",
+            width: "40%",
+            position: "absolute",
+            top: "50%",
+            left: "30%",
+          }}
+        />
+      )}
     </div>
   );
 });

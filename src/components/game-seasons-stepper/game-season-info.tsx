@@ -14,6 +14,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { CARD_COUNTER } from "@/data/cards";
+import Image from "next/image";
 
 export function GameSeasonInfo(props: { text: string }) {
   const { text } = props;
@@ -67,17 +69,22 @@ function CardsViewModal(props: CardsViewModalPropsType) {
         <DialogTitle id="orders-dialog-title">Приказы игры</DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2}>
-            {cards.map((el) => (
-              <Button key={el} variant="outlined" disableRipple disableFocusRipple disableElevation>
+            {[
+              ...CARD_COUNTER.green,
+              ...CARD_COUNTER.blue,
+              ...CARD_COUNTER.red,
+              ...CARD_COUNTER.violet,
+            ].map((el) => (
+              <Button
+                key={el.id}
+                variant="outlined"
+                disableRipple
+                disableFocusRipple
+                disableElevation
+              >
                 <Stack direction={"column"}>
-                  <Typography variant="h6">{el}</Typography>
-                  <div
-                    style={{
-                      height: "260px",
-                      width: "200px",
-                      backgroundColor: "red",
-                    }}
-                  />
+                  <Typography variant="h6">{el.id}</Typography>
+                  <Image src={el.imgSrc} alt={""} width={200} style={{ borderRadius: 4 }} />
                 </Stack>
               </Button>
             ))}

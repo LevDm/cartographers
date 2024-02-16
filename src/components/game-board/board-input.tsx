@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ElementType, useState } from "react";
 
 import SendAndArchiveIcon from "@mui/icons-material/SendAndArchive";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
@@ -15,6 +15,7 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
+  SvgIcon,
   Switch,
   Typography,
 } from "@mui/material";
@@ -137,7 +138,20 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
                   backgroundColor: itemsSrcData[el].bgc,
                   border: "1px solid grey",
                 }}
-                label={"##"}
+                label={
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <SvgIcon
+                      component={itemsSrcData[el].imgSrc as ElementType}
+                      htmlColor="transparent"
+                      sx={{ height: "90%", width: "90%" }}
+                    />
+                  </div>
+                }
               />
             ))}
           </Box>
@@ -152,8 +166,17 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
                   width: "20px",
                   backgroundColor: itemsSrcData[el].bgc,
                   border: "1px solid black",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <SvgIcon
+                  component={itemsSrcData[el].imgSrc as ElementType}
+                  htmlColor="transparent"
+                  sx={{ height: "90%", width: "90%" }}
+                />
+              </div>
               <Typography>{itemsSrcData[el].title}</Typography>
             </Stack>
           </MenuItem>
