@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import {
   Button,
@@ -35,7 +35,6 @@ import {
   MapFramesType,
   HistoryRowType,
   CoinTypes,
-  AllFrameTypes,
 } from "@/data/types";
 
 import { CARD_SKILL, MAPS } from "@/data/cards";
@@ -71,6 +70,16 @@ const HistoryDefault = [
   },
 ];
 
+type openInputStepType = null | {
+  action: Omit<AllActionTypes, "season">;
+  value?: string;
+};
+
+interface actionBarHandlerType {
+  action: AllActionTypes;
+  value?: string;
+}
+
 export default function ProcessActionPage() {
   const router = useRouter();
 
@@ -78,10 +87,7 @@ export default function ProcessActionPage() {
 
   const [coinsWallet, setCoinsWallet] = useState<CoinWalletType[]>(CoinWalletDefault);
 
-  const [openInputStep, setOpenInputStep] = useState<null | {
-    action: Omit<AllActionTypes, "season">;
-    value?: string;
-  }>(null);
+  const [openInputStep, setOpenInputStep] = useState<openInputStepType>(null);
 
   const [mapFrames, setMapFrames] = useState<MapFramesType[]>(MapDefault);
 
@@ -128,7 +134,7 @@ export default function ProcessActionPage() {
     router.replace("finished");
   };
 
-  const actionBarHandler = (e: { action: AllActionTypes; value?: string }) => {
+  const actionBarHandler = (e: actionBarHandlerType) => {
     const { action, value } = e;
 
     switch (action) {
@@ -292,7 +298,7 @@ import Image from "next/image";
 type ActionBarPropsType = {
   coinsWallet: CoinWalletType[];
   gameState: GameStateType;
-  actionBarHandler: (e: { action: AllActionTypes; value?: string }) => unknown;
+  actionBarHandler: (e: actionBarHandlerType) => unknown;
 };
 
 function ActionBar(props: ActionBarPropsType) {
@@ -325,7 +331,7 @@ function ActionBar(props: ActionBarPropsType) {
 
 interface SeasonFabPropsType {
   gameState: GameStateType;
-  actionBarHandler: (e: { action: AllActionTypes; value?: string }) => unknown;
+  actionBarHandler: (e: actionBarHandlerType) => unknown;
 }
 function SeasonFab(props: SeasonFabPropsType) {
   const { gameState, actionBarHandler } = props;
