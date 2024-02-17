@@ -192,6 +192,8 @@ export default function ProcessActionPage() {
         gameState={gameState}
         actionBarHandler={actionBarHandler}
       />
+
+      <GameActionHistory gameHistory={gameHistory} />
     </Box>
   );
 }
@@ -208,5 +210,5 @@ export default function ProcessActionPage() {
           inputClose={inputClose}
         />
 
-        <GameActionHistory gameHistory={gameHistory} />
+        
 */
