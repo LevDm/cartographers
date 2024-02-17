@@ -185,6 +185,13 @@ export default function ProcessActionPage() {
       <Container component={"section"} sx={{ marginTop: 3 }}>
         <GameSeasonsStepper gameState={gameState} />
         <CoinWallet coinsWallet={coinsWallet} />
+        <GameBoard
+          openInputStep={Boolean(openInputStep)}
+          mapFrames={mapFrames}
+          inputHandler={inputHandler}
+          inputClose={inputClose}
+        />
+        <GameActionHistory gameHistory={gameHistory} />
       </Container>
 
       <ActionBar
@@ -192,8 +199,6 @@ export default function ProcessActionPage() {
         gameState={gameState}
         actionBarHandler={actionBarHandler}
       />
-
-      <GameActionHistory gameHistory={gameHistory} />
     </Box>
   );
 }
@@ -203,12 +208,7 @@ export default function ProcessActionPage() {
 
         
 
-        <GameBoard
-          openInputStep={Boolean(openInputStep)}
-          mapFrames={mapFrames}
-          inputHandler={inputHandler}
-          inputClose={inputClose}
-        />
+        
 
         
 */
