@@ -182,7 +182,10 @@ export default function ProcessActionPage() {
     <Box component={"main"}>
       <TopAppBar router={router} />
 
-      <Container component={"section"} sx={{ marginTop: 3 }}></Container>
+      <Container component={"section"} sx={{ marginTop: 3 }}>
+        <GameSeasonsStepper gameState={gameState} />
+        <CoinWallet coinsWallet={coinsWallet} />
+      </Container>
 
       <ActionBar
         coinsWallet={coinsWallet}
@@ -194,9 +197,9 @@ export default function ProcessActionPage() {
 }
 
 /*
-<GameSeasonsStepper gameState={gameState} />
 
-        <CoinWallet coinsWallet={coinsWallet} />
+
+        
 
         <GameBoard
           openInputStep={Boolean(openInputStep)}
