@@ -1,29 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
-import {
-  Select,
-  MenuItem,
-  SelectChangeEvent,
-  InputLabel,
-  FormControl,
-  FormHelperText,
-} from "@mui/material";
+import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 
-import Image, { StaticImageData } from "next/image";
-import { Controller, Control } from "react-hook-form";
-
-export type CardType = {
-  value: string;
-  src: string | StaticImageData;
-  disabled?: boolean;
-};
+import Image from "next/image";
+import { Controller } from "react-hook-form";
+import { SelectCardType } from "@/data/types";
 
 type CardSelectorPropsType = {
   selectID: string;
   title: string;
   defaultValue?: string;
   required?: boolean;
-  cards: CardType[];
+  cards: SelectCardType[];
   //
   error: boolean;
   control: any;
@@ -60,13 +48,13 @@ export const CardSelector = React.memo((props: CardSelectorPropsType) => {
               IconComponent={() => null}
               displayEmpty
             >
-              {cards.map((card: CardType) => (
+              {cards.map((card: SelectCardType) => (
                 <MenuItem
-                  key={`${selectID}-item-${card.value}`}
-                  value={card.value}
+                  key={`${selectID}-item-${card.id}`}
+                  value={card.id}
                   disabled={card.disabled ?? false}
                 >
-                  <Image src={card.src} alt={""} width={300} style={{ borderRadius: 4 }} />
+                  <Image src={card.imgSrc} alt={""} width={300} style={{ borderRadius: 4 }} />
                 </MenuItem>
               ))}
             </Select>

@@ -41,3 +41,9 @@ export type HistoryRowType = {
   oldFrames?: frameToHisory[];
   newFrames?: frameToHisory[];
 };
+
+export type SelectCardType = {
+  id: string;
+  imgSrc: string | StaticImageData;
+  disabled?: boolean;
+};

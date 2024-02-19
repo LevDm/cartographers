@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import {
   Button,
@@ -18,41 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { CardSelector } from "@/components/card-selector/card-selector";
 
-import {
-  MAPS_IMG,
-  GREEN_COUNTERS_IMG,
-  BLUE_COUNTERS_IMG,
-  RED_COUNTERS_IMG,
-  VIOLET_COUNTERS_IMG,
-  SKILLS_IMG,
-} from "@/data/cards";
-
-const COUNTERS = {
-  base: {
-    id: "counter",
-    title: "Счетчик",
-    selectID: "game-start-counter",
-  },
-  data: [
-    { id: "a", title: "А", cards: GREEN_COUNTERS_IMG },
-    { id: "b", title: "Б", cards: BLUE_COUNTERS_IMG },
-    { id: "c", title: "В", cards: RED_COUNTERS_IMG },
-    { id: "d", title: "Г", cards: VIOLET_COUNTERS_IMG },
-  ],
-};
-
-const SCILLS = {
-  base: {
-    id: "skill",
-    title: "Навык",
-    selectID: "game-start-skill",
-  },
-  data: [
-    { id: "1", title: "1", cards: SKILLS_IMG },
-    { id: "2", title: "2", cards: SKILLS_IMG },
-    { id: "3", title: "3", cards: SKILLS_IMG },
-  ],
-};
+import { MAPS_IMG, START_GAME_CARDS } from "@/data/selectedCards";
 
 export default function ActionPage() {
   const router = useRouter();
@@ -121,18 +87,18 @@ export default function ActionPage() {
             error={Boolean(errors["game-frame"])}
           />
 
-          {[COUNTERS, SCILLS].map((sel) => (
-            <Box key={sel.base.id}>
-              {sel.data.map((el) => (
+          {START_GAME_CARDS.map((store) => (
+            <Box key={store.base.id}>
+              {store.data.map((el) => (
                 <CardSelector
-                  key={`${sel.base.id}-${el.id}`}
-                  selectID={`${sel.base.selectID}-${el.id}`}
-                  title={`${sel.base.title} ${el.title}`}
+                  key={`${store.base.id}-${el.id}`}
+                  selectID={`${store.base.selectID}-${el.id}`}
+                  title={`${store.base.title} ${el.title}`}
                   cards={el.cards}
                   //
                   required
                   control={control}
-                  error={Object.keys(errors).includes(`${sel.base.selectID}-${el.id}`)}
+                  error={Object.keys(errors).includes(`${store.base.selectID}-${el.id}`)}
                 />
               ))}
             </Box>

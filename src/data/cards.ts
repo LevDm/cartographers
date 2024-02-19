@@ -55,25 +55,21 @@ export const MAPS: MapType[] = [
 
 import { StaticImageData } from "next/image";
 
-import gc0 from "../../public/cards/counters/green/gc0.jpg";
 import gc1 from "../../public/cards/counters/green/gc01.jpg";
 import gc2 from "../../public/cards/counters/green/gc02.jpg";
 import gc3 from "../../public/cards/counters/green/gc03.jpg";
 import gc4 from "../../public/cards/counters/green/gc04.jpg";
 
-import bc0 from "../../public/cards/counters/blue/bc0.jpg";
 import bc1 from "../../public/cards/counters/blue/bc01.jpg";
 import bc2 from "../../public/cards/counters/blue/bc02.jpg";
 import bc3 from "../../public/cards/counters/blue/bc03.jpg";
 import bc4 from "../../public/cards/counters/blue/bc04.jpg";
 
-import rc0 from "../../public/cards/counters/red/rc0.jpg";
 import rc1 from "../../public/cards/counters/red/rc01.jpg";
 import rc2 from "../../public/cards/counters/red/rc02.jpg";
 import rc3 from "../../public/cards/counters/red/rc03.jpg";
 import rc4 from "../../public/cards/counters/red/rc04.jpg";
 
-import vc0 from "../../public/cards/counters/violet/vc0.jpg";
 import vc1 from "../../public/cards/counters/violet/vc01.jpg";
 import vc2 from "../../public/cards/counters/violet/vc02.jpg";
 import vc3 from "../../public/cards/counters/violet/vc03.jpg";
@@ -177,7 +173,6 @@ export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
   ],
 };
 
-import s0 from "../../public/cards/skills/s0.jpg";
 import s1 from "../../public/cards/skills/s03.jpg";
 import s2 from "../../public/cards/skills/s06.jpg";
 import s3 from "../../public/cards/skills/s02.jpg";
@@ -242,63 +237,4 @@ export const CARD_SKILL: CardSkill[] = [
     cost: 1,
     imgSrc: s8,
   },
-];
-
-import { toSelect } from "@/game-utils/format-to-selecter";
-import { CardType } from "@/components/card-selector/card-selector";
-
-import mapA from "../../public/cards/maps/map-a.jpg";
-import mapB from "../../public/cards/maps/map-b.jpg";
-
-export const MAPS_IMG: CardType[] = [
-  {
-    value: "map-a",
-    src: mapA,
-  },
-  {
-    value: "map-b",
-    src: mapB,
-  },
-];
-
-export const GREEN_COUNTERS_IMG: CardType[] = [
-  {
-    value: "",
-    src: gc0,
-    disabled: true,
-  },
-  ...CARD_COUNTER.green.map((el) => toSelect(el)),
-];
-export const BLUE_COUNTERS_IMG: CardType[] = [
-  {
-    value: "",
-    src: bc0,
-    disabled: true,
-  },
-  ...CARD_COUNTER.blue.map((el) => toSelect(el)),
-];
-export const RED_COUNTERS_IMG: CardType[] = [
-  {
-    value: "",
-    src: rc0,
-    disabled: true,
-  },
-  ...CARD_COUNTER.red.map((el) => toSelect(el)),
-];
-export const VIOLET_COUNTERS_IMG: CardType[] = [
-  {
-    value: "",
-    src: vc0,
-    disabled: true,
-  },
-  ...CARD_COUNTER.violet.map((el) => toSelect(el)),
-];
-
-export const SKILLS_IMG: CardType[] = [
-  {
-    value: "",
-    src: s0,
-    disabled: true,
-  },
-  ...CARD_SKILL.map((el) => toSelect(el)),
 ];
