@@ -73,10 +73,8 @@ export default function ActionPage() {
           component={"form"}
           onSubmit={handleSubmit(submit)}
           flexDirection={"column"}
-          sx={{
-            alignItems: "center",
-            gap: 4,
-          }}
+          alignItems={"center"}
+          spacing={4}
         >
           <CardSelector
             selectID="game-frame"
@@ -88,7 +86,15 @@ export default function ActionPage() {
           />
 
           {START_GAME_CARDS.map((store) => (
-            <Box key={store.base.id}>
+            <Box
+              key={store.base.id}
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {store.data.map((el) => (
                 <CardSelector
                   key={`${store.base.id}-${el.id}`}

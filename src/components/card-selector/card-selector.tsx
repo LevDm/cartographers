@@ -39,7 +39,7 @@ export const CardSelector = React.memo((props: CardSelectorPropsType) => {
               labelId={`${selectID}-label`}
               sx={{
                 width: "fit-content",
-                minWidth: 332,
+                minWidth: 302,
                 padding: 2,
                 paddingBottom: 1,
               }}
@@ -54,7 +54,13 @@ export const CardSelector = React.memo((props: CardSelectorPropsType) => {
                   value={card.id}
                   disabled={card.disabled ?? false}
                 >
-                  <Image src={card.imgSrc} alt={""} width={300} style={{ borderRadius: 4 }} />
+                  <Image
+                    src={card.imgSrc}
+                    placeholder="blur"
+                    alt={""}
+                    width={270}
+                    style={{ borderRadius: 4 }}
+                  />
                 </MenuItem>
               ))}
             </Select>
