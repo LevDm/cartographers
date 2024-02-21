@@ -55,12 +55,12 @@ const HistoryDefault = [
 
 type openInputStepType = null | {
   action: Omit<AllActionTypes, "season">;
-  value?: string;
+  value: string;
 };
 
 interface actionBarHandlerType {
   action: AllActionTypes;
-  value?: string;
+  value: string;
 }
 
 export default function ProcessActionPage() {

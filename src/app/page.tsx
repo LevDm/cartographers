@@ -12,17 +12,23 @@ import {
   Container,
 } from "@mui/material";
 
+import { observer } from "mobx-react-lite";
+
 import ExtensionIcon from "@mui/icons-material/Extension";
 
 import { usePathname, useRouter } from "next/navigation";
+import { useStore } from "@/mobx-store/use-store-provider";
+import { format } from "date-fns";
 
-export default function HomePage() {
+const HomePage = observer(() => {
   const router = useRouter();
   const basepath = usePathname();
 
   const link = (path: string) => {
     router.push(`${basepath}${path}`);
   };
+
+  const { loadSuccses, lastSave } = useStore();
 
   return (
     <Box component={"main"}>
@@ -43,11 +49,18 @@ export default function HomePage() {
           <Button size="large" onClick={() => link("/action")}>
             Новая
           </Button>
-          <Button size="large" onClick={() => link("/action/process")}>
-            Продолжить
+          <Button
+            size="large"
+            onClick={() => link("/action/process")}
+            disabled={!(loadSuccses.get() && lastSave.get() != null)}
+          >
+            {lastSave.get()
+              ? `${format(lastSave.get() ?? "", "HH:mm / dd.MM")} - продолжить`
+              : "Нет сохранений"}
           </Button>
         </Stack>
       </Container>
     </Box>
   );
-}
+});
+export default HomePage;

@@ -16,7 +16,7 @@ import NavigationIcon from "@mui/icons-material/Navigation";
 
 interface actionBarHandlerType {
   action: AllActionTypes;
-  value?: string;
+  value: string;
 }
 
 interface SeasonFabPropsType {

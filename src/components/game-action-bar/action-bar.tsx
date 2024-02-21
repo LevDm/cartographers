@@ -9,7 +9,7 @@ import { SeasonFab } from "./season-fab";
 
 interface actionBarHandlerType {
   action: AllActionTypes;
-  value?: string;
+  value: string;
 }
 
 type ActionBarPropsType = {
@@ -37,7 +37,11 @@ export function ActionBar(props: ActionBarPropsType) {
       }}
     >
       <SkillFab {...props} />
-      <Fab color="primary" variant="extended" onClick={() => actionBarHandler({ action: "simpl" })}>
+      <Fab
+        color="primary"
+        variant="extended"
+        onClick={() => actionBarHandler({ action: "simpl", value: "" })}
+      >
         <AddIcon sx={{ mr: 1 }} />
         Ход
       </Fab>

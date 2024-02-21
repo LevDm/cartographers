@@ -23,7 +23,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 interface actionBarHandlerType {
   action: AllActionTypes;
-  value?: string;
+  value: string;
 }
 
 type ActionBarPropsType = {
