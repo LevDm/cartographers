@@ -9,32 +9,22 @@ import {
   SeasonScoresType,
   CoinTypes,
   AllFrameTypes,
+  GameConfig,
 } from "@/data/types";
 
 import { CARD_SKILL, MAPS } from "@/data/cards";
 import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
 import { mapFramesCompare, countScores } from "@/game-utils";
 
-import {
-  getDefaultScores,
-  getDefaultCoinsWallet,
-  getMap,
-  getDefaultHistory,
-} from "./default-store-values";
+import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
 
-interface stepHandlerType {
+export interface stepHandlerType {
   stepMode: AllActionTypes;
   stepValue: string;
   newMapFrames: MapFramesType[];
   ruin: boolean;
   coins: number;
 }
-
-type GameConfig = {
-  MapId: string;
-  countersIds: string[];
-  skillsIds: string[];
-};
 
 type StorageData = {
   lastSave: string | Date;

@@ -47,3 +47,9 @@ export type SelectCardType = {
   imgSrc: string | StaticImageData;
   disabled?: boolean;
 };
+
+export type GameConfig = {
+  MapId: string;
+  countersIds: string[];
+  skillsIds: string[];
+};

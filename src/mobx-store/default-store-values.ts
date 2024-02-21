@@ -1,7 +1,6 @@
-import { AllActionTypes, CoinTypes, AllFrameTypes } from "@/data/types";
+import { CoinTypes, AllFrameTypes } from "@/data/types";
 
 import { MAPS } from "@/data/cards";
-import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
 
 export const getDefaultScores = () => [...Array(4)].map(() => ({ p1: 0, p2: 0, c: 0, m: 0 }));
 
@@ -28,10 +27,3 @@ export const getMap = (settingMapId: string) => {
     return { id: frameID, ...frame };
   });
 };
-export const getDefaultHistory = () => [
-  {
-    id: "history-row-0",
-    stepMode: "season" as AllActionTypes,
-    time: getCurrentDateTime(),
-  },
-];
