@@ -1,10 +1,17 @@
 /** @type {import('next').NextConfig} */
 
+const isGithubActions = process.env.GITHUB_ACTIONS || false;
+
+const GHConfig = {
+  output: "export",
+};
+
 const basePath = "/cartographers";
 
 const nextConfig = {
   basePath: basePath,
-  output: "export",
+
+  ...(isGithubActions && GHConfig),
 
   webpack(config) {
     config.module.rules.push({
