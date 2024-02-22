@@ -8,7 +8,7 @@ type FrameProps = MapFramesType & {
 };
 
 import { BASIC_FRAMES, PARAMS, RUIN_PARAM } from "@/data/elements";
-import { SvgIcon } from "@mui/material";
+import { Button, SvgIcon } from "@mui/material";
 
 export const Frame = React.memo((props: FrameProps) => {
   const { id, frameType, frameSubType, coinType, ruinType, isEdit, handler, usageIn } = props;
@@ -26,17 +26,20 @@ export const Frame = React.memo((props: FrameProps) => {
   };
 
   return (
-    <div
-      style={{
+    <Button
+      sx={{
         aspectRatio: "1/1",
         display: "flex",
         //background: `linear-gradient(to bottom right, ${bgc} 50%, ${subBgc} 50%`,
+        minWidth: "auto",
         backgroundColor: bgc,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 2,
         opacity: useInEdit ? (isEdit ? 1 : 0.4) : 1,
         position: "relative",
+        padding: 0,
+        margin: 0,
       }}
       onClick={useInEdit ? onClickHandler : undefined}
     >
@@ -84,6 +87,6 @@ export const Frame = React.memo((props: FrameProps) => {
           }}
         />
       )}
-    </div>
+    </Button>
   );
 });
