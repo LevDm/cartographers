@@ -44,7 +44,7 @@ export const InputBoard = observer((props: InputBoardPropsType) => {
             id: el.id,
             isEdit: el.isEdit,
             frameType: frameType ?? el.frameType,
-            frameSubType: frameSubType ?? el.frameSubType,
+            frameSubType: frameSubType,
             coinType: el.coinType,
             ruinType,
           };

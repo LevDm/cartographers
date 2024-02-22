@@ -41,6 +41,7 @@ export const Frame = React.memo((props: FrameProps) => {
         padding: 0,
         margin: 0,
       }}
+      disabled={disabled}
       onClick={useInEdit ? onClickHandler : undefined}
     >
       <SvgIcon
