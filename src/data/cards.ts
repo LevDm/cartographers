@@ -75,7 +75,7 @@ import vc2 from "../../public/cards/counters/violet/vc02.jpg";
 import vc3 from "../../public/cards/counters/violet/vc03.jpg";
 import vc4 from "../../public/cards/counters/violet/vc04.jpg";
 
-type CounterTypes = "green" | "blue" | "red" | "violet";
+export type CounterTypes = "green" | "blue" | "red" | "violet";
 type CardCounter = {
   id: string;
   title: string;

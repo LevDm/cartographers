@@ -63,6 +63,7 @@ import coinLost from "../../public/element-icons/coin-lost.svg";
 
 import ruinNone from "../../public/element-icons/ruin-none.svg";
 import ruinAdded from "../../public/element-icons/ruin-added.svg";
+import { CounterTypes } from "./cards";
 
 type paramsType = {
   title: string;
@@ -148,6 +149,25 @@ export const SEASONS: seasonsType[] = [
     score: [{ title: "A" }, { title: "Г" }, ...STATIC_SCORES],
   },
 ];
+
+export const seasonCounters: Record<CounterTypes, { title: string; used: number[] }> = {
+  green: {
+    title: "A",
+    used: [0, 3],
+  },
+  blue: {
+    title: "Б",
+    used: [0, 1],
+  },
+  red: {
+    title: "В",
+    used: [1, 2],
+  },
+  violet: {
+    title: "Г",
+    used: [2, 3],
+  },
+};
 
 export const ACTIONS_TITLES: Record<AllActionTypes, string> = {
   simpl: "Ход",

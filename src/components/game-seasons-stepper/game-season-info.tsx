@@ -6,17 +6,13 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogProps,
   DialogTitle,
-  ListItem,
   Paper,
   Stack,
   Typography,
 } from "@mui/material";
-import { CARD_COUNTER } from "@/data/cards";
 
-import { COUNTERS } from "@/data/selectedCards";
+import { CARD_COUNTER } from "@/data/cards";
 
 import Image from "next/image";
 import { observer } from "mobx-react-lite";
@@ -44,32 +40,26 @@ export function GameSeasonInfo(props: { text: string }) {
   );
 }
 
-/*
-COUNTERS.data.map((counter, index)=>{
-  const counterId = configCounters[index]
-  const card = counter.cards.find((card) => card.id == counterId)
-
-  return {
-    title: counter.title,
-    ...card,
-    disabled
-  }
-})  
- */
+import { CounterTypes } from "@/data/cards";
+import { seasonCounters } from "@/data/elements";
 
 const CardsViewModal = observer(() => {
-  const { gameConfig } = useStore();
+  const { season, gameConfig } = useStore();
   const configCounters = gameConfig.get()?.countersIds ?? [];
 
   const cards = useMemo(() => {
-    const allCards = [
-      ...CARD_COUNTER.green,
-      ...CARD_COUNTER.blue,
-      ...CARD_COUNTER.red,
-      ...CARD_COUNTER.violet,
-    ];
-    return configCounters.map((cardId) => allCards.find((card) => card.id == cardId)) ?? [];
-  }, [configCounters]);
+    const counters = (Object.keys(seasonCounters) as CounterTypes[]).map((key) => {
+      const card = CARD_COUNTER[key].find((card) => configCounters.includes(card.id));
+      const counterData = seasonCounters[key];
+      const inSeasonUsed = counterData.used.includes(season.get());
+      return {
+        counterTitle: counterData.title,
+        ...card,
+        disabled: !inSeasonUsed,
+      };
+    });
+    return counters;
+  }, [configCounters, season]);
 
   const [open, setOpen] = useState(false);
 
@@ -102,8 +92,10 @@ const CardsViewModal = observer(() => {
                 disableRipple
                 disableFocusRipple
                 disableElevation
+                disabled={el.disabled}
               >
                 <Stack direction={"column"}>
+                  <Typography>{el.counterTitle}</Typography>
                   <Image src={el?.imgSrc ?? ""} alt={""} width={200} style={{ borderRadius: 4 }} />
                 </Stack>
               </Button>
