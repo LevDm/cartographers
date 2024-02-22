@@ -1,8 +1,8 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 
-import { Board, GameBoardPropsType } from "./board";
-import { AllActionTypes, MapFramesType } from "@/data/types";
+import { Board } from "./board";
+import { GameBoardPropsType } from "./types";
 
 export function GameBoard(props: GameBoardPropsType) {
   return (

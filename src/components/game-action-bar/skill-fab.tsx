@@ -15,43 +15,21 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
-import { AllActionTypes, CoinWalletType, GameStateType } from "@/data/types";
+
 import { CARD_SKILL } from "@/data/cards";
 import Image from "next/image";
 
 import AddIcon from "@mui/icons-material/Add";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
+import { ActionBarPropsType } from "./types";
 
-interface actionBarHandlerType {
-  action: AllActionTypes;
-  value: string;
-}
+export const SkillFab = observer((props: ActionBarPropsType) => {
+  const { actionBarHandler } = props;
 
-type ActionBarPropsType = {
-  coinsWallet: CoinWalletType[];
-  gameState: GameStateType;
-  actionBarHandler: (e: actionBarHandlerType) => unknown;
-};
-type SkillFabPropsType = ActionBarPropsType & {
-  skillCardIds?: string[];
-};
+  const { coinsWallet, freeSkills, gameConfig } = useStore();
 
-export function SkillFab(props: SkillFabPropsType) {
-  const {
-    coinsWallet,
-    gameState,
-    actionBarHandler,
-    skillCardIds = [
-      "skill-1",
-      "skill-2",
-      "skill-3",
-      "skill-4",
-      "skill-5",
-      "skill-6",
-      "skill-7",
-      "skill-8",
-    ],
-  } = props;
-  const { freeSkills } = gameState;
+  const skillCardIds = gameConfig.get()?.skillsIds ?? [];
 
   const coinsCount = coinsWallet.reduce((acc, el) => acc + (el.coinType == "added" ? 1 : 0), 0);
 
@@ -81,7 +59,7 @@ export function SkillFab(props: SkillFabPropsType) {
       <Fab
         variant="extended"
         size="medium"
-        disabled={freeSkills === 0}
+        disabled={freeSkills.get() == 0}
         onClick={() => handleClickOpen()}
       >
         <AddIcon sx={{ mr: 1 }} />
@@ -136,4 +114,4 @@ export function SkillFab(props: SkillFabPropsType) {
       </Dialog>
     </>
   );
-}
+});

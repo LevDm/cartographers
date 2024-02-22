@@ -9,31 +9,25 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import { AllActionTypes, GameStateType } from "@/data/types";
+
 import { SEASONS } from "@/data/elements";
 
 import NavigationIcon from "@mui/icons-material/Navigation";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
+import { ActionBarPropsType } from "./types";
 
-interface actionBarHandlerType {
-  action: AllActionTypes;
-  value: string;
-}
+export const SeasonFab = observer((props: ActionBarPropsType) => {
+  const { actionBarHandler } = props;
 
-interface SeasonFabPropsType {
-  gameState: GameStateType;
-  actionBarHandler: (e: actionBarHandlerType) => unknown;
-}
-export function SeasonFab(props: SeasonFabPropsType) {
-  const { gameState, actionBarHandler } = props;
+  const { season } = useStore();
 
-  const { season } = gameState;
-
-  const title = season !== 3 ? SEASONS[season + 1].title : "Закончить";
+  const title = season.get() !== 3 ? SEASONS[season.get() + 1].title : "Закончить";
 
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
-    if (season == 3) setOpen(true);
+    if (season.get() == 3) setOpen(true);
     else actionBarHandler({ action: "season", value: "next" });
   };
 
@@ -73,4 +67,4 @@ export function SeasonFab(props: SeasonFabPropsType) {
       </Dialog>
     </>
   );
-}
+});

@@ -1,23 +1,19 @@
 import React from "react";
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
-import { SeasonScoresType } from "@/data/types";
-
-type SeasonScorePropsType = {
-  season: number;
-  score: SeasonScoresType;
-};
-
-import { countScores } from "@/game-utils/score-counter";
 
 import { SEASONS } from "@/data/elements";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
 
-export function GameSeasonScore(props: SeasonScorePropsType) {
-  const { season, score } = props;
-  //const { p1, p2, c, m } = score;
+export const GameSeasonScore = observer(() => {
+  const { season, scores, scoresResults } = useStore();
+  const score = scores[season.get()];
+  const result = scoresResults.get()[season.get()];
+  const data = SEASONS[season.get()];
 
   return (
     <Box sx={{ paddingTop: 1 }}>
-      <Typography>Счёт сезона {SEASONS[season].title}</Typography>
+      <Typography>Счёт сезона {data.title}</Typography>
       <Paper sx={{ padding: 1, width: "fit-content" }}>
         <Stack
           direction={"row"}
@@ -25,7 +21,7 @@ export function GameSeasonScore(props: SeasonScorePropsType) {
           spacing={1}
           divider={<Divider orientation="vertical" flexItem />}
         >
-          {SEASONS[season].score.map((el, index) => (
+          {data.score.map((el, index) => (
             <Stack
               key={`score-col-${index}`}
               direction={"column"}
@@ -37,9 +33,9 @@ export function GameSeasonScore(props: SeasonScorePropsType) {
               <Typography>{Object.values(score)[index]}</Typography>
             </Stack>
           ))}
-          <Typography variant="h5">{countScores(score)}</Typography>
+          <Typography variant="h5">{result}</Typography>
         </Stack>
       </Paper>
     </Box>
   );
-}
+});

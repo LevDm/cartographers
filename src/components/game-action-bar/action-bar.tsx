@@ -3,20 +3,9 @@ import React from "react";
 import { Box, Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-import { AllActionTypes, CoinWalletType, GameStateType } from "@/data/types";
 import { SkillFab } from "./skill-fab";
 import { SeasonFab } from "./season-fab";
-
-interface actionBarHandlerType {
-  action: AllActionTypes;
-  value: string;
-}
-
-type ActionBarPropsType = {
-  coinsWallet: CoinWalletType[];
-  gameState: GameStateType;
-  actionBarHandler: (e: actionBarHandlerType) => unknown;
-};
+import { ActionBarPropsType } from "./types";
 
 export function ActionBar(props: ActionBarPropsType) {
   const { actionBarHandler } = props;

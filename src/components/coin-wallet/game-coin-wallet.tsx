@@ -1,25 +1,24 @@
-import { Box, Divider, Grid, Paper, Stack, SvgIcon, Typography } from "@mui/material";
+import { Box, Grid, Paper, SvgIcon, Typography } from "@mui/material";
 import React, { ElementType } from "react";
 
-import { CoinWalletType, CoinKinds } from "@/data/types";
-
-type CoinWalletPropsType = {
-  coinsWallet: CoinWalletType[];
-};
+import { CoinKinds } from "@/data/types";
 
 import { COIN_PARAM } from "@/data/elements";
+
+import { useStore } from "@/mobx-store/use-store-provider";
+import { observer } from "mobx-react-lite";
+
 const COINS = COIN_PARAM.kind as CoinKinds;
 
-export function CoinWallet(props: CoinWalletPropsType) {
-  const { coinsWallet } = props;
+export const CoinWallet = observer(() => {
+  const { coinsWallet } = useStore();
+
   return (
     <Box sx={{ paddingTop: 1, marginTop: 2 }}>
       <Typography paddingRight={1}>Кошелек</Typography>
 
       <Paper sx={{}}>
         <Grid
-          //spacing={2}
-          //rowSpacing={2}
           sx={{
             width: "100%",
             padding: [1, 3],
@@ -27,7 +26,6 @@ export function CoinWallet(props: CoinWalletPropsType) {
             display: "flex",
             justifyContent: "space-between",
           }}
-          //direction={"row"}
         >
           {coinsWallet.map((el) => (
             <SvgIcon
@@ -45,4 +43,4 @@ export function CoinWallet(props: CoinWalletPropsType) {
       </Paper>
     </Box>
   );
-}
+});

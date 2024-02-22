@@ -14,22 +14,21 @@ import {
 } from "@mui/material";
 import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
-import { AllFrameTypes, HistoryRowType } from "@/data/types";
+import { AllFrameTypes } from "@/data/types";
 import { ACTIONS_TITLES, BASIC_FRAMES } from "@/data/elements";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
 
-type HistoryPropsType = {
-  gameHistory: HistoryRowType[];
-};
+export const GameActionHistory = observer(() => {
+  const { history: gameHistory } = useStore();
 
-export function GameActionHistory(props: HistoryPropsType) {
-  const { gameHistory } = props;
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - gameHistory.length) : 0;
 
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: unknown, newPage: number) => {
     setPage(newPage);
   };
 
@@ -126,7 +125,7 @@ export function GameActionHistory(props: HistoryPropsType) {
       </TableContainer>
     </Box>
   );
-}
+});
 
 function FrameInHistory({ count, kind }: { count: number; kind: AllFrameTypes }) {
   return (
@@ -145,6 +144,7 @@ function FrameInHistory({ count, kind }: { count: number; kind: AllFrameTypes })
           height: 18,
           width: 18,
           backgroundColor: BASIC_FRAMES[kind].bgc,
+          borderRadius: 4,
           border: "1px solid black",
         }}
       />

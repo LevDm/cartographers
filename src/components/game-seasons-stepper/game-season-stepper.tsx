@@ -3,27 +3,23 @@ import { Badge, Box, Stack, Step, StepLabel, Stepper } from "@mui/material";
 
 import { GameSeasonScore } from "./game-season-score";
 import { GameSeasonInfo } from "./game-season-info";
-import { GameStateType } from "@/data/types";
 
 import { SEASONS } from "@/data/elements";
 
-type GameSeasonsStepperPropsType = {
-  gameState: GameStateType;
-};
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
 
-import { countScores } from "@/game-utils/score-counter";
-
-export function GameSeasonsStepper(props: GameSeasonsStepperPropsType) {
-  const { season, scores } = props.gameState;
+export const GameSeasonsStepper = observer(() => {
+  const { season, scoresResults } = useStore();
 
   return (
     <Box>
-      <Stepper activeStep={season} alternativeLabel>
+      <Stepper activeStep={season.get()} alternativeLabel>
         {SEASONS.map((step, index) => (
           <Step key={`${step.title}-${index}`}>
             <StepLabel>
               <Badge
-                badgeContent={season > index ? countScores(scores[index]) : 0}
+                badgeContent={season.get() > index ? scoresResults.get()[index] : 0}
                 color="secondary"
                 anchorOrigin={{
                   vertical: "top",
@@ -41,10 +37,10 @@ export function GameSeasonsStepper(props: GameSeasonsStepperPropsType) {
       </Stepper>
 
       <Stack direction={"row"} spacing={2} sx={{ marginTop: 2 }} alignItems={"stretch"}>
-        <GameSeasonInfo text={SEASONS[season].description} />
+        <GameSeasonInfo text={SEASONS[season.get()].description} />
 
-        <GameSeasonScore season={season} score={scores[season]} />
+        <GameSeasonScore />
       </Stack>
     </Box>
   );
-}
+});

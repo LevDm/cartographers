@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import {
   Box,
@@ -15,7 +15,12 @@ import {
   Typography,
 } from "@mui/material";
 import { CARD_COUNTER } from "@/data/cards";
+
+import { COUNTERS } from "@/data/selectedCards";
+
 import Image from "next/image";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
 
 export function GameSeasonInfo(props: { text: string }) {
   const { text } = props;
@@ -39,12 +44,33 @@ export function GameSeasonInfo(props: { text: string }) {
   );
 }
 
-type CardsViewModalPropsType = {
-  cards?: string[];
-};
+/*
+COUNTERS.data.map((counter, index)=>{
+  const counterId = configCounters[index]
+  const card = counter.cards.find((card) => card.id == counterId)
 
-function CardsViewModal(props: CardsViewModalPropsType) {
-  const { cards = ["1", "2", "3", "4"] } = props;
+  return {
+    title: counter.title,
+    ...card,
+    disabled
+  }
+})  
+ */
+
+const CardsViewModal = observer(() => {
+  const { gameConfig } = useStore();
+  const configCounters = gameConfig.get()?.countersIds ?? [];
+
+  const cards = useMemo(() => {
+    const allCards = [
+      ...CARD_COUNTER.green,
+      ...CARD_COUNTER.blue,
+      ...CARD_COUNTER.red,
+      ...CARD_COUNTER.violet,
+    ];
+    return configCounters.map((cardId) => allCards.find((card) => card.id == cardId)) ?? [];
+  }, [configCounters]);
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -69,22 +95,16 @@ function CardsViewModal(props: CardsViewModalPropsType) {
         <DialogTitle id="orders-dialog-title">Приказы игры</DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2}>
-            {[
-              ...CARD_COUNTER.green,
-              ...CARD_COUNTER.blue,
-              ...CARD_COUNTER.red,
-              ...CARD_COUNTER.violet,
-            ].map((el) => (
+            {cards.map((el) => (
               <Button
-                key={el.id}
+                key={el?.id}
                 variant="outlined"
                 disableRipple
                 disableFocusRipple
                 disableElevation
               >
                 <Stack direction={"column"}>
-                  <Typography variant="h6">{el.id}</Typography>
-                  <Image src={el.imgSrc} alt={""} width={200} style={{ borderRadius: 4 }} />
+                  <Image src={el?.imgSrc ?? ""} alt={""} width={200} style={{ borderRadius: 4 }} />
                 </Stack>
               </Button>
             ))}
@@ -96,4 +116,4 @@ function CardsViewModal(props: CardsViewModalPropsType) {
       </Dialog>
     </>
   );
-}
+});

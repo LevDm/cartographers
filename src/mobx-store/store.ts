@@ -83,14 +83,17 @@ class GameStateStore {
   switchToNewSeason = action(() => {
     this.season.set(Math.min(this.season.get() + 1, 3));
     this.freeSkills.set(Math.max(this.freeSkills.get(), 1));
+    this.scores[this.season.get()].c = this.coinsWallet.filter(
+      (el) => el.coinType == "added"
+    ).length;
     this.addToHistory({ stepMode: "season" });
   });
 
   walletHandler = action((coins: number) => {
     const newWallet = [...this.coinsWallet];
 
-    const targetCoinType = coins > 0 ? "added" : "none";
-    const settingCoinType = coins > 0 ? "lost" : "added";
+    const targetCoinType = coins > 0 ? "none" : "added";
+    const settingCoinType = coins > 0 ? "added" : "lost";
 
     for (let i = 0; i < Math.abs(coins); i++) {
       const index = newWallet.findIndex((el) => el.coinType == targetCoinType);
@@ -138,10 +141,29 @@ class GameStateStore {
   loadStore = action(() => {
     try {
       const load = localStorage.getItem(this.storeName);
+      //console.log(load);
       if (load != null) {
-        const loadedData: StorageData = JSON.parse(load);
+        const {
+          lastSave,
 
-        this.lastSave.set(loadedData.lastSave);
+          gameConfig,
+          season,
+          freeSkills,
+          scores,
+          coinsWallet,
+          mapFrames,
+          history,
+        }: StorageData = JSON.parse(load);
+
+        this.lastSave.set(lastSave);
+
+        this.gameConfig.set(gameConfig);
+        this.season.set(season);
+        this.freeSkills.set(freeSkills);
+        this.scores.replace(scores);
+        this.coinsWallet.replace(coinsWallet);
+        this.mapFrames.replace(mapFrames);
+        this.history.replace(history);
       }
 
       this.loadSuccses.set(true);

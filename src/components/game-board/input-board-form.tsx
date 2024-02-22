@@ -22,8 +22,7 @@ import {
 
 import { AllFrameTypes, FrameParamsType } from "@/data/types";
 import { BASIC_FRAMES, BasicFramesType, PARAMS, ParamsType } from "@/data/elements";
-
-export type LocationType = { type: AllFrameTypes[]; params: FrameParamsType[] };
+import { LocationType } from "./types";
 
 type InputFieldProps = {
   location: LocationType;
@@ -164,6 +163,7 @@ function FieldTypeSelect(props: FieldTypeSelectProps) {
                 style={{
                   height: "20px",
                   width: "20px",
+                  borderRadius: 4,
                   backgroundColor: itemsSrcData[el].bgc,
                   border: "1px solid black",
                   display: "flex",
