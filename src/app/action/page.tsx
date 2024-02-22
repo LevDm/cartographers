@@ -24,7 +24,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { MAPS_IMG, START_GAME_CARDS } from "@/data/selectedCards";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { Alert } from "@/components/notification/custom-alert";
-import { SelectCardType } from "@/data/types";
+import { GameConfig, SelectCardType } from "@/data/types";
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store/use-store-provider";
 
 type FormSelecterNames =
   | "game-frame"
@@ -38,15 +40,24 @@ type FormSelecterNames =
 
 type FormValues = Record<FormSelecterNames, string>;
 
-const skillSelecterIds = [
+const skillSelecterIds: FormSelecterNames[] = [
   "game-start-skill-1",
   "game-start-skill-2",
   "game-start-skill-3",
-] as FormSelecterNames[];
+];
 
-export default function ActionPage() {
+const counterSelecterIds: FormSelecterNames[] = [
+  "game-start-counter-a",
+  "game-start-counter-b",
+  "game-start-counter-c",
+  "game-start-counter-d",
+];
+
+const ActionPage = observer(() => {
   const router = useRouter();
   const basepath = usePathname();
+
+  const { startGame } = useStore();
 
   const link = (path: string) => {
     router.push(`${basepath}${path}`);
@@ -71,13 +82,20 @@ export default function ActionPage() {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (config: FormValues) => {
-    console.log("submit", config);
     enqueueSnackbar({ variant: "success", message: `Запуск игры...` });
+
+    const gameConfig: GameConfig = {
+      MapId: config["game-frame"],
+      countersIds: counterSelecterIds.map((id) => config[id]),
+      skillsIds: skillSelecterIds.map((id) => config[id]),
+    };
+
+    startGame(gameConfig);
+
     link("/process");
   };
 
   const onError = (errors: any) => {
-    console.log("onError", errors);
     const firstRequired = Object.keys(errors)[0];
     const isCounter = firstRequired.includes("counter");
     const isSkill = firstRequired.includes("skill");
@@ -198,4 +216,5 @@ export default function ActionPage() {
       </Container>
     </Box>
   );
-}
+});
+export default ActionPage;
