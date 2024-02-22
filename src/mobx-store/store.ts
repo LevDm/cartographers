@@ -76,6 +76,8 @@ class GameStateStore {
       ...row,
     };
     this.history.unshift(newRow);
+
+    this.saveStore();
   });
 
   switchToNewSeason = action(() => {
