@@ -11,6 +11,10 @@ const basePath = "/cartographers";
 const nextConfig = {
   basePath: basePath,
 
+  images: {
+    unoptimized: true,
+  },
+
   ...(isGithubActions && GHConfig),
 
   webpack(config) {
