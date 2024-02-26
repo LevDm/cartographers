@@ -71,7 +71,10 @@ export const CardsViewModal = observer(() => {
                 disabled={el.disabled}
               >
                 <Stack direction={"column"}>
-                  <Typography>{el.counterTitle}</Typography>
+                  <Typography sx={{ fontWeight: "700" }}>
+                    {el.counterTitle}. {el.title}
+                  </Typography>
+                  <Typography sx={{ fontSize: 14 }}>Лимит очков:{el.limitScores}</Typography>
                   <Image src={el?.imgSrc ?? ""} alt={""} width={200} style={{ borderRadius: 4 }} />
                 </Stack>
               </Button>
