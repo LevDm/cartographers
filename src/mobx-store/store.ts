@@ -18,7 +18,7 @@ import { mapFramesCompare, countScores } from "@/utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
 import { mapCountig } from "@/utils";
-import { isNull } from "lodash";
+import { isNull, isUndefined } from "lodash";
 
 export interface stepHandlerType {
   stepMode: AllActionTypes;
@@ -39,6 +39,8 @@ type StorageData = {
   mapFrames: MapFramesType[];
   history: HistoryRowType[];
 };
+
+type ScoresType = { p1: number; p2: number; m: number };
 
 class GameStateStore {
   readonly storeName: string = "GameStateStore";
@@ -107,15 +109,36 @@ class GameStateStore {
     this.scores[this.season.get()].c = newWallet.filter((el) => el.coinType == "added").length;
   });
 
+  updateScores = action((scores: ScoresType, season: number) => {
+    this.scores[season] = { ...this.scores[season], ...scores };
+  });
+
   setMapFrames = action((mapValue: MapFramesType[]) => {
+    if (isNull(this.gameConfig.get())) return;
+
+    const curSeason = this.season.get();
+
+    const { p1, p2, m, c } = mapCountig(mapValue, curSeason, this.gameConfig.get() as GameConfig);
+    const newMap = [...mapValue];
+
+    let coins = 0;
+    c.map((id) => {
+      const index = newMap.findIndex((frame) => frame.id == id && !isUndefined(frame.coinType));
+      if (index >= 0) {
+        const newItem = { ...newMap[index] };
+        delete newItem.coinType;
+        newMap[index] = newItem;
+        coins += 1;
+      }
+    });
+
+    this.mapFrames.replace(newMap);
+
+    this.updateScores({ p1, p2, m }, curSeason);
+
     const framesCompare = mapFramesCompare(this.mapFrames, mapValue);
-    this.mapFrames.replace(mapValue);
 
-    if (!isNull(this.gameConfig.get())) {
-      mapCountig(mapValue, this.season.get(), this.gameConfig.get() as GameConfig);
-    }
-
-    return framesCompare;
+    return { compare: framesCompare, coins: coins };
   });
 
   usedSkillHandler = action((idSkill: string) => {
@@ -128,18 +151,24 @@ class GameStateStore {
   stepHandler = (e: stepHandlerType) => {
     const { stepMode, stepValue, newMapFrames, ruin, coins } = e;
 
+    const updateResult = this.setMapFrames(newMapFrames);
+
+    if (isUndefined(updateResult)) return;
+
+    const { compare, coins: mapCoins } = updateResult;
+
+    const newCoins = mapCoins + coins;
+
     const skillCost = stepMode == "skill" && stepValue != "" ? this.usedSkillHandler(stepValue) : 0;
 
-    if (coins > 0) this.walletHandler(coins);
-
-    const { oldFrames, newFrames } = this.setMapFrames(newMapFrames);
+    if (newCoins > 0) this.walletHandler(newCoins);
 
     const rowHistory = {
       stepMode: stepMode,
-      coins: coins - skillCost,
+      coins: newCoins - skillCost,
       ruin: ruin,
-      oldFrames: oldFrames,
-      newFrames: newFrames,
+      oldFrames: compare.oldFrames,
+      newFrames: compare.newFrames,
     };
 
     this.addToHistory(rowHistory);

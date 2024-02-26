@@ -8,10 +8,23 @@ import { isUndefined } from "lodash";
 
 export const countScores = (scores: SeasonScoresType) => {
   const { p1, p2, c, m } = scores;
-  return 1 + p1 + p2 + c - m;
+  return 0 + p1 + p2 + c - m;
 };
 
-export const mapCountig = (mapFrames: MapFramesType[], season: number, config: GameConfig) => {
+type CountingResultType = {
+  p1: number;
+  p2: number;
+  c: string[];
+  m: number;
+};
+
+type mapCountigType = (
+  mapFrames: MapFramesType[],
+  season: number,
+  config: GameConfig
+) => CountingResultType;
+
+export const mapCountig: mapCountigType = (mapFrames, season, config) => {
   const { countersIds } = config;
 
   const targetCounters = (Object.keys(seasonCounters) as CounterTypes[]).filter((ctype) => {
@@ -27,19 +40,17 @@ export const mapCountig = (mapFrames: MapFramesType[], season: number, config: G
 
   const [p1, p2] = countersData.map((cdata) => {
     if (isUndefined(cdata)) return -1;
-    return cdata.count(filltredMap, mapFrames);
+    return Math.min(cdata.count(filltredMap, mapFrames), cdata.limitScores);
   });
 
   const m = evil_counter(filltredMap, mapFrames);
   const c = coin_counter(filltredMap, mapFrames);
 
-  console.log(p1, p2, m, c);
-
   const res = {
-    p1: 0,
-    p2: 0,
-    c: 0,
-    m: 0,
+    p1: p1,
+    p2: p2,
+    c: c,
+    m: m,
   };
   return res;
 };
