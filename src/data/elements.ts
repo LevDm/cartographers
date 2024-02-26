@@ -1,4 +1,11 @@
-import { AllFrameTypes, CoinKinds, RuinKinds, AllActionTypes, FrameParamsType } from "./types";
+import {
+  AllFrameTypes,
+  CoinKinds,
+  RuinKinds,
+  AllActionTypes,
+  FrameParamsType,
+  ScoreValueType,
+} from "./types";
 
 import hill from "../../public/element-icons/hill.svg";
 import home from "../../public/element-icons/home.svg";
@@ -118,9 +125,13 @@ export const PARAMS: ParamsType = {
 
 type seasonScoreType = {
   title: string;
+  value: ScoreValueType;
   imgScr?: string;
 };
-const STATIC_SCORES: seasonScoreType[] = [{ title: "К" }, { title: "М" }];
+const STATIC_SCORES: seasonScoreType[] = [
+  { title: "К", value: "c" },
+  { title: "М", value: "m" },
+];
 
 type seasonsType = {
   title: string;
@@ -131,22 +142,22 @@ export const SEASONS: seasonsType[] = [
   {
     title: "Весна",
     description: "Активны А и Б",
-    score: [{ title: "A" }, { title: "Б" }, ...STATIC_SCORES],
+    score: [{ title: "A", value: "p1" }, { title: "Б", value: "p2" }, ...STATIC_SCORES],
   },
   {
     title: "Лето",
     description: "Активны Б и В",
-    score: [{ title: "Б" }, { title: "В" }, ...STATIC_SCORES],
+    score: [{ title: "Б", value: "p1" }, { title: "В", value: "p2" }, ...STATIC_SCORES],
   },
   {
     title: "Осень",
     description: "Активны В и Г",
-    score: [{ title: "В" }, { title: "Г" }, ...STATIC_SCORES],
+    score: [{ title: "В", value: "p1" }, { title: "Г", value: "p2" }, ...STATIC_SCORES],
   },
   {
     title: "Зима",
     description: "Активны А и Г",
-    score: [{ title: "A" }, { title: "Г" }, ...STATIC_SCORES],
+    score: [{ title: "A", value: "p1" }, { title: "Г", value: "p2" }, ...STATIC_SCORES],
   },
 ];
 

@@ -85,11 +85,21 @@ class GameStateStore {
   });
 
   switchToNewSeason = action(() => {
-    this.season.set(Math.min(this.season.get() + 1, 3));
+    const oldSeason = this.season.get();
+    const newSeason = Math.min(oldSeason + 1, 3);
+    this.season.set(newSeason);
     this.freeSkills.set(Math.max(this.freeSkills.get(), 1));
-    this.scores[this.season.get()].c = this.coinsWallet.filter(
-      (el) => el.coinType == "added"
-    ).length;
+
+    const { p1, p2, m } = mapCountig(
+      this.mapFrames,
+      newSeason,
+      this.gameConfig.get() as GameConfig
+    );
+
+    const c = this.coinsWallet.filter((el) => el.coinType == "added").length;
+
+    this.scores[newSeason] = { p1: p1, p2: p2, m: m, c: c };
+
     this.addToHistory({ stepMode: "season" });
   });
 

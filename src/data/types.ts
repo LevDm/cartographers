@@ -4,7 +4,8 @@ export type AllFrameTypes = "none" | "hill" | "home" | "tree" | "evil" | "brim" 
 export type FrameParamsType = "coin" | "ruin";
 export type AllActionTypes = "skill" | "simpl" | "season";
 
-export type SeasonScoresType = { p1: number; p2: number; c: number; m: number };
+export type ScoreValueType = "p1" | "p2" | "c" | "m";
+export type SeasonScoresType = Record<ScoreValueType, number>;
 export type GameStateType = {
   season: number;
   scores: SeasonScoresType[];

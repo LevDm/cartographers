@@ -7,9 +7,12 @@ import { useStore } from "@/mobx-store/use-store-provider";
 
 export const GameSeasonScore = observer(() => {
   const { season, scores, scoresResults } = useStore();
-  const score = scores[season.get()];
-  const result = scoresResults.get()[season.get()];
-  const data = SEASONS[season.get()];
+
+  const curSeason = season.get();
+
+  const score = scores[curSeason];
+  const result = scoresResults.get()[curSeason];
+  const data = SEASONS[curSeason];
 
   return (
     <Box sx={{ paddingTop: 1 }}>
@@ -30,7 +33,7 @@ export const GameSeasonScore = observer(() => {
               divider={<Divider orientation="horizontal" flexItem />}
             >
               <Typography>{el.title}</Typography>
-              <Typography>{Object.values(score)[index]}</Typography>
+              <Typography>{score[el.value]}</Typography>
             </Stack>
           ))}
           <Typography variant="h5">{result}</Typography>

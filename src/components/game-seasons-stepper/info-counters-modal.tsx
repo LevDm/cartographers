@@ -22,12 +22,13 @@ import { seasonCounters } from "@/data/elements";
 export const CardsViewModal = observer(() => {
   const { season, gameConfig } = useStore();
   const configCounters = gameConfig.get()?.countersIds ?? [];
+  const curSeason = season.get();
 
   const cards = useMemo(() => {
     const counters = (Object.keys(seasonCounters) as CounterTypes[]).map((key) => {
       const card = CARD_COUNTER[key].find((card) => configCounters.includes(card.id));
       const counterData = seasonCounters[key];
-      const inSeasonUsed = counterData.used.includes(season.get());
+      const inSeasonUsed = counterData.used.includes(curSeason);
       return {
         counterTitle: counterData.title,
         ...card,
@@ -35,7 +36,7 @@ export const CardsViewModal = observer(() => {
       };
     });
     return counters;
-  }, [configCounters, season]);
+  }, [configCounters, curSeason]);
 
   const [open, setOpen] = useState(false);
 
