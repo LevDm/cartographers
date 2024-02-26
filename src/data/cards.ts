@@ -75,11 +75,31 @@ import vc2 from "../../public/cards/counters/violet/vc02.jpg";
 import vc3 from "../../public/cards/counters/violet/vc03.jpg";
 import vc4 from "../../public/cards/counters/violet/vc04.jpg";
 
+import {
+  Counter,
+  green_counter_1,
+  green_counter_2,
+  green_counter_3,
+  green_counter_4,
+  blue_counter_1,
+  blue_counter_2,
+  blue_counter_3,
+  blue_counter_4,
+  red_counter_1,
+  red_counter_2,
+  red_counter_3,
+  red_counter_4,
+  violet_counter_1,
+  violet_counter_2,
+  violet_counter_3,
+  violet_counter_4,
+} from "@/utils/score-counter";
+
 export type CounterTypes = "green" | "blue" | "red" | "violet";
 type CardCounter = {
   id: string;
   title: string;
-  counter?: () => unknown;
+  count: Counter;
   imgSrc: StaticImageData;
 };
 export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
@@ -87,21 +107,25 @@ export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
     {
       id: "g-counter-1",
       title: "Сторожевой лес",
+      count: green_counter_1,
       imgSrc: gc1,
     },
     {
       id: "g-counter-2",
       title: "",
+      count: green_counter_2,
       imgSrc: gc2,
     },
     {
       id: "g-counter-3",
       title: "",
+      count: green_counter_3,
       imgSrc: gc3,
     },
     {
       id: "g-counter-4",
       title: "",
+      count: green_counter_4,
       imgSrc: gc4,
     },
   ],
@@ -109,21 +133,25 @@ export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
     {
       id: "b-counter-1",
       title: "",
+      count: blue_counter_1,
       imgSrc: bc1,
     },
     {
       id: "b-counter-2",
       title: "",
+      count: blue_counter_2,
       imgSrc: bc2,
     },
     {
       id: "b-counter-3",
       title: "",
+      count: blue_counter_3,
       imgSrc: bc3,
     },
     {
       id: "b-counter-4",
       title: "",
+      count: blue_counter_4,
       imgSrc: bc4,
     },
   ],
@@ -131,21 +159,25 @@ export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
     {
       id: "r-counter-1",
       title: "",
+      count: red_counter_1,
       imgSrc: rc1,
     },
     {
       id: "r-counter-2",
       title: "",
+      count: red_counter_2,
       imgSrc: rc2,
     },
     {
       id: "r-counter-3",
       title: "",
+      count: red_counter_3,
       imgSrc: rc3,
     },
     {
       id: "r-counter-4",
       title: "",
+      count: red_counter_4,
       imgSrc: rc4,
     },
   ],
@@ -153,21 +185,25 @@ export const CARD_COUNTER: Record<CounterTypes, CardCounter[]> = {
     {
       id: "v-counter-1",
       title: "",
+      count: violet_counter_1,
       imgSrc: vc1,
     },
     {
       id: "v-counter-2",
       title: "",
+      count: violet_counter_2,
       imgSrc: vc2,
     },
     {
       id: "v-counter-3",
       title: "",
+      count: violet_counter_3,
       imgSrc: vc3,
     },
     {
       id: "v-counter-4",
       title: "",
+      count: violet_counter_4,
       imgSrc: vc4,
     },
   ],

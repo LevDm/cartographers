@@ -15,7 +15,8 @@ export const violet_counter_1: Counter = (_, sourceMap) => {
 
   const v1 = [...rowCoordinates(filtredMap), ...columnCoordinates(filtredMap)].reduce(
     (acc, line) => {
-      return acc + (line.length == 11 ? 6 : 0);
+      const isfullLength = line.length == 11;
+      return acc + (isfullLength ? 6 : 0);
     },
     0
   );

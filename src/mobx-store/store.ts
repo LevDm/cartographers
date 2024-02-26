@@ -17,7 +17,8 @@ import { getCurrentDateTime } from "@/utils/get-current-date-time";
 import { mapFramesCompare, countScores } from "@/utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
-import { mapCountig } from "@/utils/score-counter";
+import { mapCountig } from "@/utils";
+import { isNull } from "lodash";
 
 export interface stepHandlerType {
   stepMode: AllActionTypes;
@@ -110,7 +111,9 @@ class GameStateStore {
     const framesCompare = mapFramesCompare(this.mapFrames, mapValue);
     this.mapFrames.replace(mapValue);
 
-    mapCountig(mapValue);
+    if (!isNull(this.gameConfig.get())) {
+      mapCountig(mapValue, this.season.get(), this.gameConfig.get() as GameConfig);
+    }
 
     return framesCompare;
   });
