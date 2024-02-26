@@ -17,6 +17,16 @@ import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
 import { mapFramesCompare, countScores } from "@/game-utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
+import {
+  columnCoordinates,
+  diagonalCoordinates,
+  findClusters,
+  findLargestSquare,
+  getNeighbours,
+  getNeighboursArea,
+  mapCountig,
+  rowCoordinates,
+} from "@/game-utils/score-counter";
 
 export interface stepHandlerType {
   stepMode: AllActionTypes;
@@ -108,6 +118,9 @@ class GameStateStore {
   setMapFrames = action((mapValue: MapFramesType[]) => {
     const framesCompare = mapFramesCompare(this.mapFrames, mapValue);
     this.mapFrames.replace(mapValue);
+
+    mapCountig(mapValue);
+
     return framesCompare;
   });
 
