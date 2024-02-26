@@ -17,16 +17,7 @@ import { getCurrentDateTime } from "@/utils/get-current-date-time";
 import { mapFramesCompare, countScores } from "@/utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
-import {
-  columnCoordinates,
-  diagonalCoordinates,
-  findClusters,
-  findLargestSquare,
-  getNeighbours,
-  getNeighboursArea,
-  mapCountig,
-  rowCoordinates,
-} from "@/utils/score-counter";
+import { mapCountig } from "@/utils/score-counter";
 
 export interface stepHandlerType {
   stepMode: AllActionTypes;
