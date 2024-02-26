@@ -13,8 +13,8 @@ import {
 } from "@/data/types";
 
 import { CARD_SKILL, MAPS } from "@/data/cards";
-import { getCurrentDateTime } from "@/game-utils/get-current-date-time";
-import { mapFramesCompare, countScores } from "@/game-utils";
+import { getCurrentDateTime } from "@/utils/get-current-date-time";
+import { mapFramesCompare, countScores } from "@/utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
 import {
@@ -26,7 +26,7 @@ import {
   getNeighboursArea,
   mapCountig,
   rowCoordinates,
-} from "@/game-utils/score-counter";
+} from "@/utils/score-counter";
 
 export interface stepHandlerType {
   stepMode: AllActionTypes;

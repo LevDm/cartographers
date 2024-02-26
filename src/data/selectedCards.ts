@@ -1,4 +1,4 @@
-import { formatToSelect } from "@/game-utils";
+import { formatToSelect } from "@/utils";
 import { SelectCardType } from "./types";
 import { CARD_COUNTER, CARD_SKILL } from "./cards";
 
