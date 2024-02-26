@@ -61,9 +61,9 @@ export const CardsViewModal = observer(() => {
         <DialogTitle id="orders-dialog-title">Приказы игры</DialogTitle>
         <DialogContent dividers>
           <Stack spacing={2}>
-            {cards.map((el) => (
+            {cards.map((el, index) => (
               <Button
-                key={el?.id}
+                key={el?.id ?? `game-counter-${index}`}
                 variant="outlined"
                 disableRipple
                 disableFocusRipple

@@ -61,7 +61,7 @@ class GameStateStore {
   });
 
   constructor() {
-    this.loadStore();
+    //this.loadStore();
   }
 
   //

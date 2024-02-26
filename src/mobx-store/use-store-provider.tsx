@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import gameStateStore from "./store";
 
 export const StoreContext = React.createContext(gameStateStore);
@@ -10,6 +10,11 @@ export const StoreProvider = ({ children }: { children: ReactElement }) => {
 
 export const useStore = () => {
   const store = React.useContext(StoreContext);
+
+  useEffect(() => {
+    store.loadStore();
+  }, []);
+
   if (!store) {
     throw new Error("useStore must be used within a StoreProvider");
   }
