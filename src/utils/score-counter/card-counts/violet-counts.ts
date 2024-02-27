@@ -26,9 +26,13 @@ export const violet_counter_1: Counter = (_, sourceMap) => {
 
 //
 export const violet_counter_2: Counter = (_, sourceMap) => {
-  const filtredMap = sourceMap.filter((el) => el.frameType != "none").map((point) => point.id);
+  const filtredMap = sourceMap
+    .filter((el) => el.frameType != "none" && el.frameType != "void")
+    .map((point) => point.id);
 
-  const v2 = findLargestSquare(filtredMap).size * 3;
+  const square = findLargestSquare(filtredMap).size;
+
+  const v2 = (square > 1 ? square : 0) * 3;
 
   return v2;
 };
