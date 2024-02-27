@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -27,6 +29,8 @@ import { Alert } from "@/components/notification/custom-alert";
 import { GameConfig, SelectCardType } from "@/data/types";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/mobx-store/use-store-provider";
+import { CARD_COUNTER, CARD_SKILL } from "@/data/cards";
+import { random } from "lodash";
 
 type FormSelecterNames =
   | "game-frame"
@@ -68,6 +72,7 @@ const ActionPage = observer(() => {
     watch,
     control,
     formState: { errors },
+    setValue,
   } = useForm({
     defaultValues: {
       "game-frame": "map-a",
@@ -80,6 +85,41 @@ const ActionPage = observer(() => {
       "game-start-skill-3": "",
     },
   });
+
+  const getRandArray = (size: number, low: number, max: number) => {
+    const res: number[] = [];
+    if (low > max || max - (low == 0 ? low - 1 : low) < size) return res;
+
+    while (res.length < size) {
+      const num = random(low, max);
+      if (!res.includes(num)) res.push(num);
+    }
+    return res;
+  };
+
+  const randomFill = () => {
+    const rMap = ["map-a", "map-b"][random(0, 1)];
+
+    const aCounter = CARD_COUNTER.green.map((el) => el.id)[random(0, 3)];
+
+    const bCounter = CARD_COUNTER.blue.map((el) => el.id)[random(0, 3)];
+
+    const cCounter = CARD_COUNTER.red.map((el) => el.id)[random(0, 3)];
+
+    const dCounter = CARD_COUNTER.violet.map((el) => el.id)[random(0, 3)];
+
+    const skills = CARD_SKILL.map((el) => el.id);
+    const [rSkill_1, rSkill_2, rSkill_3] = getRandArray(3, 0, 7).map((index) => skills[index]);
+
+    setValue("game-frame", rMap);
+    setValue("game-start-counter-a", aCounter);
+    setValue("game-start-counter-b", bCounter);
+    setValue("game-start-counter-c", cCounter);
+    setValue("game-start-counter-d", dCounter);
+    setValue("game-start-skill-1", rSkill_1);
+    setValue("game-start-skill-2", rSkill_2);
+    setValue("game-start-skill-3", rSkill_3);
+  };
 
   const onSubmit: SubmitHandler<FormValues> = (config: FormValues) => {
     enqueueSnackbar({ variant: "success", message: `Запуск игры...` });
@@ -207,6 +247,10 @@ const ActionPage = observer(() => {
               "& > :not(style)": { m: 1 },
             }}
           >
+            <Fab color="secondary" variant="extended" onClick={randomFill}>
+              <CasinoOutlinedIcon />
+              <Typography ml={1}>Заполнить</Typography>
+            </Fab>
             <Fab color="primary" variant="extended" type="submit">
               <Typography>Начать</Typography>
               <ChevronRightIcon />
