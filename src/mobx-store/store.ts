@@ -162,7 +162,7 @@ class GameStateStore {
     const { stepMode, stepValue, newMapFrames, ruin, coins } = e;
 
     const updateResult = this.setMapFrames(newMapFrames);
-    console.log("stepHandler", updateResult);
+
     if (isUndefined(updateResult)) return;
 
     const { compare, coins: mapCoins } = updateResult;
