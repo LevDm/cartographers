@@ -32,9 +32,15 @@ export const SeasonScore = (props: SeasonScorePropsType) => {
     <Box sx={{ paddingTop: 1 }}>
       <Typography>Счёт сезона {data.title}</Typography>
       <Paper sx={{ padding: 1, width: "fit-content" }}>
+        <Stack direction={"row"} alignItems={"center"} alignSelf={"center"}>
+          <StarIcon htmlColor={"#D29947"} />
+          <Typography variant="h5">{result}</Typography>
+        </Stack>
+        <Divider orientation="horizontal" flexItem sx={{ marginBottom: 1, marginTop: 0.5 }} />
         <Stack
           direction={"row"}
           alignItems="flex-end"
+          //mt={1}
           spacing={1}
           divider={<Divider orientation="vertical" flexItem />}
         >
@@ -67,10 +73,6 @@ export const SeasonScore = (props: SeasonScorePropsType) => {
               <Typography sx={{ textAlign: "center" }}>{score[el.value]}</Typography>
             </Stack>
           ))}
-          <Stack direction={"row"} alignItems={"center"} alignSelf={"center"}>
-            <StarIcon htmlColor={"#D29947"} />
-            <Typography variant="h5">{result}</Typography>
-          </Stack>
         </Stack>
       </Paper>
     </Box>
