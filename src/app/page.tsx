@@ -24,6 +24,8 @@ import ExtensionIcon from "@mui/icons-material/Extension";
 import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/mobx-store/use-store-provider";
 import { format } from "date-fns";
+import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { Alert } from "@/components/notification/custom-alert";
 
 const HomePage = observer(() => {
   const router = useRouter();
@@ -35,8 +37,26 @@ const HomePage = observer(() => {
 
   const { loadSuccses, lastSave } = useStore();
 
+  const oldRun = () => {
+    enqueueSnackbar({ variant: "success", message: `Запуск игры...` });
+
+    link("/action/process");
+  };
+
   return (
     <Box component={"main"}>
+      <SnackbarProvider
+        maxSnack={3}
+        autoHideDuration={3000}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        Components={{
+          error: Alert,
+          success: Alert,
+        }}
+      />
       <AppBar position="static">
         <Toolbar>
           <ExtensionIcon />
@@ -104,7 +124,7 @@ const HomePage = observer(() => {
             <Button
               size="large"
               sx={{ textTransform: "none" }}
-              onClick={() => link("/action/process")}
+              onClick={oldRun}
               disabled={!(loadSuccses.get() && lastSave.get() != null)}
             >
               {lastSave.get()
