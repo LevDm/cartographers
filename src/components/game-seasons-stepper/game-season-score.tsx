@@ -6,15 +6,27 @@ import { SEASONS } from "@/data/elements";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/mobx-store/use-store-provider";
 import { isUndefined } from "lodash";
+import { SeasonScoresType } from "@/data/types";
 
 export const GameSeasonScore = observer(() => {
   const { season, scores, scoresResults } = useStore();
-
   const curSeason = season.get();
 
   const score = scores[curSeason];
   const result = scoresResults.get()[curSeason];
-  const data = SEASONS[curSeason];
+
+  return <SeasonScore season={curSeason} score={score} result={result} />;
+});
+
+type SeasonScorePropsType = {
+  season: number;
+  score: SeasonScoresType;
+  result: number;
+};
+export const SeasonScore = (props: SeasonScorePropsType) => {
+  const { season, score, result } = props;
+
+  const data = SEASONS[season];
 
   return (
     <Box sx={{ paddingTop: 1 }}>
@@ -63,4 +75,4 @@ export const GameSeasonScore = observer(() => {
       </Paper>
     </Box>
   );
-});
+};
