@@ -251,7 +251,7 @@ const ActionPage = observer(() => {
               "& > :not(style)": { m: 1 },
             }}
           >
-            <Fab color="secondary" variant="extended" onClick={randomFill}>
+            <Fab variant="extended" onClick={randomFill}>
               <CasinoOutlinedIcon />
               <Typography ml={1}>Заполнить</Typography>
             </Fab>

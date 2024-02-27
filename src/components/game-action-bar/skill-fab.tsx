@@ -56,12 +56,7 @@ export const SkillFab = observer((props: ActionBarPropsType) => {
 
   return (
     <>
-      <Fab
-        variant="extended"
-        size="medium"
-        disabled={freeSkills.get() == 0}
-        onClick={() => handleClickOpen()}
-      >
+      <Fab variant="extended" disabled={freeSkills.get() == 0} onClick={() => handleClickOpen()}>
         <AddIcon sx={{ mr: 1 }} />
         Навык
       </Fab>

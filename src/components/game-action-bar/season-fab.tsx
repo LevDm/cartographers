@@ -42,7 +42,7 @@ export const SeasonFab = observer((props: ActionBarPropsType) => {
 
   return (
     <>
-      <Fab variant="extended" size="medium" onClick={handleClickOpen}>
+      <Fab variant="extended" onClick={handleClickOpen}>
         <NavigationIcon sx={{ mr: 1 }} />
         {title}
       </Fab>
