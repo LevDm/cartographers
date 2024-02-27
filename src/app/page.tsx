@@ -83,6 +83,7 @@ const HomePage = observer(() => {
           width: "100%",
           height: "100%",
           opacity: 0.9,
+          maxHeight: "92dvh",
         }}
         objectFit="cover"
         fill={true}
@@ -92,7 +93,7 @@ const HomePage = observer(() => {
       <Container
         component={"section"}
         sx={{
-          height: "93vh",
+          height: "92dvh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
