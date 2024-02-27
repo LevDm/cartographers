@@ -142,11 +142,11 @@ class GameStateStore {
       }
     });
 
-    this.mapFrames.replace(newMap);
-
     this.updateScores({ p1, p2, m }, curSeason);
 
     const framesCompare = mapFramesCompare(this.mapFrames, mapValue);
+
+    this.mapFrames.replace(newMap);
 
     return { compare: framesCompare, coins: coins };
   });
@@ -162,7 +162,7 @@ class GameStateStore {
     const { stepMode, stepValue, newMapFrames, ruin, coins } = e;
 
     const updateResult = this.setMapFrames(newMapFrames);
-
+    console.log("stepHandler", updateResult);
     if (isUndefined(updateResult)) return;
 
     const { compare, coins: mapCoins } = updateResult;
