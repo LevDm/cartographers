@@ -123,14 +123,41 @@ export const PARAMS: ParamsType = {
   },
 };
 
+export const seasonCounters: Record<
+  CounterTypes,
+  { title: string; color: string; used: number[] }
+> = {
+  green: {
+    title: "A",
+    color: "#0A6F3D",
+    used: [0, 3],
+  },
+  blue: {
+    title: "Б",
+    color: "#2F70AB",
+    used: [0, 1],
+  },
+  red: {
+    title: "В",
+    color: "#CC2832",
+    used: [1, 2],
+  },
+  violet: {
+    title: "Г",
+    color: "#6C3677",
+    used: [2, 3],
+  },
+};
+
 type seasonScoreType = {
   title: string;
   value: ScoreValueType;
-  imgScr?: string;
+  img?: { src: string; bgc: string };
+  color?: string;
 };
 const STATIC_SCORES: seasonScoreType[] = [
-  { title: "К", value: "c" },
-  { title: "М", value: "m" },
+  { title: "К", value: "c", img: { src: coinAdded, bgc: "transparent" } },
+  { title: "М", value: "m", img: { src: evil, bgc: "#E5CADC" } },
 ];
 
 type seasonsType = {
@@ -142,43 +169,40 @@ export const SEASONS: seasonsType[] = [
   {
     title: "Весна",
     description: "Активны А и Б",
-    score: [{ title: "A", value: "p1" }, { title: "Б", value: "p2" }, ...STATIC_SCORES],
+    score: [
+      { ...seasonCounters.green, value: "p1" },
+      { ...seasonCounters.blue, value: "p2" },
+      ...STATIC_SCORES,
+    ],
   },
   {
     title: "Лето",
     description: "Активны Б и В",
-    score: [{ title: "Б", value: "p1" }, { title: "В", value: "p2" }, ...STATIC_SCORES],
+    score: [
+      { ...seasonCounters.blue, value: "p1" },
+      { ...seasonCounters.red, value: "p2" },
+      ...STATIC_SCORES,
+    ],
   },
   {
     title: "Осень",
     description: "Активны В и Г",
-    score: [{ title: "В", value: "p1" }, { title: "Г", value: "p2" }, ...STATIC_SCORES],
+    score: [
+      { ...seasonCounters.red, value: "p1" },
+      { ...seasonCounters.violet, value: "p2" },
+      ...STATIC_SCORES,
+    ],
   },
   {
     title: "Зима",
     description: "Активны А и Г",
-    score: [{ title: "A", value: "p1" }, { title: "Г", value: "p2" }, ...STATIC_SCORES],
+    score: [
+      { ...seasonCounters.green, value: "p1" },
+      { ...seasonCounters.violet, value: "p2" },
+      ...STATIC_SCORES,
+    ],
   },
 ];
-
-export const seasonCounters: Record<CounterTypes, { title: string; used: number[] }> = {
-  green: {
-    title: "A",
-    used: [0, 3],
-  },
-  blue: {
-    title: "Б",
-    used: [0, 1],
-  },
-  red: {
-    title: "В",
-    used: [1, 2],
-  },
-  violet: {
-    title: "Г",
-    used: [2, 3],
-  },
-};
 
 export const ACTIONS_TITLES: Record<AllActionTypes, string> = {
   simpl: "Ход",
