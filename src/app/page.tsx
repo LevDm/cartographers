@@ -38,7 +38,11 @@ const HomePage = observer(() => {
           <Typography variant="h6" sx={{ marginLeft: 2, flexGrow: 1 }}>
             Главная
           </Typography>
-          <Button color="inherit" onClick={() => router.push("//rules")}>
+          <Button
+            color="inherit"
+            sx={{ fontSize: "1.25rem", textTransform: "none" }}
+            onClick={() => router.push("//rules")}
+          >
             Правила
           </Button>
         </Toolbar>

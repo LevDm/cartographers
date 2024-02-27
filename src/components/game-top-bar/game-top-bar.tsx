@@ -29,7 +29,11 @@ export function TopAppBar(props: TopAppBarType) {
         <Typography variant="h6" sx={{ marginLeft: 2, flexGrow: 1 }}>
           Игра
         </Typography>
-        <Button color="inherit" onClick={() => router.push("//rules")}>
+        <Button
+          color="inherit"
+          sx={{ fontSize: "1.25rem", textTransform: "none" }}
+          onClick={() => router.push("//rules")}
+        >
           Правила
         </Button>
       </Toolbar>
