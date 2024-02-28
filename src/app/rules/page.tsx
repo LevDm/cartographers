@@ -6,7 +6,8 @@ import { AppBar, Box, Toolbar, IconButton, Typography, Container } from "@mui/ma
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import { useRouter } from "next/navigation";
-import { RulesPdf } from "@/components/rules-pdf/rulesPDF";
+
+import { RulesAccordions } from "@/components";
 
 export default function RulesPage() {
   const router = useRouter();
@@ -25,8 +26,8 @@ export default function RulesPage() {
         </Toolbar>
       </AppBar>
 
-      <Container component={"section"}>
-        <RulesPdf />
+      <Container component={"section"} sx={{ paddingTop: 2 }}>
+        <RulesAccordions />
       </Container>
     </Box>
   );
