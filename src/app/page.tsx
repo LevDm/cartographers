@@ -45,7 +45,7 @@ const HomePage = observer(() => {
   };
 
   return (
-    <Box component={"main"}>
+    <Box component={"main"} sx={{ position: "relative" }}>
       <SnackbarProvider
         maxSnack={3}
         autoHideDuration={3000}
@@ -82,7 +82,6 @@ const HomePage = observer(() => {
           zIndex: -1,
           width: "100%",
           height: "100%",
-          opacity: 1,
           maxHeight: "100dvh",
           objectFit: "cover",
         }}
