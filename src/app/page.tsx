@@ -41,7 +41,7 @@ const HomePage = observer(() => {
   const oldRun = () => {
     enqueueSnackbar({ variant: "success", message: `Запуск игры...` });
 
-    link("/action/process");
+    link("action/process");
   };
 
   return (
@@ -67,7 +67,7 @@ const HomePage = observer(() => {
           <Button
             color="inherit"
             sx={{ fontSize: "1.25rem", textTransform: "none" }}
-            onClick={() => router.push("//rules")}
+            onClick={() => router.push("rules")}
           >
             Правила
           </Button>
@@ -118,7 +118,7 @@ const HomePage = observer(() => {
             <Button
               size="large"
               sx={{ textTransform: "none", width: "100%" }}
-              onClick={() => link("/action")}
+              onClick={() => link("action")}
             >
               Новый
             </Button>
