@@ -84,8 +84,8 @@ const HomePage = observer(() => {
           height: "100%",
           opacity: 1,
           maxHeight: "100dvh",
+          objectFit: "cover",
         }}
-        objectFit="cover"
         fill={true}
         placeholder="blur"
       />
