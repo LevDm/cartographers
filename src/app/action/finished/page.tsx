@@ -27,7 +27,12 @@ import { GameActionHistory, SeasonScore } from "@/components";
 const FinishedActionPage = observer(() => {
   const router = useRouter();
 
-  const { scores, scoresResults } = useStore();
+  const { scores, scoresResults, resetStore } = useStore();
+
+  const onEnd = () => {
+    resetStore();
+    router.replace("//");
+  };
 
   const final = scoresResults.get().reduce((acc, res) => acc + res, 0);
   const addFinal = scores.reduce((acc, score) => acc + score.m, 0);
@@ -36,9 +41,8 @@ const FinishedActionPage = observer(() => {
     <Box component={"main"}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton color="inherit" onClick={() => router.back()}>
-            <StarOutlineIcon />
-          </IconButton>
+          <StarOutlineIcon />
+
           <Typography variant="h6" sx={{ marginLeft: 2, flexGrow: 1 }}>
             Результат
           </Typography>
@@ -118,7 +122,7 @@ const FinishedActionPage = observer(() => {
             "& > :not(style)": { m: 1 },
           }}
         >
-          <Fab variant="extended" color="primary" onClick={() => router.replace("//")}>
+          <Fab variant="extended" color="primary" onClick={onEnd}>
             <Typography>На главную</Typography>
           </Fab>
         </Box>
