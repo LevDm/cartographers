@@ -12,6 +12,7 @@ import {
   Fab,
   Stack,
   Paper,
+  Badge,
 } from "@mui/material";
 
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
@@ -29,6 +30,7 @@ const FinishedActionPage = observer(() => {
   const { scores, scoresResults } = useStore();
 
   const final = scoresResults.get().reduce((acc, res) => acc + res, 0);
+  const addFinal = scores.reduce((acc, score) => acc + score.m, 0);
 
   return (
     <Box component={"main"}>
@@ -73,9 +75,11 @@ const FinishedActionPage = observer(() => {
                 left: "0%",
               }}
             />
-            <Typography variant="h4" sx={{ zIndex: 1 }}>
-              {final}
-            </Typography>
+            <Badge badgeContent={addFinal} color="info" showZero>
+              <Typography variant="h4" sx={{ zIndex: 1, paddingRight: 1 }}>
+                {final}
+              </Typography>
+            </Badge>
           </Box>
 
           <Box
