@@ -13,7 +13,7 @@ import {
   Divider,
 } from "@mui/material";
 
-import CoverBG from "../../public/cover.jpg";
+import CoverBG from "../../public/jcover.jpg";
 import Image from "next/image";
 
 import ExtensionIcon from "@mui/icons-material/Extension";
@@ -78,13 +78,12 @@ const HomePage = observer(() => {
         src={CoverBG}
         alt=""
         style={{
-          marginTop: "56px",
           position: "absolute",
           zIndex: -1,
           width: "100%",
           height: "100%",
-          opacity: 0.9,
-          maxHeight: "92dvh",
+          opacity: 1,
+          maxHeight: "100dvh",
         }}
         objectFit="cover"
         fill={true}
