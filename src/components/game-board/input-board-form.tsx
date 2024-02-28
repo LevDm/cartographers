@@ -1,24 +1,8 @@
-import React, { ElementType, useState } from "react";
+import React from "react";
 
 import SendAndArchiveIcon from "@mui/icons-material/SendAndArchive";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Paper,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  SvgIcon,
-  Switch,
-  Typography,
-} from "@mui/material";
+import { Button, Divider, Paper, Stack } from "@mui/material";
 
 import { AllFrameTypes, FrameParamsType } from "@/data/types";
 import { BASIC_FRAMES, BasicFramesType, PARAMS, ParamsType } from "@/data/elements";

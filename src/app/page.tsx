@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 
 import {
   Button,
   AppBar,
   Box,
   Toolbar,
-  IconButton,
   Typography,
   Stack,
   Container,
@@ -17,15 +16,17 @@ import {
 import CoverBG from "../../public/cover.jpg";
 import Image from "next/image";
 
-import { observer } from "mobx-react-lite";
-
 import ExtensionIcon from "@mui/icons-material/Extension";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useStore } from "@/mobx-store/use-store-provider";
+
+import { observer } from "mobx-react-lite";
+import { useStore } from "@/mobx-store";
+
 import { format } from "date-fns";
+
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
-import { Alert } from "@/components/notification/custom-alert";
+import { Alert } from "@/components";
 
 const HomePage = observer(() => {
   const router = useRouter();

@@ -11,7 +11,6 @@ import {
   Container,
   Fab,
   Stack,
-  Paper,
   Badge,
 } from "@mui/material";
 
@@ -19,10 +18,11 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import StarIcon from "@mui/icons-material/Star";
 
 import { useRouter } from "next/navigation";
+
 import { useStore } from "@/mobx-store/use-store-provider";
 import { observer } from "mobx-react-lite";
-import { GameActionHistory } from "@/components";
-import { SeasonScore } from "@/components/game-seasons-stepper/game-season-score";
+
+import { GameActionHistory, SeasonScore } from "@/components";
 
 const FinishedActionPage = observer(() => {
   const router = useRouter();

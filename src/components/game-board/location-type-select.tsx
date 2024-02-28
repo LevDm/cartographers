@@ -1,25 +1,20 @@
-import React, { ElementType, useState } from "react";
+import React, { ElementType } from "react";
 
 import {
   Box,
-  Button,
   Chip,
-  Divider,
   FormControl,
   InputLabel,
   MenuItem,
-  OutlinedInput,
-  Paper,
   Select,
   SelectChangeEvent,
   Stack,
   SvgIcon,
-  Switch,
   Typography,
 } from "@mui/material";
 
 import { AllFrameTypes, FrameParamsType } from "@/data/types";
-import { BASIC_FRAMES, BasicFramesType, PARAMS, ParamsType } from "@/data/elements";
+import { BasicFramesType, ParamsType } from "@/data/elements";
 
 type AllFramesFieldsType = AllFrameTypes | FrameParamsType;
 

@@ -2,22 +2,19 @@ import { observable, action, computed, IObservableArray, IObservableValue, toJS 
 
 import {
   CoinWalletType,
-  GameStateType,
   AllActionTypes,
   MapFramesType,
   HistoryRowType,
   SeasonScoresType,
-  CoinTypes,
-  AllFrameTypes,
   GameConfig,
 } from "@/data/types";
 
-import { CARD_SKILL, MAPS } from "@/data/cards";
-import { getCurrentDateTime } from "@/utils/get-current-date-time";
-import { mapFramesCompare, countScores } from "@/utils";
+import { CARD_SKILL } from "@/data/cards";
+
+import { mapFramesCompare, countScores, getCurrentDateTime, mapCountig } from "@/utils";
 
 import { getDefaultScores, getDefaultCoinsWallet, getMap } from "./default-store-values";
-import { mapCountig } from "@/utils";
+
 import { isNull, isUndefined } from "lodash";
 
 export interface stepHandlerType {

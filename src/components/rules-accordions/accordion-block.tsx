@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Stack } from "@mui/material";
 import { RuleType } from "@/data/rules";
-import { isUndefined } from "lodash";
 
 type AccordionBlockPropsType = RuleType & {
   expanded: boolean;

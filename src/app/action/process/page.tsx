@@ -3,18 +3,23 @@ import React, { useState } from "react";
 
 import { Box, Container } from "@mui/material";
 
-import { CoinWallet, GameActionHistory, GameBoard, GameSeasonsStepper } from "@/components";
+import {
+  CoinWallet,
+  GameActionHistory,
+  GameBoard,
+  GameSeasonsStepper,
+  ActionBar,
+  TopAppBar,
+} from "@/components";
+import { InputHandlerType, OpenInputStepType } from "@/components/game-board/types";
+import { actionBarHandlerType } from "@/components/game-action-bar/types";
 
 import { useRouter } from "next/navigation";
 
 import { AllActionTypes } from "@/data/types";
 
-import { ActionBar } from "@/components/game-action-bar/action-bar";
-import { TopAppBar } from "@/components/game-top-bar/game-top-bar";
-import { InputHandlerType, OpenInputStepType } from "@/components/game-board/types";
 import { observer } from "mobx-react-lite";
 import { useStore } from "@/mobx-store/use-store-provider";
-import { actionBarHandlerType } from "@/components/game-action-bar/types";
 
 const ProcessActionPage = observer(() => {
   const router = useRouter();

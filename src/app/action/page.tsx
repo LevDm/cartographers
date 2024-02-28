@@ -15,21 +15,23 @@ import {
 
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
-
-import { SubmitHandler, useForm } from "react-hook-form";
-import { usePathname, useRouter } from "next/navigation";
-
-import { CardSelector } from "@/components/card-selector/card-selector";
-
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-import { MAPS_IMG, START_GAME_CARDS } from "@/data/selectedCards";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+import { usePathname, useRouter } from "next/navigation";
+
+import { CardSelector, Alert } from "@/components";
+
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
-import { Alert } from "@/components/notification/custom-alert";
+
+import { MAPS_IMG, START_GAME_CARDS } from "@/data/selectedCards";
 import { GameConfig, SelectCardType } from "@/data/types";
-import { observer } from "mobx-react-lite";
-import { useStore } from "@/mobx-store/use-store-provider";
 import { CARD_COUNTER, CARD_SKILL } from "@/data/cards";
+
+import { useStore } from "@/mobx-store";
+import { observer } from "mobx-react-lite";
+
 import { random } from "lodash";
 
 type FormSelecterNames =
