@@ -235,7 +235,20 @@ class GameStateStore {
     }
   });
 
+  setDefaultStoreValues = action(() => {
+    this.loadSuccses.set(false);
+    this.lastSave.set(null);
+    this.gameConfig.set(null);
+    this.season.set(0);
+    this.freeSkills.set(1);
+    this.scores.replace(getDefaultScores());
+    this.coinsWallet.replace(getDefaultCoinsWallet());
+    this.mapFrames.replace(getMap("map-a"));
+    this.history.replace([]);
+  });
+
   resetStore = () => {
+    this.setDefaultStoreValues();
     localStorage.removeItem(this.storeName);
   };
 }
